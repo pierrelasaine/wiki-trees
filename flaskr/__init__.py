@@ -1,5 +1,6 @@
-from flaskr import pages
+"""Creates and configures a Flask app for serving a wiki website."""
 
+from flaskr import pages
 from flask import Flask
 
 import logging
