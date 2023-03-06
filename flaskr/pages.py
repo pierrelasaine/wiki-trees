@@ -16,7 +16,7 @@ All routes use templates rendered with Flask's "render_template" function, and i
 from flask import render_template, abort
 from google.cloud import storage
 
-bucket_name = "wiki_content_p1"
+content_bucket = "wiki_content_p1"
 storage_client = storage.Client.from_service_account_json("buckets-read-write-key.json")
 
 def make_endpoints(app):
@@ -29,12 +29,12 @@ def make_endpoints(app):
 
     @app.route("/pages")
     def pages_index():
-        blobs = storage_client.list_blobs("wiki_content_p1")
+        blobs = storage_client.list_blobs(content_bucket)
         return render_template("pages.html", pages=blobs)
 
     @app.route("/pages/<tree>")
     def page(tree):
-        blob = storage_client.bucket("wiki_content_p1").get_blob(f"{tree}.txt")
+        blob = storage_client.bucket(content_bucket).get_blob(f"{tree}.txt")
         if not blob:
             abort(404)
 
