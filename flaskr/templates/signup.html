@@ -1,0 +1,47 @@
+<html>
+    <style>
+        body{font-family: Arial, Helvetica, sans-serif;}
+
+        /* Full-width input fields */
+        input[type=text], input[type=password]{
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+
+        /* Style for all buttons */
+        button{
+            background-color: #08ece1;
+            color: rgb(0, 0, 0);
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: navy;
+            cursor: pointer;
+            width: 100%
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+    <head>
+        <title>Sign Up</title>
+    </head>
+    <body>
+        <h2>Sign Up</h2>
+        
+        <form method="post" action="/results">
+            <div class="contanier">
+                <label for="username"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="text" placeholder="Enter Password" name="psw" required>
+
+                <button type="submit" value="Submit">Sign Up</button>
+             </div>
+        </form>
+    </body>
+</html>
