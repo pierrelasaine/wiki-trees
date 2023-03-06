@@ -12,3 +12,11 @@ def make_endpoints(app):
         return render_template("main.html")
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
+
+    @app.route('/signup')
+    def new_user():
+        return render_template("signup.html")
+
+    @app.route('/login')
+    def past_user():
+        return render_template("login.html")
