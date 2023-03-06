@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, abort
 from google.cloud import storage
 
 
@@ -19,15 +19,16 @@ def make_endpoints(app):
     def pages_index():
         # get a list of all the blobs in the bucket
         blobs = storage_client.list_blobs("wiki_content_p1")
-        # create a list of links for each page (the page name is the link name)
-        # links = [f'<li><a href="{blob.public_url}">{blob.name}</a></li>' for blob in blobs]
-        # render the template passing the links to pages.html
+        # render the template passing the blobs to pages.html
         return render_template("pages.html", pages=blobs)
 
-    @app.route("/pages/<tree>/")
+    @app.route("/pages/<tree>")
     def page(tree):
         # retrieve blob
         blob = storage_client.bucket("wiki_content_p1").get_blob(f"{tree}.txt")
+        # return Page not found if page not in buckets
+        if not blob:
+            abort(404)
         # get contents as byte string
         contents_bytes = blob.download_as_string()
         # decode to string
