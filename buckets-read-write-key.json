@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "project1-tech",
+  "private_key_id": "1adbdb1b565c39e3d1a0a6744176ca545d2a42db",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWMnKqPgIQNV5Y\nEyBP2QbDg1hsJhnyg4l0XRqJp/Ri8lxoEarHsUyfXWfG3nciA9qcojEVuQdOCL66\nOm0BCJAV/SAbMj1on75z+rl0Fuqd7TwuWpwIzepF8I8GVT9UUjXKCvxkfOy5VFIx\nu27HaI7zxFRZNx0jRLsfv8Zq5dMayyNo3EXr68P5KWR8jWebXBz9CIFrFPA0bkA7\nUXh4Bu4ppzMsoUQ07ImnXmCRdzpCd+V8wJiyY8cTcHAlFeCqm64zNZHmuv2rceJN\nwvgc6atvyxpEqpF1rYaBYbs2lttie7G5nexHATYoR8jfdMIKLzVrzpzKdvYHYDyW\nKjtPTQSnAgMBAAECggEAAsvKymUf0sVXk2/AerpbB79Vrqe6q/tClpXGjGh4XLhM\nM4GTiKLMXMIz4hkyVevV9Th6yo1NRpv/nV+434wUkWzp9+Dqg0yeiFYMCLNp4aDg\nqbw+EDFb7wjKXStMtdWS5S3KiKdG0c6Deim3svuu7giwjy+Ufkrd5Ha06N1SKaXa\nEod2zvQSX+q6SyASsL0Agrf2EGIDyw1CVXUBfQBSDWnmr8MYpUD0nE0zsVFGHxJw\nyfc8UX1qrzWpIJ3mfnDnmIqLSjOCxbrMyBlo+mdTKH42kJFFhGRQ8wECzi8hEnss\nGVnMxhKqfWwfP19Ffi4+W5Yi6JLcuEY7o3894e1/JQKBgQD6C/OVfAufpM0Scadu\nU4th+RdGqTtsT3a4K7A/pP5Bu72B23ytVMBAs/xp8UM7/n8l1tF1cSJLafnb1ZSO\n3tacw4bFqFAqS4eh3xshXjJloZd74TrgB/2iGvWUXcRuup+wDL9y6daW/8T6mJ/K\nLa3Td+eFuBsj05bPe3faMtAdcwKBgQDbS/2vQ8YChM6ROetD/1d2uP22iirbGl2b\nTB/RIrBhsubR4qN+rp5WClSmH9bMVqfYg11SnfMt+KiZ6cFS5Anh346Hy0T6zWpS\nt1BJtX+Yc0Vn/gr5MnzFCJ9g/aXpG0sALBONTSzY4prYAPQhK7u5FR7AFF9S+/4e\nVdUgkwXu/QKBgH3Pq6UIQBT4Z9Ki6vqhAJ2wJl0AY4zQwsxR9yFe1Cug2e5P0ICq\nBv3HUfbAVPMHz1PrrYJpBTdqwDQzV8c3KkbAPryPPp65WCpDRrRYYAUw9DZ5khUN\nEDoTVINtVpvcPOLo1x9rtvRNBwCL8MJaj366cvyeMNGq8dO9rQVV0c8vAoGBAJyg\ncdg0N8CkykS/cWFnhjitd8hgdqt28VRx0me0tvWQqXtOvCdG4J/jUQI1y1y2p7rk\nWEshtQYoi4MiiYmChexll481h1b6T+40L4v1reRcsD3OHFhPzv2LYwoLH+yWKcM9\nt9k8PcPKVX3hcHwgmDtg8k2OP2ctxBo2g7p4R8yhAoGAGy0oIgs0QNC7vOdtCYam\n8Kikg3yxBkVMrE7PRZJgQp4wkCg6JKSXQojp4spuA5eriXgBM9V60MRuBmNvXstI\ntLEbgH0a/Eyn1V83iU44Oqws0gAaurpzB6a/D74ozPpEQtGNxAsmTc9zEK2XlFfv\nVjL4BobjIGnOWVuXpwTiKno=\n-----END PRIVATE KEY-----\n",
+  "client_email": "flask-storage-reader-writer@project1-tech.iam.gserviceaccount.com",
+  "client_id": "102854417393956108677",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/flask-storage-reader-writer%40project1-tech.iam.gserviceaccount.com"
+}

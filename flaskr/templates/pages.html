@@ -1,0 +1,14 @@
+{% extends "main.html" %}
+
+{% block title %}
+Pages
+{% endblock %}
+
+{% block content %}
+<h1>Wiki Pages</h1>
+<ul>
+    {% for blob in pages %}
+        <li><a href="/pages/{{ blob.name.strip('.txt') }}"> {{ blob.name.strip(".txt") }} </a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

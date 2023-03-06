@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+
+{% block title %}
+{{ lines[0] }}
+{% endblock %}
+
+{% block content %}
+<h1>{{ lines[0] }}</h1>
+<h2>History</h2>
+    <p>{{ lines[1] }}</p>
+<h2>Biology</h2>
+    <p>{{ lines[2] }}</p>
+<h2>Fun Facts</h2>
+    <p>{{ lines[3] }}</p>
+{% endblock %}
