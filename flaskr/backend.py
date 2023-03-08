@@ -8,11 +8,19 @@ class Backend:
         self.storage_client = storage.Client()
         self.bucket = self.storage_client.bucket(bucket_name)
         
-    def get_wiki_page(self, name):
-        pass
+    def get_wiki_page(self, name): #wiki_content_p1
+        blob_name = name
+        bucket = self.storage_client.bucket(self.bucket_name)
+        blob = bucket.blob(blob_name)
+        
+        with blob.open("r") as f:
+            return f.read()
 
     def get_all_page_names(self):
-        pass
+        self.pages = []
+        for blob in self.storage_client.list_blobs(self.bucket_name):
+            self.pages.append(blob.name.strip(".txt"))
+        return self.pages
 
     def upload(self, username, password):
         pass
@@ -48,4 +56,20 @@ class Backend:
     
     def get_image(self):
         pass
+        
 
+    def get_image(self, image_name):
+        blob_name = image_name
+        bucket = self.storage_client.bucket(self.bucket_name)
+        blob = bucket.blob(blob_name)
+        
+        with blob.open("rb") as image:
+            f = image.read()
+            b = bytearray(f)
+            return b
+
+backend1 = Backend("wiki_content_p1")
+backend2 = Backend("developer_images")
+#print(backend.get_wiki_page("ginkgo.txt"))
+#print(backend.get_all_page_names())
+print(backend2.get_image("bulbasaur.jpeg"))

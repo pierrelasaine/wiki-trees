@@ -2,6 +2,7 @@ from flaskr import create_app
 from unittest.mock import patch, Mock
 from google.cloud.storage.blob import Blob
 import pytest
+import os
 
 # See https://flask.palletsprojects.com/en/2.2.x/testing/ 
 # for more info on testing
@@ -29,6 +30,21 @@ def test_about_page(client):
     assert resp.status_code == 200
     assert b"About this Wiki" in resp.data
 
+@patch("google.cloud.storage.bucket.Bucket.get_blob")
+def test_get_image(mock_get_blob, client):
+    mock_blob = Mock(spec=Blob)
+    mock_blob.download_as_string.return_value = os.urandom(1024)
+
+    mock_get_blob.return_value = mock_blob
+
+    resp = client.get("/images/mock_blob")
+    assert resp.status_code == 200
+
+def test_image_nonexistent(client):
+    resp = client.get("/images/nonexistent")
+    assert resp.status_code == 404
+    assert b"Not Found" in resp.data
+
 def test_pages_page(client):
     resp = client.get("/pages")
     assert resp.status_code == 200
@@ -43,9 +59,9 @@ def test_pages_wiki_nonexistent(client):
 def test_pages_wiki_details(mock_get_blob, client):
     mock_blob = Mock(spec=Blob)
     mock_blob.download_as_string.return_value = b"Mock Text for Unit Test\nBiology\nHistory\nFun Fact"
+
     mock_get_blob.return_value = mock_blob
 
     resp = client.get("/pages/mock-blob")
     assert resp.status_code == 200
-    print(resp.data)
     assert b"Mock Text for Unit Test" in resp.data
