@@ -22,7 +22,7 @@ class Backend:
 
         # Checks if username exists
         blob = self.bucket.blob(f"{username}.json")
-        if blob.exis():
+        if blob.exists():
             return False
 
         # # Create user
