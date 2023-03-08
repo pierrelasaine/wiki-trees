@@ -1,10 +1,12 @@
 from google.cloud import storage
 import hashlib
+# import json
 
 # TODO(Project 1): Implement Backend according to the requirements.
 class Backend:
 
     def __init__(self, bucket_name):
+        self.bucket_name = bucket_name
         self.storage_client = storage.Client()
         self.bucket = self.storage_client.bucket(bucket_name)
         
@@ -18,22 +20,28 @@ class Backend:
         pass
 
     def sign_up(self, username, password):
-        # hash_pword = hashlib.blake2b(password.encode()).hexdigest()
-
-        # Checks if username exists
-        blob = self.bucket.blob(f"{username}.json")
-        if blob.exists():
+        if self.bucket.blob(username).exists():
             return False
 
-        # # Create user
-        # new_user = {"username": username, "password": hash_pword}
-        # new_user_json = json.dumps(new_user).encode("utf-8")
-        # blob.upload_from_string(new_user_json)
+        # Hash password
+        hash_pword = hashlib.blake2b(password.encode()).hexdigest()
 
+        blob = self.bucket.blob(username)
+        blob.upload_from_string(hash_pword)
         return True
 
-    def sign_in(self):
-        pass
+    def sign_in(self, username, password):
+        if self.bucket.blob(username).exists():
+            return False
+
+        get_pword = self.bucket.blob(username).download_as_string().decode()
+        user_pword = hashlib.blake2b(password.encode()).hexdigest()
+
+        if get_pword == user_pword:
+            return True
+        else:
+            return False
+        
 
     def get_image(self):
         pass
