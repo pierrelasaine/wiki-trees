@@ -51,9 +51,18 @@ class Backend:
             return False
         
 
-    def get_image(self):
-        pass
+    def get_image(self, image_name):
+        blob_name = image_name
+        bucket = self.storage_client.bucket(self.bucket_name)
+        blob = bucket.blob(blob_name)
+        
+        with blob.open("rb") as image:
+            f = image.read()
+            b = bytearray(f)
+            return b
 
-backend = Backend("wiki_content_p1")
+backend1 = Backend("wiki_content_p1")
+backend2 = Backend("developer_images")
 #print(backend.get_wiki_page("ginkgo.txt"))
-print(backend.get_all_page_names())
+#print(backend.get_all_page_names())
+print(backend2.get_image("bulbasaur.jpeg"))
