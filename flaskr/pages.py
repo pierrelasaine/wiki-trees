@@ -13,11 +13,14 @@ The module also defines two additional routes for user authentication:
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
 
-from flask import render_template, abort
+from flask import render_template, abort, session, request, redirect, url_for
 from google.cloud import storage
+from flaskr.backend import Backend
 
 content_bucket = "wiki_content_p1"
 storage_client = storage.Client.from_service_account_json("buckets-read-write-key.json")
+
+backend = Backend(content_bucket)
 
 def make_endpoints(app):
 
@@ -47,12 +50,30 @@ def make_endpoints(app):
     def about():
         return render_template("about.html")
 
-    # TODO(Project 1): Implement additional routes according to the project requirements.
+    @app.route('/signup', methods=["GET","POST"])
+    def new_signup():
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
 
-    @app.route('/signup')
-    def new_user():
-        return render_template("signup.html")
+            if backend.sign_up(username, password):
+                 return redirect(url_for("login"))
+            else:
+                return render_template("signup.html", error="Username already exists!")
+        else:
+            return render_template("signup.html")
 
-    @app.route('/login')
-    def past_user():
-        return render_template("login.html")
+    @app.route('/login', methods=["GET","POST"])
+    def user_login():
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+
+            if backend.sign_in(username, password):
+                session["username"] = username
+                # return redirect(url_for("upload"))
+                return redirect(url_for("logged_in"))
+            else:
+                return render_template("login.html")
+
+    #     # TODO(Project 1): Implement additional routes according to the project requirements.
