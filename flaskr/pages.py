@@ -13,14 +13,14 @@ The module also defines two additional routes for user authentication:
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
 
-from flask import render_template, abort, session, request, redirect, url_for
+from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file
 from google.cloud import storage
 from flaskr.backend import Backend
 
-content_bucket = "wiki_content_p1"
-storage_client = storage.Client.from_service_account_json("buckets-read-write-key.json")
+bucket_name = "wiki_content_p1"
+storage_client = storage.Client()
 
-backend = Backend(content_bucket)
+backend = Backend(bucket_name)
 
 def make_endpoints(app):
 
@@ -32,12 +32,12 @@ def make_endpoints(app):
 
     @app.route("/pages")
     def pages_index():
-        blobs = storage_client.list_blobs(content_bucket)
+        blobs = storage_client.list_blobs(bucket_name)
         return render_template("pages.html", pages=blobs)
 
     @app.route("/pages/<tree>")
     def page(tree):
-        blob = storage_client.bucket(content_bucket).get_blob(f"{tree}.txt")
+        blob = storage_client.bucket(bucket_name).get_blob(f"{tree}.txt")
         if not blob:
             abort(404)
 
@@ -48,7 +48,23 @@ def make_endpoints(app):
 
     @app.route("/about")
     def about():
-        return render_template("about.html")
+        authors = [
+            ("Pierre Johnson", "bulbasaur.jpeg"),
+            ("Ericka James", "charmander.jpeg"),
+            ("Jalen Richburg", "squirtle.jpeg") 
+        ]
+        return render_template("about.html", authors=authors)
+
+    @app.route("/images/<filename>")
+    def get_image(filename):
+        blob = storage_client.bucket("developer_images").get_blob(filename)
+        if not blob:
+            abort(404)
+
+        image_data = blob.download_as_string()
+        response = make_response(image_data)
+        response.headers.set("Content-Type", "image/jpeg")
+        return response
 
     @app.route('/signup', methods=["GET","POST"])
     def new_signup():
