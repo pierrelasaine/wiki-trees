@@ -17,10 +17,10 @@ from flask import render_template, abort, session, request, redirect, url_for
 from google.cloud import storage
 from flaskr.backend import Backend
 
-content_bucket = "wiki_content_p1"
-storage_client = storage.Client.from_service_account_json("buckets-read-write-key.json")
+bucket_name = "wiki_content_p1"
+storage_client = storage.Client()
 
-backend = Backend(content_bucket)
+backend = Backend(bucket_name)
 
 def make_endpoints(app):
 
@@ -32,12 +32,12 @@ def make_endpoints(app):
 
     @app.route("/pages")
     def pages_index():
-        blobs = storage_client.list_blobs(content_bucket)
+        blobs = storage_client.list_blobs(bucket_name)
         return render_template("pages.html", pages=blobs)
 
     @app.route("/pages/<tree>")
     def page(tree):
-        blob = storage_client.bucket(content_bucket).get_blob(f"{tree}.txt")
+        blob = storage_client.bucket(bucket_name).get_blob(f"{tree}.txt")
         if not blob:
             abort(404)
 
