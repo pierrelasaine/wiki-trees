@@ -53,11 +53,7 @@ class Backend:
             return True
         else:
             return False
-    
-    def get_image(self):
-        pass
-        
-
+            
     def get_image(self, image_name):
         blob_name = image_name
         bucket = self.storage_client.bucket(self.bucket_name)
