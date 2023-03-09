@@ -74,6 +74,11 @@ def make_endpoints(app):
         response.headers.set("Content-Type", "image/jpeg")
         return response
 
+    @app.route("/upload")
+    def upload():
+        is_login,uname = check_logged_in()       
+        return render_template("upload.html", logged_in=is_login, username=uname)
+
     @app.route('/signup', methods=["GET","POST"])
     def new_signup():
         if request.method == "POST":
@@ -98,7 +103,7 @@ def make_endpoints(app):
             if backend.sign_in(username, password):
                 session['username'] = username
                 session['logged_in'] = True
-                return redirect(url_for("Upload", username=username))
+                return redirect(url_for("/upload", username=username))
             else:
                 return render_template("login.html", error="Invalid username or password") #, logged_in=session.get('logged_in', False))
 
