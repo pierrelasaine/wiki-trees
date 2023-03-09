@@ -3,7 +3,7 @@
 The main functionality of the wiki is provided by four routes:
     The home route ("/") displays the main page of the wiki.
     The pages index route ("/pages") displays a list of all the pages in the wiki.
-    The page detail route ("/pages/<tree>") displays the contents of a specific page.
+    The page detail route ("/pages/<filename>") displays the contents of a specific page.
     The about route ("/about") displays information about the authors of the wiki.
 
 The module also defines two additional routes for user authentication:
