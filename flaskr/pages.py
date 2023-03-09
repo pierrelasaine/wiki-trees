@@ -24,17 +24,26 @@ storage_client = storage.Client()
 backend = Backend(user_bucket)
 
 def make_endpoints(app):
+    def check_logged_in():
+        logged_in = session.get('logged_in', False)
+        if logged_in:
+            username = session['username']
+            return True,username
+        else:
+            return False, ""
 
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
-    def home():
-        return render_template("main.html")
+    def home(): 
+        is_login,uname = check_logged_in()       
+        return render_template("main.html", logged_in=is_login, username=uname)
 
     @app.route("/pages")
     def pages_index():
         pages = backend1.get_all_page_names()
-        return render_template("pages.html", pages=pages)
+        is_login,uname = check_logged_in() 
+        return render_template("pages.html", pages=pages, logged_in=is_login, username=uname)
 
     @app.route("/pages/<filename>")
     def page(filename):
@@ -42,7 +51,8 @@ def make_endpoints(app):
             abort(404)
             
         lines = backend1.get_wiki_page(filename).splitlines()
-        return render_template("page_template.html", lines=lines)
+        is_login,uname = check_logged_in() 
+        return render_template("page_template.html", lines=lines, logged_in=is_login, username=uname)
 
     @app.route("/about")
     def about():
@@ -51,7 +61,8 @@ def make_endpoints(app):
             ("Ericka James", "charmander.jpeg"),
             ("Jalen Richburg", "squirtle.jpeg") 
         ]
-        return render_template("about.html", authors=authors)
+        is_login,uname = check_logged_in() 
+        return render_template("about.html", authors=authors, logged_in=is_login, username=uname)
 
     @app.route("/images/<filename>")
     def get_image(filename):
@@ -74,9 +85,9 @@ def make_endpoints(app):
                 session['logged_in'] = True
                 return redirect('/')
             else:
-                return render_template("login.html", error="Username already exists!", active_tab='SignUp', logged_in=session.get('logged_in', False))
+                return render_template("login.html", error="Username already exists!", active_tab='SignUp')
         else:
-            return render_template("login.html", active_tab='SignUp', logged_in=session.get('logged_in', False))
+            return render_template("login.html", active_tab='SignUp')
 
     @app.route('/login', methods=["GET","POST"])
     def user_login():
@@ -89,10 +100,15 @@ def make_endpoints(app):
                 session['logged_in'] = True
                 return redirect(url_for("Upload", username=username))
             else:
-                return render_template("login.html", error="Invalid username or password", logged_in=session.get('logged_in', False))
+                return render_template("login.html", error="Invalid username or password") #, logged_in=session.get('logged_in', False))
 
         else:
-            return render_template("login.html", logged_in=session.get('logged_in', False))
+            return render_template("login.html") #, logged_in=session.get('logged_in', False))
+
+    @app.route('/logout')
+    def logout():
+        session.clear()
+        return redirect(url_for('home'))
             
 
 def is_valid_blob(bucket_name, filename):

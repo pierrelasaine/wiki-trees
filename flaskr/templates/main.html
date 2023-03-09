@@ -14,8 +14,8 @@
                 <a href="/about"><button class="tablinks" onclick="openTab('About')">About</button></a>
                 {% if logged_in %}
                 <a href="/upload"><button class="tablinks" onclick="openTab('Upload')">Upload</button></a>
+                <a>  <span class="username">| {{ username }} |</span>  <a>
                 <a href="/logout"><button class="tablinks" onclick="openTab('Logout')">Logout</button></a>
-                <span class="username">{{ username }}</span>
                 {% else %}
                 <a href="/login"><button class="tablinks" onclick="openTab('Login')" active_tab='Login'>Login</button></a>
                 <a href="/signup"><button class="tablinks" onclick="openTab('SignUp')" active_tab='SignUp'>Sign Up</button></a>
