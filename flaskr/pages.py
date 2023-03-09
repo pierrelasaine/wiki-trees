@@ -18,6 +18,7 @@ from google.cloud import storage
 from flaskr.backend import *
 
 storage_client = storage.Client()
+backend = Backend("wiki_content_p1")
 
 def make_endpoints(app):
 
