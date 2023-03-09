@@ -93,3 +93,16 @@ def make_endpoints(app):
                 return render_template("login.html")
 
     #     # TODO(Project 1): Implement additional routes according to the project requirements.
+
+    @app.route('/upload', methods=["POST"])
+    def upload_files():
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+            file = request.form["file"]
+
+            if backend.upload(username,password, file):
+                session["file"] = file
+                return redirect(url_for('File Uploaded'))
+            else:
+                return render_template("upload.html")

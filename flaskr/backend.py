@@ -24,8 +24,15 @@ class Backend:
             self.pages.append(blob.name.strip(".txt"))
         return self.pages
 
-    def upload(self, username, password):
-        pass
+    def upload(self, username, password,file):
+        blob_name = file
+        bucket = self.storage_client.bucket(self.bucket_name)
+        blob = bucket.blob(blob_name)
+        
+        with blob.open("w") as image:
+            f = image.read()
+            #b = bytearray(f)
+            return f
 
     def sign_up(self, username, password):
         if self.bucket.blob(username).exists():
@@ -58,8 +65,8 @@ class Backend:
         
         with blob.open("rb") as image:
             f = image.read()
-            b = bytearray(f)
-            return b
+            #b = bytearray(f)
+            return f
 
 backend1 = Backend("wiki_content_p1")
 backend2 = Backend("developer_images")
