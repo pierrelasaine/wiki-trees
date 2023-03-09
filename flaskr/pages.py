@@ -17,8 +17,11 @@ from flask import render_template, abort, session, request, redirect, url_for, m
 from google.cloud import storage
 from flaskr.backend import *
 
+bucket_name = "wiki_content_p1"
+user_bucket = "users_passwords_p1"
 storage_client = storage.Client()
-backend = Backend("wiki_content_p1")
+
+backend = Backend(user_bucket)
 
 def make_endpoints(app):
 
@@ -67,13 +70,13 @@ def make_endpoints(app):
             password = request.form["password"]
 
             if backend3.sign_up(username, password):
-                 return redirect(url_for("Login"))
+                session['username'] = username
+                session['logged_in'] = True
+                return redirect('/')
             else:
-                # return render_template("siggnup.html", error="Username already exists!")
-                return render_template("login.html", error="Username already exists!")
+                return render_template("login.html", error="Username already exists!", active_tab='SignUp', logged_in=session.get('logged_in', False))
         else:
-            # return render_template("signup.html")
-            return render_template("login.html")
+            return render_template("login.html", active_tab='SignUp', logged_in=session.get('logged_in', False))
 
     @app.route('/login', methods=["GET","POST"])
     def user_login():
@@ -82,15 +85,15 @@ def make_endpoints(app):
             password = request.form["password"]
 
             if backend3.sign_in(username, password):
-    #             session["username"] = username
+                session['username'] = username
+                session['logged_in'] = True
                 return redirect(url_for("Upload", username=username))
             else:
-                return render_template("login.html", error="Invalid username or password")
+                return render_template("login.html", error="Invalid username or password", logged_in=session.get('logged_in', False))
 
         else:
-            return render_template("login.html")
-
-    #     # TODO(Project 1): Implement additional routes according to the project requirements.
+            return render_template("login.html", logged_in=session.get('logged_in', False))
+            
 
     @app.route('/upload', methods=["GET, POST"])
     def upload_files():
