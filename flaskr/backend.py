@@ -22,9 +22,13 @@ class Backend:
             self.pages.append(blob.name.strip(".txt"))
         return self.pages
 
-    def upload(self, username, password):
-        pass
+    def upload(self, username, password, file):
+        blob = self.bucket.blob(f"uploaded_countent/{file}")
+        if blob:
+            return False
 
+        blob.upload_from_file(file)
+        return True
     def sign_up(self, username, password):
         blob = self.bucket.blob(f"users/{username}")
         # blob = self.bucket.blob(username)
@@ -55,19 +59,20 @@ class Backend:
             return False
             
     def get_image(self, image_name):
-        blob_name = image_name
+        blob = self.bucket.blob(f"wiki_content_p1")
         bucket = self.storage_client.bucket(self.bucket_name)
-        blob = bucket.blob(blob_name)
+        blob = bucket.blob(blob)
         
         with blob.open("rb") as image:
             f = image.read()
-            b = bytearray(f)
-            return b
+            #b = bytearray(f)
+            return f
 
 
 
 backend1 = Backend("wiki_content_p1")
 backend2 = Backend("developer_images")
+backend3 = Backend("users_passwords_p1")
 #print(backend.get_wiki_page("ginkgo.txt"))
 #print(backend.get_all_page_names())
-print(backend2.get_image("bulbasaur.jpeg"))
+#print(backend2.get_image("bulbasaur.jpeg"))
