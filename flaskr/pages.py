@@ -66,7 +66,7 @@ def make_endpoints(app):
             username = request.form["username"]
             password = request.form["password"]
 
-            if backend1.sign_up(username, password):
+            if backend3.sign_up(username, password):
                  return redirect(url_for("Login"))
             else:
                 # return render_template("siggnup.html", error="Username already exists!")
@@ -81,7 +81,7 @@ def make_endpoints(app):
             username = request.form["username"]
             password = request.form["password"]
 
-            if backend1.sign_in(username, password):
+            if backend3.sign_in(username, password):
     #             session["username"] = username
                 return redirect(url_for("Upload", username=username))
             else:
@@ -92,7 +92,7 @@ def make_endpoints(app):
 
     #     # TODO(Project 1): Implement additional routes according to the project requirements.
 
-    @app.route('/upload', methods=["POST"])
+    @app.route('/upload', methods=["GET, POST"])
     def upload_files():
         if request.method == "POST":
             username = request.form["username"]
@@ -101,9 +101,9 @@ def make_endpoints(app):
 
             if backend1.upload(username,password, file):
                 session["file"] = file
-                return redirect(url_for('File Uploaded'))
+                return redirect(url_for('upload.html'))
             else:
-                return render_template("upload.html")
+                return render_template("main.html")
 def is_valid_blob(bucket_name, filename):
     bucket = storage_client.bucket(bucket_name)
     if bucket.exists():
