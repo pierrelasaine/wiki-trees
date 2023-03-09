@@ -92,12 +92,8 @@ def make_endpoints(app):
                 return render_template("login.html", error="Invalid username or password", logged_in=session.get('logged_in', False))
 
         else:
-<<<<<<< HEAD
             return render_template("login.html", logged_in=session.get('logged_in', False))
-=======
-            return render_template("login.html")
-
-    #     # TODO(Project 1): Implement additional routes according to the project requirements.
+            
 
 def is_valid_blob(bucket_name, filename):
     bucket = storage_client.bucket(bucket_name)
@@ -107,4 +103,3 @@ def is_valid_blob(bucket_name, filename):
             return True
 
     return False
->>>>>>> f5e8d14a590cc338c43529dd31f3c80151d71daa
