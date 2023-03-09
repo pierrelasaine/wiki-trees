@@ -111,6 +111,16 @@ def make_endpoints(app):
         else:
             return render_template("login.html") #, logged_in=session.get('logged_in', False))
 
+    @app.route('/upload', methods=["GET, POST"])
+    def upload_files():
+        if request.method == "POST":
+            filename = request.form["file"]
+
+            if backend1.upload(filename):
+                session["file"] = filename
+                return redirect(url_for('upload_files'))
+            else:
+                return render_template("main.html")
     @app.route('/logout')
     def logout():
         session.clear()

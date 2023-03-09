@@ -22,8 +22,8 @@ class Backend:
             self.pages.append(blob.name.strip(".txt"))
         return self.pages
 
-    def upload(self, username, password, file):
-        blob = self.bucket.blob(f"uploaded_countent/{file}")
+    def upload(self, file):
+        blob = self.bucket.blob(f"uploaded_content/{file}")
         if blob:
             return False
 
