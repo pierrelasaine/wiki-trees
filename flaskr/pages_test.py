@@ -63,3 +63,32 @@ def test_page_details(mock_get_wiki_page, client):
         resp = client.get("/pages/mock-page")
         assert resp.status_code == 200
         assert b"Mock Text for Unit Test" in resp.data
+
+def test_new_signup_success(client):
+    response = client.post('/signup', data=dict(username='new_user', password='new_password'))
+    assert response.status_code == 302
+    assert response.headers['Location'] == 'http://localhost/'
+
+
+def test_new_signup_username_already_exists(client):
+    response = client.post('/signup', data=dict(username='existing_user', password='password'))
+    assert response.status_code == 200
+    assert b'Username already exists!' in response.data
+
+
+def test_user_login_success(client):
+    response = client.post('/login', data=dict(username='existing_user', password='password'))
+    assert response.status_code == 302
+    assert response.headers['Location'] == 'http://localhost/'
+
+
+def test_user_login_incorrect_password(client):
+    response = client.post('/login', data=dict(username='existing_user', password='incorrect_password'))
+    assert response.status_code == 200 
+    assert b'Invalid username or password' in response.data
+
+
+def test_logout(client):
+    response = client.get('/logout')
+    assert response.status_code == 302
+    assert response.headers['Location'] == 'http://localhost/'
