@@ -103,23 +103,24 @@ def make_endpoints(app):
             if backend.sign_in(username, password):
                 session['username'] = username
                 session['logged_in'] = True
-                return redirect(url_for("/upload", username=username))
+                return redirect(url_for("/upload"), username=username)
             else:
                 return render_template("login.html", error="Invalid username or password") #, logged_in=session.get('logged_in', False))
 
         else:
             return render_template("login.html") #, logged_in=session.get('logged_in', False))
 
-    @app.route('/upload', methods=["GET, POST"])
-    def upload_files():
-        if request.method == "POST":
-            filename = request.form["file"]
+    @app.route('/upload')
+    def upload_file():
+        return render_template('upload.html')
 
-            if backend1.upload(filename):
-                session["file"] = filename
-                return redirect(url_for('upload_files'))
-            else:
-                return render_template("main.html")
+    @app.route('/uploader', methods = ['GET', 'POST'])
+    def upload_file():
+        if request.method == 'POST':
+            f = request.files['file']
+            #f.save(secure_filename(f.filename))
+            return 'file uploaded successfully'
+
     @app.route('/logout')
     def logout():
         session.clear()

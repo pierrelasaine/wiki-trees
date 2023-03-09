@@ -59,14 +59,13 @@ class Backend:
             return False
             
     def get_image(self, image_name):
-        blob = self.bucket.blob(f"wiki_content_p1")
-        bucket = self.storage_client.bucket(self.bucket_name)
-        blob = bucket.blob(blob)
+        bucket = self.bucket
+        blob = bucket.blob(image_name)
         
         with blob.open("rb") as image:
             f = image.read()
-            #b = bytearray(f)
-            return f
+            b = bytearray(f)
+            return b
 
 
 
