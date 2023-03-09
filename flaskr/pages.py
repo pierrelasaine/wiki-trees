@@ -110,9 +110,9 @@ def make_endpoints(app):
                 session['logged_in'] = True
                 return redirect('/')
             else:
-                return render_template("login.html") #, logged_in=session.get('logged_in', False)
+                return render_template("login.html", error="Incorrect username or password!") 
         else:
-            return render_template("login.html") #, logged_in=session.get('logged_in', False))
+            return render_template("login.html")
 
     @app.route('/logout')
     def logout():

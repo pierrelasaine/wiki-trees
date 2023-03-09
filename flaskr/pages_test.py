@@ -1,10 +1,10 @@
 from flaskr import create_app
-# from unittest.mock import patch, Mock
-# from google.cloud.storage.blob import Blob
-# from flaskr.backend import Backend
-# from flaskr.pages import *
+from unittest.mock import patch, Mock
+from google.cloud.storage.blob import Blob
+from flaskr.backend import Backend
+from flaskr.pages import *
 import pytest
-# import os
+import os
 
 # See https://flask.palletsprojects.com/en/2.2.x/testing/ 
 # for more info on testing
@@ -105,6 +105,7 @@ def test_user_login_incorrect_password(client):
         password='incorrect_password'
     ))
     assert response.status_code == 200
+    assert b'Incorrect username or password' in response.data
 
 def test_logout(client):
     response = client.get('/logout')
