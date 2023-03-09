@@ -25,6 +25,10 @@
         button:hover {
             opacity: 0.9;
         }
+
+        h3 {
+            font-weight: normal;
+        }
     </style>
     <head>
         <title>Upload File</title>
@@ -34,11 +38,7 @@
         
         <form method="post" action="/results">
             <div class="contanier">
-                <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" required>
-
-                <label for="psw"><b>Password</b></label>
-                <input type="text" placeholder="Enter Password" name="psw" required>
+                <h3>Drag & Drop File Here</h3>
 
                 <label for="file"><b>File</b></label>
                 <input type="file" placeholder="Enter File" name="file" required>

@@ -87,7 +87,7 @@ def make_endpoints(app):
             if backend3.sign_in(username, password):
                 session['username'] = username
                 session['logged_in'] = True
-                return redirect(url_for("Upload", username=username))
+                return redirect(url_for("user_login"))
             else:
                 return render_template("login.html", error="Invalid username or password", logged_in=session.get('logged_in', False))
 
@@ -98,13 +98,11 @@ def make_endpoints(app):
     @app.route('/upload', methods=["GET, POST"])
     def upload_files():
         if request.method == "POST":
-            username = request.form["username"]
-            password = request.form["password"]
-            file = request.form["file"]
+            filename = request.form["file"]
 
-            if backend1.upload(username,password, file):
-                session["file"] = file
-                return redirect(url_for('upload.html'))
+            if backend1.upload(filename):
+                session["file"] = filename
+                return redirect(url_for('upload_files'))
             else:
                 return render_template("main.html")
 def is_valid_blob(bucket_name, filename):
