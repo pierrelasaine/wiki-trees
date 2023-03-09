@@ -1,6 +1,8 @@
 from flaskr import create_app
 from unittest.mock import patch, Mock
 from google.cloud.storage.blob import Blob
+from flaskr.backend import Backend
+from flaskr.pages import *
 import pytest
 import os
 
@@ -17,8 +19,6 @@ def app():
 def client(app):
     return app.test_client()
 
-# TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
-# match the changes made in the other Checkpoint Requirements.
 def test_home_page(client):
     resp = client.get("/")
     assert resp.status_code == 200
@@ -30,15 +30,14 @@ def test_about_page(client):
     assert resp.status_code == 200
     assert b"About this Wiki" in resp.data
 
-@patch("google.cloud.storage.bucket.Bucket.get_blob")
-def test_get_image(mock_get_blob, client):
-    mock_blob = Mock(spec=Blob)
-    mock_blob.download_as_string.return_value = os.urandom(1024)
+@patch("flaskr.backend.backend2.get_image")
+def test_get_image(mock_get_image, client):
+    with patch("flaskr.pages.is_valid_blob") as mock_valid_blob:
+        mock_valid_blob.return_value = True
+        mock_get_image.return_value = os.urandom(1024)
 
-    mock_get_blob.return_value = mock_blob
-
-    resp = client.get("/images/mock_blob")
-    assert resp.status_code == 200
+        resp = client.get("/images/mock_image")
+        assert resp.status_code == 200
 
 def test_image_nonexistent(client):
     resp = client.get("/images/nonexistent")
@@ -55,13 +54,12 @@ def test_pages_wiki_nonexistent(client):
     assert resp.status_code == 404
     assert b"Not Found" in resp.data
 
-@patch("google.cloud.storage.bucket.Bucket.get_blob")
-def test_pages_wiki_details(mock_get_blob, client):
-    mock_blob = Mock(spec=Blob)
-    mock_blob.download_as_string.return_value = b"Mock Text for Unit Test\nBiology\nHistory\nFun Fact"
+@patch("flaskr.backend.backend1.get_wiki_page")
+def test_page_details(mock_get_wiki_page, client):
+    with patch("flaskr.pages.is_valid_blob") as mock_valid_blob:
+        mock_valid_blob.return_value = True
+        mock_get_wiki_page.return_value = "Mock Text for Unit Test\n2\n3\n4"
 
-    mock_get_blob.return_value = mock_blob
-
-    resp = client.get("/pages/mock-blob")
-    assert resp.status_code == 200
-    assert b"Mock Text for Unit Test" in resp.data
+        resp = client.get("/pages/mock-page")
+        assert resp.status_code == 200
+        assert b"Mock Text for Unit Test" in resp.data

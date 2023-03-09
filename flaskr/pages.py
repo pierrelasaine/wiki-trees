@@ -3,7 +3,7 @@
 The main functionality of the wiki is provided by four routes:
     The home route ("/") displays the main page of the wiki.
     The pages index route ("/pages") displays a list of all the pages in the wiki.
-    The page detail route ("/pages/<tree>") displays the contents of a specific page.
+    The page detail route ("/pages/<filename>") displays the contents of a specific page.
     The about route ("/about") displays information about the authors of the wiki.
 
 The module also defines two additional routes for user authentication:
@@ -15,7 +15,7 @@ All routes use templates rendered with Flask's "render_template" function, and i
 
 from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file
 from google.cloud import storage
-from flaskr.backend import Backend
+from flaskr.backend import *
 
 bucket_name = "wiki_content_p1"
 user_bucket = "users_passwords_p1"
@@ -33,18 +33,15 @@ def make_endpoints(app):
 
     @app.route("/pages")
     def pages_index():
-        blobs = storage_client.list_blobs(bucket_name)
-        return render_template("pages.html", pages=blobs)
+        pages = backend1.get_all_page_names()
+        return render_template("pages.html", pages=pages)
 
-    @app.route("/pages/<tree>")
-    def page(tree):
-        blob = storage_client.bucket(bucket_name).get_blob(f"{tree}.txt")
-        if not blob:
+    @app.route("/pages/<filename>")
+    def page(filename):
+        if not is_valid_blob("wiki_content_p1", filename):
             abort(404)
-
-        contents_bytes = blob.download_as_string()
-        contents = contents_bytes.decode("utf-8")
-        lines = contents.splitlines()
+            
+        lines = backend1.get_wiki_page(filename).splitlines()
         return render_template("page_template.html", lines=lines)
 
     @app.route("/about")
@@ -58,11 +55,10 @@ def make_endpoints(app):
 
     @app.route("/images/<filename>")
     def get_image(filename):
-        blob = storage_client.bucket("developer_images").get_blob(filename)
-        if not blob:
+        if not is_valid_blob("developer_images", filename):
             abort(404)
 
-        image_data = blob.download_as_string()
+        image_data = backend2.get_image(filename)
         response = make_response(image_data)
         response.headers.set("Content-Type", "image/jpeg")
         return response
@@ -96,4 +92,19 @@ def make_endpoints(app):
                 return render_template("login.html", error="Invalid username or password", logged_in=session.get('logged_in', False))
 
         else:
+<<<<<<< HEAD
             return render_template("login.html", logged_in=session.get('logged_in', False))
+=======
+            return render_template("login.html")
+
+    #     # TODO(Project 1): Implement additional routes according to the project requirements.
+
+def is_valid_blob(bucket_name, filename):
+    bucket = storage_client.bucket(bucket_name)
+    if bucket.exists():
+        blob = bucket.blob(filename)
+        if blob.exists():
+            return True
+
+    return False
+>>>>>>> f5e8d14a590cc338c43529dd31f3c80151d71daa
