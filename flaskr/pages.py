@@ -103,7 +103,8 @@ def make_endpoints(app):
             if backend.sign_in(username, password):
                 session['username'] = username
                 session['logged_in'] = True
-                return redirect(url_for("/upload", username=username))
+                # return redirect(url_for("upload"))
+                return redirect('/')
             else:
                 return render_template("login.html", error="Invalid username or password") #, logged_in=session.get('logged_in', False))
 
