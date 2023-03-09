@@ -61,6 +61,8 @@ class Backend:
             b = bytearray(f)
             return b
 
+
+
 backend1 = Backend("wiki_content_p1")
 backend2 = Backend("developer_images")
 #print(backend.get_wiki_page("ginkgo.txt"))

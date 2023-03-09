@@ -7,8 +7,8 @@ Pages
 {% block content %}
 <h1>Wiki Pages</h1>
 <ul>
-    {% for blob in pages %}
-        <li><a href="/pages/{{ blob.name.strip('.txt') }}"> {{ blob.name.strip(".txt") }} </a></li>
+    {% for page in pages %}
+        <li><a href="/pages/{{ page ~ '.txt' }}"> {{ page }} </a></li>
     {% endfor %}
 </ul>
 {% endblock %}
