@@ -15,12 +15,9 @@ All routes use templates rendered with Flask's "render_template" function, and i
 
 from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file
 from google.cloud import storage
-from flaskr.backend import Backend
+from flaskr.backend import *
 
-bucket_name = "wiki_content_p1"
 storage_client = storage.Client()
-
-backend = Backend(bucket_name)
 
 def make_endpoints(app):
 
@@ -32,18 +29,15 @@ def make_endpoints(app):
 
     @app.route("/pages")
     def pages_index():
-        blobs = storage_client.list_blobs(bucket_name)
-        return render_template("pages.html", pages=blobs)
+        pages = backend1.get_all_page_names()
+        return render_template("pages.html", pages=pages)
 
-    @app.route("/pages/<tree>")
-    def page(tree):
-        blob = storage_client.bucket(bucket_name).get_blob(f"{tree}.txt")
-        if not blob:
+    @app.route("/pages/<filename>")
+    def page(filename):
+        if not is_valid_blob("wiki_content_p1", filename):
             abort(404)
-
-        contents_bytes = blob.download_as_string()
-        contents = contents_bytes.decode("utf-8")
-        lines = contents.splitlines()
+            
+        lines = backend1.get_wiki_page(filename).splitlines()
         return render_template("page_template.html", lines=lines)
 
     @app.route("/about")
@@ -57,11 +51,10 @@ def make_endpoints(app):
 
     @app.route("/images/<filename>")
     def get_image(filename):
-        blob = storage_client.bucket("developer_images").get_blob(filename)
-        if not blob:
+        if not is_valid_blob("developer_images", filename):
             abort(404)
 
-        image_data = blob.download_as_string()
+        image_data = backend2.get_image(filename)
         response = make_response(image_data)
         response.headers.set("Content-Type", "image/jpeg")
         return response
@@ -72,12 +65,14 @@ def make_endpoints(app):
             username = request.form["username"]
             password = request.form["password"]
 
-            if backend.sign_up(username, password):
-                 return redirect(url_for("login"))
+            if backend1.sign_up(username, password):
+                 return redirect(url_for("Login"))
             else:
-                return render_template("signup.html", error="Username already exists!")
+                # return render_template("siggnup.html", error="Username already exists!")
+                return render_template("login.html", error="Username already exists!")
         else:
-            return render_template("signup.html")
+            # return render_template("signup.html")
+            return render_template("login.html")
 
     @app.route('/login', methods=["GET","POST"])
     def user_login():
@@ -85,12 +80,14 @@ def make_endpoints(app):
             username = request.form["username"]
             password = request.form["password"]
 
-            if backend.sign_in(username, password):
-                session["username"] = username
-                # return redirect(url_for("upload"))
-                return redirect(url_for("logged_in"))
+            if backend1.sign_in(username, password):
+    #             session["username"] = username
+                return redirect(url_for("Upload", username=username))
             else:
-                return render_template("login.html")
+                return render_template("login.html", error="Invalid username or password")
+
+        else:
+            return render_template("login.html")
 
     #     # TODO(Project 1): Implement additional routes according to the project requirements.
 
@@ -101,8 +98,16 @@ def make_endpoints(app):
             password = request.form["password"]
             file = request.form["file"]
 
-            if backend.upload(username,password, file):
+            if backend1.upload(username,password, file):
                 session["file"] = file
                 return redirect(url_for('File Uploaded'))
             else:
                 return render_template("upload.html")
+def is_valid_blob(bucket_name, filename):
+    bucket = storage_client.bucket(bucket_name)
+    if bucket.exists():
+        blob = bucket.blob(filename)
+        if blob.exists():
+            return True
+
+    return False

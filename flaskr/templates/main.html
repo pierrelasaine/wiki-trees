@@ -2,7 +2,6 @@
 <html>
     <head>
         <head>
-            <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
             <title>{% block title %}Home{% endblock %} - WikiTrees</title>
         </head>
     </head>
@@ -10,17 +9,16 @@
     <body>
         <nav>
             <div class="tabs">
-                <a href="/"><button class="tabl/inks" onclick="openTab('Home')"> Home </button></a>
-                <a href="/pages"><button class="tablinks" onclick="openTab('Pages')"> Pages </button></a>
-                <a href="/about"><button class="tablinks" onclick="openTab('About')"> About </button></a>
+                <a href="/"><button class="tablinks" onclick="openTab('Home')">Home</button></a>
+                <a href="/pages"><button class="tablinks" onclick="openTab('Pages')">Pages</button></a>
+                <a href="/about"><button class="tablinks" onclick="openTab('About')">About</button></a>
                 {% if logged_in %}
                     <!-- <{{username}}!> -->
-                    <a href="/upload"><button class="tablinks" onclick="openTab('Upload')"> Upload <</a>
-                    <a href="/logout"><button class="tablinks" onclick="openTab('Logout')"> Logout <</a>
+                    <a href="/upload"><button class="tablinks" onclick="openTab('Upload')">Upload</button></a>
+                    <a href="/logout"><button class="tablinks" onclick="openTab('Logout')">Logout</button></a>
                 {% else %}
-                    <{{username}}!>
-                    <a href="/login"><button class="tablinks" onclick="openTab('Login')"> Login </a>
-                    <a href="/signup"><button class="tablinks" onclick="openTab('Sign Up')"> Sign Up </a>
+                    <a href="/login"><button class="tablinks" onclick="openTab('Login')" active_tab='Login'>Login</button></a>
+                    <a href="/login"><button class="tablinks" onclick="openTab('SignUp')" active_tab='SignUp'>Sign Up</button></a>
                 {% endif %}
             </div>
         </nav>
