@@ -19,16 +19,14 @@ class Backend:
     def get_all_page_names(self):
         self.pages = []
         for blob in self.storage_client.list_blobs(self.bucket_name):
-            self.pages.append(blob.name.strip(".txt"))
+            self.pages.append(blob.name.removesuffix(".txt"))
         return self.pages
 
-    def upload(self, file):
-        blob = self.bucket.blob(f"uploaded_content/{file}")
-        if blob:
-            return False
+    def bucket_upload(self, file):
+            bucket = self.storage_client.get_bucket(self.bucket_name)
+            blob = self.bucket.blob(file.filename)
+            blob.upload_from_file(file)
 
-        blob.upload_from_file(file)
-        return True
     def sign_up(self, username, password):
         blob = self.bucket.blob(f"users/{username}")
         # blob = self.bucket.blob(username)

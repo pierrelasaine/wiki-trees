@@ -74,10 +74,15 @@ def make_endpoints(app):
         response.headers.set("Content-Type", "image/jpeg")
         return response
 
-    @app.route("/upload")
+    @app.route("/upload", methods=["GET", "POST"])
     def upload():
-        is_login,uname = check_logged_in()       
-        return render_template("upload.html", logged_in=is_login, username=uname)
+        if request.method == 'POST':
+            file = request.files['file']
+            backend1.bucket_upload(file)
+            return render_template("main.html")
+        else:
+            is_login,uname = check_logged_in()     
+            return render_template("upload.html", logged_in=is_login, username=uname)
 
     @app.route('/signup', methods=["GET","POST"])
     def new_signup():
@@ -105,20 +110,9 @@ def make_endpoints(app):
                 session['logged_in'] = True
                 return redirect('/')
             else:
-                return render_template("login.html") #, logged_in=session.get('logged_in', False))
+                return render_template("login.html") #, logged_in=session.get('logged_in', False)
         else:
             return render_template("login.html") #, logged_in=session.get('logged_in', False))
-
-    @app.route('/upload')
-    def upload_file():
-        return render_template('upload.html')
-
-    @app.route('/uploader', methods = ['GET', 'POST'])
-    def upload_file():
-        if request.method == 'POST':
-            f = request.files['file']
-            #f.save(secure_filename(f.filename))
-            return 'file uploaded successfully'
 
     @app.route('/logout')
     def logout():

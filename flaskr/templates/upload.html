@@ -1,50 +1,16 @@
-<html>
-    <style>
-        body{font-family: Arial, Helvetica, sans-serif;}
+{% extends 'main.html' %}
 
-        /* Full-width input fields */
-        input[type=text], input[type=password]{
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            box-sizing: border-box;
-        }
+{% block content %}
+	<h1>{% if active_tab == 'SignUp' %}Sign Up{% else %}Upload{% endif %}</h1>
+	{% if error_message %}
+		<p class="error">{{ error_message }}</p>
+	{% endif %}
+  
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <h3 style="font-weight: normal;">Drag & Drop File to Upload</h3>
+        <input type="file" name="file">
+        <button type="submit", value = "Upload">Upload</button>
+    </form>
+		
 
-        /* Style for all buttons */
-        button{
-            background-color: #08ece1;
-            color: rgb(0, 0, 0);
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: navy;
-            cursor: pointer;
-            width: 100%
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        h3 {
-            font-weight: normal;
-        }
-    </style>
-    <head>
-        <title>Upload File</title>
-    </head>
-    <body>
-        <h2>File Uploader</h2>
-        
-        <form method="post" action="/results">
-            <div class="contanier">
-                <h3>Drag & Drop File Here</h3>
-
-                <label for="file"><b>File</b></label>
-                <input type="file" placeholder="Enter File" name="file" required>
-
-                <button type="submit" value="Submit">Upload</button>
-             </div>
-        </form>
-    </body>
-</html>
+{% endblock %}
