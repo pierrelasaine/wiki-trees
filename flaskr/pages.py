@@ -66,11 +66,13 @@ def make_endpoints(app):
             password = request.form["password"]
 
             if backend.sign_up(username, password):
-                 return redirect(url_for("login"))
+                 return redirect(url_for("Login"))
             else:
-                return render_template("signup.html", error="Username already exists!")
+                # return render_template("siggnup.html", error="Username already exists!")
+                return render_template("login.html", error="Username already exists!")
         else:
-            return render_template("signup.html")
+            # return render_template("signup.html")
+            return render_template("login.html")
 
     @app.route('/login', methods=["GET","POST"])
     def user_login():
@@ -79,11 +81,13 @@ def make_endpoints(app):
             password = request.form["password"]
 
             if backend.sign_in(username, password):
-                session["username"] = username
-                # return redirect(url_for("upload"))
-                return redirect(url_for("logged_in"))
+    #             session["username"] = username
+                return redirect(url_for("Upload", username=username))
             else:
-                return render_template("login.html")
+                return render_template("login.html", error="Invalid username or password")
+
+        else:
+            return render_template("login.html")
 
     #     # TODO(Project 1): Implement additional routes according to the project requirements.
 
