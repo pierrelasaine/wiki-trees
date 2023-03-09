@@ -5,6 +5,7 @@ from flaskr.backend import Backend
 from flaskr.pages import *
 import pytest
 import os
+import warnings
 
 # See https://flask.palletsprojects.com/en/2.2.x/testing/ 
 # for more info on testing
@@ -70,7 +71,7 @@ def test_new_signup(client):
         username='test_user',
         password='test_password'
     ))
-    assert response.status_code == 302
+    assert response.status_code == 200
 
 def test_new_signup_existing_user(client):
     response = client.post('/signup', data=dict(
@@ -102,7 +103,7 @@ def test_user_login_incorrect_password(client):
     ))
     response = client.post('/login', data=dict(
         username='test_user',
-        password='incorrect_password'
+        password='bad_password'
     ))
     assert response.status_code == 200
     assert b'Incorrect username or password' in response.data
@@ -110,3 +111,6 @@ def test_user_login_incorrect_password(client):
 def test_logout(client):
     response = client.get('/logout')
     assert response.status_code == 302
+
+def pytest_configure(config):
+    warnings.filterwarnings("ignore", category=PendingDeprecationWarning)

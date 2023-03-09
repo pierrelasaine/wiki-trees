@@ -95,7 +95,7 @@ def make_endpoints(app):
                 session['logged_in'] = True
                 return redirect('/')
             else:
-                return render_template("login.html", error="Username already exists!", active_tab='SignUp')
+                return render_template("login.html", error_message="Username already exists!", active_tab='SignUp')
         else:
             return render_template("login.html", active_tab='SignUp')
 
@@ -110,7 +110,7 @@ def make_endpoints(app):
                 session['logged_in'] = True
                 return redirect('/')
             else:
-                return render_template("login.html", error="Incorrect username or password!") 
+                return render_template("login.html", error_message="Incorrect username or password!") 
         else:
             return render_template("login.html")
 
