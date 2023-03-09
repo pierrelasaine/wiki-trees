@@ -29,10 +29,8 @@ class Backend:
         bucket = self.storage_client.bucket(self.bucket_name)
         blob = bucket.blob(blob_name)
         
-        with blob.open("w") as image:
-            f = image.read()
-            #b = bytearray(f)
-            return f
+        with blob.open("w") as file_upload:
+            file_upload.write(file)
 
     def sign_up(self, username, password):
         if self.bucket.blob(username).exists():
