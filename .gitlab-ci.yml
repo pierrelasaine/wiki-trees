@@ -1,0 +1,8 @@
+image: python:3
+lint:
+ stage: test
+ script:
+ - pip install yapf
+ - yapf --recursive . --style google --diff
+ only:
+ - merge_requests
