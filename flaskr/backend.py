@@ -1,18 +1,20 @@
 from google.cloud import storage
 import hashlib
 
+
 # TODO(Project 1): Implement Backend according to the requirements.
 class Backend:
+
     def __init__(self, bucket_name):
         self.bucket_name = bucket_name
         self.storage_client = storage.Client()
         self.bucket = self.storage_client.bucket(bucket_name)
-        
-    def get_wiki_page(self, name): #wiki_content_p1
+
+    def get_wiki_page(self, name):  #wiki_content_p1
         blob_name = name
         bucket = self.storage_client.bucket(self.bucket_name)
         blob = bucket.blob(blob_name)
-        
+
         with blob.open("r") as f:
             return f.read()
 
@@ -23,9 +25,9 @@ class Backend:
         return self.pages
 
     def bucket_upload(self, file):
-            bucket = self.storage_client.get_bucket(self.bucket_name)
-            blob = self.bucket.blob(file.filename)
-            blob.upload_from_file(file)
+        bucket = self.storage_client.get_bucket(self.bucket_name)
+        blob = self.bucket.blob(file.filename)
+        blob.upload_from_file(file)
 
     def sign_up(self, username, password):
         blob = self.bucket.blob(f"users/{username}")
@@ -55,16 +57,15 @@ class Backend:
             return True
         else:
             return False
-            
+
     def get_image(self, image_name):
         bucket = self.bucket
         blob = bucket.blob(image_name)
-        
+
         with blob.open("rb") as image:
             f = image.read()
             b = bytearray(f)
             return b
-
 
 
 backend1 = Backend("wiki_content_p1")
