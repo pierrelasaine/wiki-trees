@@ -7,3 +7,5 @@ Jinja2==3.1.2
 MarkupSafe==2.1.2
 itsdangerous==2.1.2
 Werkzeug==2.2.2
+py==1.11.0
+pluggy==0.13.1
