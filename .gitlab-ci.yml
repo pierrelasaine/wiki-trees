@@ -1,6 +1,6 @@
-image: python:3
+image: python:3.11.0
 lint:
- stage: test
+ stage: build
  script:
  - pip install yapf==0.32.0
  - yapf --recursive . --style google --diff
@@ -10,8 +10,7 @@ lint:
 unittest:
  stage: test
  needs: 
- - pipeline: lint
-   job: lint
+ - lint
  script:
  - pip install -r requirements.txt
  - pytest
