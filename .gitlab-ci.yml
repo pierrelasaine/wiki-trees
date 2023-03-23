@@ -6,3 +6,14 @@ lint:
  - yapf --recursive . --style google -i
  only:
  - merge_requests
+
+ unittest:
+ stage: test
+ needs: 
+ - pipeline: lint
+   job: lint
+ script:
+ - pip install -r requirements.txt
+ - pytest
+ only:
+ - merge_requests
