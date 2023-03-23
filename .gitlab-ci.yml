@@ -10,7 +10,8 @@ lint:
 unittest:
  stage: test
  needs: 
- - lint
+ - pipeline: test
+ - job: lint
  script:
  - pip install -r requirements.txt
  - pytest
