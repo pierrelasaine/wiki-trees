@@ -3,7 +3,7 @@ lint:
  stage: test
  script:
  - pip install yapf==0.32.0
- - yapf --recursive . --style google -i
+ - yapf --recursive . --style google --diff
  only:
  - merge_requests
 
