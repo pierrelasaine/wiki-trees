@@ -7,7 +7,7 @@ lint:
  only:
  - merge_requests
 
- unittest:
+unittest:
  stage: test
  needs: 
  - pipeline: lint
