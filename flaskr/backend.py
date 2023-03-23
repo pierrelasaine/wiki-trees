@@ -32,7 +32,7 @@ class Backend:
     def sign_up(self, username, password):
         blob = self.bucket.blob(f"users/{username}")
         # blob = self.bucket.blob(username)
-        if blob.exists():
+        if      blob.exists():
             return False
 
         # Hash password
