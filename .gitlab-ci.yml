@@ -9,7 +9,7 @@ lint:
 
 unittest:
  stage: test
- dependencies:
+ needs: 
  - lint
  script:
  - pip install -r requirements.txt
