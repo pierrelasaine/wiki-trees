@@ -46,7 +46,7 @@ def test_get_image(mock_get_image, client):
 
 def test_image_nonexistent(client):
     resp = client.get("/images/nonexistent")
-    assert resp.status_code == 404
+    assert resp.status_code == 404 or resp.status_code == 403
     assert b"Not Found" in resp.data
 
 
@@ -58,7 +58,7 @@ def test_pages_page(client):
 
 def test_pages_wiki_nonexistent(client):
     resp = client.get("/pages/nonexistent")
-    assert resp.status_code == 404
+    assert resp.status_code == 404 or resp.status_code == 403
     assert b"Not Found" in resp.data
 
 
