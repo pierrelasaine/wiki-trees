@@ -15,6 +15,7 @@ All routes use templates rendered with Flask's "render_template" function, and i
 
 from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file
 from google.cloud import storage
+from google.api_core.exceptions import NotFound, Forbidden
 from flaskr.backend import *
 
 bucket_name = "wiki_content_p1"
@@ -52,15 +53,17 @@ def make_endpoints(app):
 
     @app.route("/pages/<filename>")
     def page(filename):
-        if not is_valid_blob("wiki_content_p1", filename):
+        try:
+            lines = backend1.get_wiki_page(filename).splitlines()
+            is_login, uname = check_logged_in()
+            return render_template("page_template.html",
+                                   lines=lines,
+                                   logged_in=is_login,
+                                   username=uname)
+        except Forbidden:
             abort(404)
-
-        lines = backend1.get_wiki_page(filename).splitlines()
-        is_login, uname = check_logged_in()
-        return render_template("page_template.html",
-                               lines=lines,
-                               logged_in=is_login,
-                               username=uname)
+        except NotFound:
+            abort(404)
 
     @app.route("/about")
     def about():
@@ -75,13 +78,15 @@ def make_endpoints(app):
 
     @app.route("/images/<filename>")
     def get_image(filename):
-        if not is_valid_blob("developer_images", filename):
+        try:
+            image_data = backend2.get_image(filename)
+            response = make_response(image_data)
+            response.headers.set("Content-Type", "image/jpeg")
+            return response
+        except Forbidden:
             abort(404)
-
-        image_data = backend2.get_image(filename)
-        response = make_response(image_data)
-        response.headers.set("Content-Type", "image/jpeg")
-        return response
+        except NotFound:
+            abort(404)
 
     @app.route("/upload", methods=["GET", "POST"])
     def upload():
