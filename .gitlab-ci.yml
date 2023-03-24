@@ -5,16 +5,17 @@ lint:
  - pip install yapf==0.32.0
  - yapf --recursive . --style google --diff
  only:
- - pushes
+ - merge_requests
 
 unittest:
  stage: test
- needs:
- - pipeline: build
-   job: lint
+ dependencies:
+ - lint
  script:
  - pip install -r requirements.txt
  - pytest
+ only:
+ - merge_requests
 
 prod:
  image: google/cloud-sdk:alpine
