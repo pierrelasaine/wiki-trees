@@ -60,9 +60,7 @@ def make_endpoints(app):
                                    lines=lines,
                                    logged_in=is_login,
                                    username=uname)
-        except Forbidden:
-            abort(404)
-        except NotFound:
+        except Forbidden or NotFound:
             abort(404)
 
     @app.route("/about")
@@ -83,9 +81,7 @@ def make_endpoints(app):
             response = make_response(image_data)
             response.headers.set("Content-Type", "image/jpeg")
             return response
-        except Forbidden:
-            abort(404)
-        except NotFound:
+        except Forbidden or NotFound:
             abort(404)
 
     @app.route("/upload", methods=["GET", "POST"])
