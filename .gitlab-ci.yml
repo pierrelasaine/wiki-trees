@@ -14,14 +14,12 @@ unittest:
  script:
  - pip install -r requirements.txt
  - pytest
- only:
- - pushes
+
 
 prod:
  image: google/cloud-sdk:alpine
  stage: deploy
  dependencies:
- - lint
  - unittest
  environment: Production
  only:
