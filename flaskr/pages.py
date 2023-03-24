@@ -60,9 +60,7 @@ def make_endpoints(app):
                                    lines=lines,
                                    logged_in=is_login,
                                    username=uname)
-        except Forbidden:
-            abort(404)
-        except NotFound:
+        except (Forbidden, NotFound):
             abort(404)
 
     @app.route("/about")
