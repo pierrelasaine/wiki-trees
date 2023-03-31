@@ -5,13 +5,15 @@
 	{% if error_message %}
 		<p class="error">{{ error_message }}</p>
 	{% endif %}
-  
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <h3 style="font-weight: normal;">Drag & Drop File to Upload or Create a New Page</h3>
-        <input type="file" name="file">
-        <button type="submit", value = "Upload">Upload</button>
-        <button type="button" onclick="toggleEditor()">Create New Page</button>
-    </form>
+    <div id="form-container" style="display: block;">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <h3 style="font-weight: normal;">Drag & Drop File to Upload or Create a New Page</h3>
+            <input type="file" name="file">
+            <button type="submit", value = "Upload">Upload</button>
+        </form>
+    </div>
+    <button id="toggleButton" type="button" onclick="toggleEditor(); toggleForm(); toggleSave();">Create New Page</button>
+    <div id='save-button-container' style="display: none;"><button type="button">Upload to Wiki</button></div>
 
     <!-- TinyMCE Text on open -->
     <div id="editor-container" style="display: none;">
@@ -41,6 +43,25 @@
 				tinymce.remove();
 			}
 		}
+        function toggleForm() {
+        var formContainer = document.getElementById('form-container');
+        var toggleButton = document.getElementById('toggleButton');
+        if (formContainer.style.display === 'block') {
+            formContainer.style.display = 'none';
+            toggleButton.innerHTML = "Back";
+        } else {
+            formContainer.style.display = 'block';
+            toggleButton.innerHTML = "Create New Page";
+        }
+    }
+        function toggleSave() {
+        var saveContainer = document.getElementById('save-button-container');
+        if (saveContainer.style.display === 'none') {
+            saveContainer.style.display = 'block';
+        } else {
+            saveContainer.style.display = 'none';
+        }
+    }
 	</script>
 
 {% endblock %}
