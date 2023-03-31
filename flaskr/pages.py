@@ -13,8 +13,7 @@ The module also defines two additional routes for user authentication:
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
 
-from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file
-
+from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file, send_from_directory
 from google.cloud import storage
 
 #Solution code: backend is an endpoint
