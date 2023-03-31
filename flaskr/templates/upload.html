@@ -12,7 +12,7 @@
             <button type="submit", value = "Upload">Upload</button>
         </form>
     </div>
-    <button id="toggleButton" type="button" onclick="toggleEditor(); toggleForm(); toggleSave();">Create New Page</button>
+    <button id="toggleButton" type="button" onclick="toggleEditor(); toggleForm(); toggleUpload();">Create New Page</button>
     <div id='save-button-container' style="display: none;"><button type="button">Upload to Wiki</button></div>
 
     <!-- TinyMCE Text on open -->
@@ -25,43 +25,5 @@
 
     <!-- TODO: Pass HTML content to GCS bucket with "Save" button -->
     <!-- https://www.tiny.cloud/blog/how-to-get-content-and-set-content-in-tinymce/ -->
-
-    <!-- TinyMCE Editor -->
-    <script src="https://cdn.tiny.cloud/1/xlogwgferszklvq97hyyn4nlvvzpo56m4z02z1tcogkqb4qx/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-	<script>
-		function toggleEditor() {
-			var editorContainer = document.getElementById('editor-container');
-			if (editorContainer.style.display === 'none') {
-				editorContainer.style.display = 'block';
-				tinymce.init({
-					selector: '#myTextarea',
-					plugins: 'anchor autolink charmap codesample image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes mergetags autocorrect typography inlinecss file_export',
-					toolbar: 'export | undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-				});
-			} else {
-				editorContainer.style.display = 'none';
-				tinymce.remove();
-			}
-		}
-        function toggleForm() {
-        var formContainer = document.getElementById('form-container');
-        var toggleButton = document.getElementById('toggleButton');
-        if (formContainer.style.display === 'block') {
-            formContainer.style.display = 'none';
-            toggleButton.innerHTML = "Back";
-        } else {
-            formContainer.style.display = 'block';
-            toggleButton.innerHTML = "Create New Page";
-        }
-    }
-        function toggleSave() {
-        var saveContainer = document.getElementById('save-button-container');
-        if (saveContainer.style.display === 'none') {
-            saveContainer.style.display = 'block';
-        } else {
-            saveContainer.style.display = 'none';
-        }
-    }
-	</script>
 
 {% endblock %}
