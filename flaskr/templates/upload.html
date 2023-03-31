@@ -11,7 +11,7 @@
         <h3 style="font-weight: normal;">Drag & Drop File to Upload or Create a New Page</h3>
         <input type="file" name="file">
         <button type="submit", value = "Upload">Upload</button>
-        <button type="button" onclick="openEditor()">Create New Page</button>
+        <button type="button" onclick="toggleEditor()">Create New Page</button>
     </form>
 
     <!-- TinyMCE Text on open -->
@@ -27,16 +27,21 @@
 
     <!-- TinyMCE Editor -->
     <script src="https://cdn.tiny.cloud/1/xlogwgferszklvq97hyyn4nlvvzpo56m4z02z1tcogkqb4qx/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-        function openEditor() {
-            var editorContainer = document.getElementById('editor-container');
-		    editorContainer.style.display = 'block';
-            tinymce.init({
-                selector: '#myTextarea',
-                plugins: 'lists searchreplace checklist casechange tinymcespellchecker powerpaste autocorrect',
-                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | checklist numlist bullist indent outdent | removeformat',
-            });
-        }
-    </script>
+	<script>
+		function toggleEditor() {
+			var editorContainer = document.getElementById('editor-container');
+			if (editorContainer.style.display === 'none') {
+				editorContainer.style.display = 'block';
+				tinymce.init({
+					selector: '#myTextarea',
+					plugins: 'anchor autolink charmap codesample image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes mergetags autocorrect typography inlinecss file_export',
+					toolbar: 'export | undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+				});
+			} else {
+				editorContainer.style.display = 'none';
+				tinymce.remove();
+			}
+		}
+	</script>
 
 {% endblock %}

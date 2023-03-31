@@ -16,8 +16,7 @@ class Backend:
         if blob is None:
             return "No page exists with this name"
         
-        with blob.open("r") as f:
-            return f.read()
+        return blob.download_as_text()
 
     def get_all_page_names(self):
         self.pages = []
