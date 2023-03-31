@@ -54,10 +54,10 @@ def make_endpoints(app):
     @app.route("/pages/<filename>")
     def page(filename):
         try:
-            lines = backend1.get_wiki_page(filename).splitlines()
+            page_data = backend1.get_wiki_page(filename)
             is_login, uname = check_logged_in()
             return render_template("page_template.html",
-                                   lines=lines,
+                                   page_data=page_data,
                                    logged_in=is_login,
                                    username=uname)
         except (Forbidden, NotFound):

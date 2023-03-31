@@ -8,7 +8,7 @@ Pages
 <h1>Wiki Pages</h1>
 <ul>
     {% for page in pages %}
-        <li><a href="/pages/{{ page ~ '.txt' }}"> {{ page }} </a></li>
+        <li><a href="/pages/{{ page ~ '.html' }}"> {{ page }} </a></li>
     {% endfor %}
 </ul>
 {% endblock %}
