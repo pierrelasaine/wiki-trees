@@ -12,4 +12,32 @@
     <p>{{ lines[2] }}</p>
 <h2>Fun Facts</h2>
     <p>{{ lines[3] }}</p>
+
+<button type="button" onclick="openEditor()">Edit Page</button>
+
+
+<!-- TODO: Edit page content in buckets to be HTML files and get page content: https://www.tiny.cloud/blog/how-to-get-content-and-set-content-in-tinymce/ -->
+<!-- TinyMCE Page Text on open -->
+
+<div id="editor-container" style="display: none;">
+    <textarea id="myTextarea">
+        <h1 style="text-align: center;">Welcome, {{ username }}!</h1>
+        <p style="text-align: center;">Type your page content here!</p>
+    </textarea>
+</div>
+
+<!-- TinyMCE Editor -->
+<script src="https://cdn.tiny.cloud/1/xlogwgferszklvq97hyyn4nlvvzpo56m4z02z1tcogkqb4qx/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    function openEditor() {
+        var editorContainer = document.getElementById('editor-container');
+		editorContainer.style.display = 'block';
+        tinymce.init({
+            selector: '#myTextarea',
+            plugins: 'lists searchreplace checklist casechange tinymcespellchecker powerpaste autocorrect',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | checklist numlist bullist indent outdent | removeformat',
+        });
+    }
+</script>
+
 {% endblock %}
