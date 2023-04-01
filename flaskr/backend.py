@@ -31,7 +31,9 @@ class Backend:
         if (original_filename.endswith(("png", "jpg", "jpeg"))):
             bucket = self.image_bucket
         blob = bucket.blob(name)
-        blob.upload_from_file(file, if_exists='overwrite')
+        if blob.exists():
+            blob.delete()
+        blob.upload_from_file(file)
 
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")
