@@ -26,7 +26,7 @@ class Backend:
     def bucket_upload(self, file):
         bucket = self.storage_client.get_bucket(self.bucket_name)
         blob = self.bucket.blob(file.filename)
-        blob.upload_from_file(file)
+        blob.upload_from_file(file, if_exists='overwrite')
 
     def sign_up(self, username, password):
         blob = self.bucket.blob(f"users/{username}")
