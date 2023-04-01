@@ -17,6 +17,7 @@ from flask import render_template, abort, session, request, redirect, url_for, m
 from google.cloud import storage
 from google.api_core.exceptions import NotFound, Forbidden
 from flaskr.backend import *
+from io import BytesIO
 
 bucket_name = "wiki_content_p1"
 user_bucket = "users_passwords_p1"
@@ -86,15 +87,22 @@ def make_endpoints(app):
 
     @app.route("/upload", methods=["GET", "POST"])
     def upload():
-        if request.method == 'POST':
-            file = request.files['file']
-            backend1.bucket_upload(file)
-            return render_template("main.html")
-        else:
+        if request.method != 'POST':
             is_login, uname = check_logged_in()
             return render_template("upload.html",
                                    logged_in=is_login,
                                    username=uname)
+
+        file = request.files['file']
+        name = request.form['name']
+        content = request.form['content']
+        if file:
+            backend1.bucket_upload(name, file)
+        else:
+            content = content.encode()
+            content = BytesIO(content)
+            backend1.bucket_upload(name, content)
+        return render_template("main.html")
 
     @app.route('/signup', methods=["GET", "POST"])
     def new_signup():
