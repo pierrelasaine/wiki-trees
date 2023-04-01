@@ -30,12 +30,8 @@ class Backend:
         bucket = self.page_bucket
         if (original_filename.endswith(("png", "jpg", "jpeg"))):
             bucket = self.image_bucket
-        blob = bucket.get_blob(name)
-        if blob is not None:
-            raise ValueError(f"{name} already exists.")
         blob = bucket.blob(name)
-        with blob.open('wb') as f:
-            f.write(file)
+        blob.upload_from_file(file, if_exists='overwrite')
 
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")
