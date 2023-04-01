@@ -15,6 +15,9 @@ All routes use templates rendered with Flask's "render_template" function, and i
 
 from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file, send_from_directory
 from google.cloud import storage
+from google.api_core.exceptions import NotFound, Forbidden
+from flaskr.backend import *
+from io import BytesIO
 
 #Solution code: backend is an endpoint
 def make_endpoints(app, backend):
@@ -59,12 +62,68 @@ def make_endpoints(app, backend):
 
     @app.route("/upload", methods=["GET", "POST"])
     def upload():
-        if request.method == 'POST':
-            file = request.files['file']
-            # Solution: adding name from the form.
-            # TODO: catch and propagate any errors that may occur from upload
-            name = request.form['name']
-            backend.upload(file.stream.read(), name, file.filename)
-            return render_template("main.html")
-        else:    
-            return render_template("upload.html")
+        if request.method != 'POST':
+            is_login, uname = check_logged_in()
+            return render_template("upload.html",
+                                   logged_in=is_login,
+                                   username=uname)
+
+        file = request.files['file']
+        name = request.form['name']
+        content = request.form['content']
+        if file:
+            backend1.bucket_upload(name, file)
+        else:
+            content = content.encode()
+            content = BytesIO(content)
+            backend1.bucket_upload(name, content)
+        return render_template("main.html")
+
+    @app.route('/signup', methods=["GET", "POST"])
+    def new_signup():
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+
+            if backend.sign_up(username, password):
+                session['username'] = username
+                session['logged_in'] = True
+                return redirect('/')
+            else:
+                return render_template("login.html",
+                                       error_message="Username already exists!",
+                                       active_tab='SignUp')
+        else:
+            return render_template("login.html", active_tab='SignUp')
+
+    @app.route('/login', methods=["GET", "POST"])
+    def user_login():
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+
+            if backend.sign_in(username, password):
+                session['username'] = username
+                session['logged_in'] = True
+                return redirect('/')
+            else:
+                return render_template(
+                    "login.html",
+                    error_message="Incorrect username or password!")
+        else:
+            return render_template("login.html")
+
+    @app.route('/logout')
+    def logout():
+        session.clear()
+        return redirect(url_for('home'))
+
+
+def is_valid_blob(bucket_name, filename):
+    bucket = storage_client.bucket(bucket_name)
+    if bucket.exists():
+        blob = bucket.blob(filename)
+        if blob.exists():
+            return True
+
+    return False
