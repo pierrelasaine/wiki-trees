@@ -40,7 +40,8 @@ def make_endpoints(app, backend):
             return render_template("page_template.html",
                                    page_data=page_data,
                                    logged_in=is_login,
-                                   username=uname)
+                                   username=uname,
+                                   filename = filename)
         except (Forbidden, NotFound):
             abort(404)
 
@@ -68,16 +69,16 @@ def make_endpoints(app, backend):
                                    logged_in=is_login,
                                    username=uname)
 
-        file = request.files['file']
         name = request.form['name']
         content = request.form['content']
-        if file:
+        if not content:
+            file = request.files['file']
             backend1.bucket_upload(name, file)
         else:
             content = content.encode()
             content = BytesIO(content)
             backend1.bucket_upload(name, content)
-        return render_template("main.html")
+        return redirect(url_for('page', filename=name))
 
     @app.route('/signup', methods=["GET", "POST"])
     def new_signup():
