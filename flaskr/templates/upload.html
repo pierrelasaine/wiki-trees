@@ -5,16 +5,19 @@
 	{% if error_message %}
 		<p class="error">{{ error_message }}</p>
 	{% endif %}
-    <div id="form-container" style="display: block;">
-        <form action="/upload" method="POST" enctype="multipart/form-data">
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input id="nameInput" type="text" placeholder="Enter Page Name" name="name" required>
+        <div id="form-container" style="display: block;">
             <h3 style="font-weight: normal;">Drag & Drop File to Upload or Create a New Page</h3>
-            <input type="file" name="file">
-            <button type="submit", value = "Upload">Upload</button>
-        </form>
-    </div>
+            <input type="file" name="file" id="fileInput">
+            <button type="submit" value="Upload">Upload</button>
+            <input type="hidden" name="content" id="contentInput">
+        </div>
+    </form>
     <button id="toggleButton" type="button" onclick="toggleEditor(); toggleForm(); toggleUpload();">Create New Page</button>
-    <div id='save-button-container' style="display: none;"><button type="button">Upload to Wiki</button></div>
-
+    <div id='save-button-container' style="display: none;">
+        <button type="button" onclick="uploadPageFromEditor()">Upload to Wiki</button>
+    </div>
     <!-- TinyMCE Text on open -->
     <div id="editor-container" style="display: none;">
 		<textarea id="myTextarea">
