@@ -37,3 +37,11 @@ def create_app(test_config=None):
     pages.make_endpoints(app, backend)
     login.make_endpoints(app, login_manager, backend)
     return app
+
+
+
+
+"""
+local GAE simulation command:
+python2 /Users/pierrejohnson/google-cloud-sdk/.install/.backup/bin/dev_appserver.py app.yaml
+"""
