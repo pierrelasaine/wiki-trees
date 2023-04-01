@@ -50,3 +50,8 @@ function toggleSave() {
         saveContainer.style.display = 'none';
     }
 }
+function uploadPageFromEditor() {
+    var myContent = tinymce.get("myTextarea").getContent();
+    document.getElementById("contentInput").value = myContent;
+    document.forms[0].submit();
+}
