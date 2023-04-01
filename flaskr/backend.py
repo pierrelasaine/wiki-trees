@@ -1,4 +1,6 @@
 from google.cloud import storage
+from bleach import Cleaner
+from bs4 import BeautifulSoup
 import hashlib
 
 class Backend:
@@ -34,6 +36,34 @@ class Backend:
         if blob.exists():
             blob.delete()
         blob.upload_from_file(file)
+
+    def is_valid_html(self, html):
+        """Checks if the given HTML string is valid and safe.
+
+        Args:
+            html: A string containing HTML code.
+
+        Returns:
+            True if the HTML is valid and safe, False otherwise.
+        """
+        soup = BeautifulSoup(html, 'html.parser')
+        
+        if soup.docinfo.doctype != 'html':
+            return False
+        
+        cleaner = Cleaner(tags=['a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title',
+                                'div', 'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'],
+                          attributes={'a': ['href', 'title'], 
+                                      'abbr': ['title'], 
+                                      'acronym': ['title'],
+                                      'img': ['src', 'alt']})
+        
+        sanitized_html = cleaner.clean(html)
+        
+        if sanitized_html != html:
+            return False
+        
+        return True
 
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")
