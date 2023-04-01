@@ -10,7 +10,13 @@
 
 {% if logged_in %}
 <button id="toggleButton" type="button" onclick="toggleEditor(); togglePage(); toggleSave();">Edit Page</button>
-<div id='save-button-container' style="display: none;"><button type="button">Save Changes</button></div>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+    <input id="nameInput" type="hidden" name="name" value="{{ filename }}">
+    <input type="hidden" name="content" id="contentInput">
+</form>
+<div id='save-button-container' style="display: none;">
+    <button type="button" onclick="uploadPageFromEditor()">Save Changes</button>
+</div>
 
 <!-- TinyMCE Page Text on open -->
 <div id="editor-container" style="display: none;">
