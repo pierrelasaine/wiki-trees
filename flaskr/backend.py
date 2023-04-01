@@ -23,10 +23,12 @@ class Backend:
             self.pages.append(blob.name.removesuffix(".html"))
         return self.pages
 
-    def bucket_upload(self, file):
+    def bucket_upload(self, name, file):
         bucket = self.storage_client.get_bucket(self.bucket_name)
-        blob = self.bucket.blob(file.filename)
-        blob.upload_from_file(file, if_exists='overwrite')
+        blob = self.bucket.blob(name)
+        if blob.exists():
+            blob.delete()
+        blob.upload_from_file(file)
 
     def sign_up(self, username, password):
         blob = self.bucket.blob(f"users/{username}")
