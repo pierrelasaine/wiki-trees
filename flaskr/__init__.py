@@ -31,3 +31,11 @@ def create_app(test_config=None):
     # and additional endpoints.
     pages.make_endpoints(app)
     return app
+
+
+
+
+"""
+local GAE simulation command:
+python2 /Users/pierrejohnson/google-cloud-sdk/.install/.backup/bin/dev_appserver.py app.yaml
+"""
