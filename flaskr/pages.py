@@ -70,14 +70,15 @@ def make_endpoints(app, backend):
                                    username=uname)
 
         name = request.form['name']
-        content = request.form['content']
+        content_str = request.form['content']
         if not content:
             file = request.files['file']
             backend1.bucket_upload(name, file)
         else:
-            content = content.encode()
-            content = BytesIO(content)
+            content_bstr = content_str.encode()
+            content = BytesIO(content_bstr)
             backend1.bucket_upload(name, content)
+        ## check for validation [Page Redirect R8.]
         return redirect(url_for('page', filename=name))
 
     @app.route('/signup', methods=["GET", "POST"])
