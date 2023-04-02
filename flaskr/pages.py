@@ -96,7 +96,7 @@ def make_endpoints(app):
 
         name = request.form['name']
         content_str = request.form['content']
-        if not content:
+        if not content_str:
             file = request.files['file']
             backend1.bucket_upload(name, file)
         else:
