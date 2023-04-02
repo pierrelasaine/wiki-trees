@@ -1,6 +1,5 @@
 from google.cloud import storage
 from bleach import Cleaner
-from bs4 import BeautifulSoup
 import hashlib
 
 
@@ -33,19 +32,14 @@ class Backend:
         blob.upload_from_file(file)
 
     def is_valid_html(self, html):
-        """Checks if the given HTML string is valid and safe.
+        """Checks if the given HTML string is safe.
 
         Args:
             html: A string containing HTML code.
 
         Returns:
-            True if the HTML is valid and safe, False otherwise.
+            True if the HTML is safe, False otherwise.
         """
-        soup = BeautifulSoup(html, 'html.parser')
-        
-        if soup.docinfo.doctype != 'html':
-            return False
-        
         cleaner = Cleaner(tags=['a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title',
                                 'div', 'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'],
                           attributes={'a': ['href', 'title'], 
