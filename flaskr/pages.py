@@ -119,13 +119,3 @@ def make_endpoints(app, backend):
     def logout():
         session.clear()
         return redirect(url_for('home'))
-
-
-def is_valid_blob(bucket_name, filename):
-    bucket = storage_client.bucket(bucket_name)
-    if bucket.exists():
-        blob = bucket.blob(filename)
-        if blob.exists():
-            return True
-
-    return False

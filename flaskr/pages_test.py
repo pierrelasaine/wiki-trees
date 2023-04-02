@@ -36,12 +36,10 @@ def test_about_page(client):
 
 @patch("flaskr.backend.backend2.get_image")
 def test_get_image(mock_get_image, client):
-    with patch("flaskr.pages.is_valid_blob") as mock_valid_blob:
-        mock_valid_blob.return_value = True
-        mock_get_image.return_value = os.urandom(1024)
+    mock_get_image.return_value = os.urandom(1024)
 
-        resp = client.get("/images/mock_image")
-        assert resp.status_code == 200
+    resp = client.get("/images/mock_image")
+    assert resp.status_code == 200
 
 
 def test_image_nonexistent(client):
@@ -64,13 +62,11 @@ def test_pages_wiki_nonexistent(client):
 
 @patch("flaskr.backend.backend1.get_wiki_page")
 def test_page_details(mock_get_wiki_page, client):
-    with patch("flaskr.pages.is_valid_blob") as mock_valid_blob:
-        mock_valid_blob.return_value = True
-        mock_get_wiki_page.return_value = "Mock Text for Unit Test\n2\n3\n4"
+    mock_get_wiki_page.return_value = "Mock Text for Unit Test\n2\n3\n4"
 
-        resp = client.get("/pages/mock-page")
-        assert resp.status_code == 200
-        assert b"Mock Text for Unit Test" in resp.data
+    resp = client.get("/pages/mock-page")
+    assert resp.status_code == 200
+    assert b"Mock Text for Unit Test" in resp.data
 
 
 def test_new_signup(client):
