@@ -87,7 +87,7 @@ def test_TinyMCE_upload(mock_bucket_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 
-# ask Bianca about weird syntax req in line 103
+# ask Bianca about weird syntax req in line 99
 """
 @patch("flaskr.backend.backend1.get_wiki_page")
 @patch("flaskr.backend.backend1.bucket_upload")
