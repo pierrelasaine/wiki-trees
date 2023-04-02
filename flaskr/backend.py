@@ -74,7 +74,7 @@ class Backend:
         if not blob.exists():
             return False
 
-        get_pword = blob.download_as_string().decode()
+        get_pword = blob.download_as_bytes()
         get_pword = eval(get_pword)
         user_pword = hashlib.blake2b(password.encode()).hexdigest()
 
