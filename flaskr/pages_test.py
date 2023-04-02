@@ -20,6 +20,10 @@ def app():
 def client(app):
     return app.test_client()
 
+@pytest.fixture
+def logged_in():
+    return True, "Test"
+
 
 def test_home_page(client):
     resp = client.get("/")
@@ -27,7 +31,6 @@ def test_home_page(client):
     assert b"Welcome to WikiTrees" in resp.data
 
 
-# # TODO(Project 1): Write tests for other routes.
 def test_about_page(client):
     resp = client.get("/about")
     assert resp.status_code == 200
@@ -67,6 +70,25 @@ def test_page_details(mock_get_wiki_page, client):
     resp = client.get("/pages/mock-page")
     assert resp.status_code == 200
     assert b"Mock Text for Unit Test" in resp.data
+
+
+def test_upload_page(client):
+    resp = client.get("/upload")
+    assert resp.status_code == 200
+    assert b"Drop File to Upload" in resp.data
+
+@patch("flaskr.backend.backend1.get_wiki_page")
+@patch("flaskr.backend.backend1.bucket_upload")
+def test_TinyMCE_upload(mock_bucket_upload, mock_get_wiki_page, client):
+    mock_bucket_upload.return_value = None
+    mock_get_wiki_page.return_value = "Test HTML"
+    resp = client.post("/upload",
+                       data=dict(name="test_page",
+                                 content="<p>Test HTML</p>"))
+    assert resp.status_code == 302
+    resp = client.get("/pages/test_page")
+    assert resp.status_code == 200
+    assert b"Test HTML" in resp.data
 
 
 def test_new_signup(client):
