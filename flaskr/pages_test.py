@@ -20,10 +20,6 @@ def app():
 def client(app):
     return app.test_client()
 
-@pytest.fixture
-def logged_in():
-    return True, "Test"
-
 
 def test_home_page(client):
     resp = client.get("/")
