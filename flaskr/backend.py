@@ -15,13 +15,12 @@ class Backend:
         bucket = self.storage_client.bucket(self.bucket_name)
         blob = bucket.blob(blob_name)
 
-        with blob.open("r") as f:
-            return f.read()
+        return blob.download_as_text()
 
     def get_all_page_names(self):
         self.pages = []
         for blob in self.storage_client.list_blobs(self.bucket_name):
-            self.pages.append(blob.name.removesuffix(".txt"))
+            self.pages.append(blob.name)
         return self.pages
 
     def bucket_upload(self, file):
