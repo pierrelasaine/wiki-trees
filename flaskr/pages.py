@@ -61,7 +61,7 @@ def make_endpoints(app):
                                    page_data=page_data,
                                    logged_in=is_login,
                                    username=uname,
-                                   filename = filename)
+                                   filename=filename)
         except (Forbidden, NotFound):
             abort(404)
 
