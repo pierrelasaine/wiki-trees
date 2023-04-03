@@ -1,7 +1,9 @@
 """Creates and configures a Flask app for serving a wiki website."""
 
-from flaskr import pages
+from flaskr import pages, login
+from flaskr.backend import Backend
 from flask import Flask
+from flask_login import LoginManager
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -27,7 +29,11 @@ def create_app(test_config=None):
         # Load the test config if passed in.
         app.config.from_mapping(test_config)
 
-    # TODO(Project 1): Make additional modifications here for logging in, backends
-    # and additional endpoints.
-    pages.make_endpoints(app)
+    # Solution code: modifying the additional endpoints
+    backend = Backend()
+    login_manager = LoginManager(app)
+    login_manager.login_view = "login"
+
+    pages.make_endpoints(app, backend)
+    login.make_endpoints(app, login_manager, backend)
     return app
