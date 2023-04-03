@@ -39,8 +39,6 @@ def create_app(test_config=None):
     return app
 
 
-
-
 """
 local GAE simulation command:
 python2 /Users/pierrejohnson/google-cloud-sdk/.install/.backup/bin/dev_appserver.py app.yaml
