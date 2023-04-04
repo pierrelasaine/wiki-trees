@@ -5,20 +5,28 @@ from google.cloud.storage.bucket import Bucket
 import pytest
 
 # # # TODO(Project 1): Write tests for Backend methods.
-def test_get_wiki_page(self, name):
+def test_get_wiki_page():
     pass
 
-def test_get_all_page_names(self):
+def test_get_all_page_names():
     pass
 
-def test_upload(self, username, password,file):
+def test_upload():
     pass
 
-def test_sign_up(self, username, password):
+def test_sign_up():
     pass
 
-def test_sign_in(self, username, password):
+def test_sign_in():
     pass
 
-def test_get_image(self, image_name):
+def test_get_image():
+    pass
+
+
+@pytest.fixture
+def matches():
+    return ["apple", "allep", "app", "pear", "pineapple"]
+
+def test_search():
     pass
