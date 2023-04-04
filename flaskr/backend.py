@@ -1,5 +1,6 @@
 from google.cloud import storage
 import hashlib
+from difflib import get_close_matches
 
 
 # TODO(Project 1): Implement Backend according to the requirements.
@@ -66,6 +67,12 @@ class Backend:
             b = bytearray(f)
             return b
 
+    # Uses the difflib Python library(specifically the “get_close_matches” function) 
+    # to return page results that might be spelled incorrectly.
+    def search(self, search_input):
+        return get_close_matches(search_input, self.get_all_page_names())
+
+
 
 
 backend1 = Backend("wiki_content_p1")
@@ -74,3 +81,4 @@ backend3 = Backend("users_passwords_p1")
 #print(backend.get_wiki_page("ginkgo.txt"))
 #print(backend.get_all_page_names())
 #print(backend2.get_image("bulbasaur.jpeg"))
+#print(backend1.search("malm"))

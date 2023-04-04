@@ -42,14 +42,22 @@ def make_endpoints(app):
         is_login, uname = check_logged_in()
         return render_template("main.html", logged_in=is_login, username=uname)
 
-    @app.route("/pages")
+    @app.route("/pages", methods=["GET", "POST"])
     def pages_index():
-        pages = backend1.get_all_page_names()
-        is_login, uname = check_logged_in()
-        return render_template("pages.html",
-                               pages=pages,
-                               logged_in=is_login,
-                               username=uname)
+        if request.method == "POST":
+            search_input = request.form["search_input"]
+
+            results = backend1.search(search_input)
+            return render_template("search_results.html",
+                            search_input=search_input,
+                            results=results)
+        else:
+            pages = backend1.get_all_page_names()
+            is_login, uname = check_logged_in()
+            return render_template("pages.html",
+                                pages=pages,
+                                logged_in=is_login,
+                                username=uname)
 
     @app.route("/pages/<filename>")
     def page(filename):
@@ -135,6 +143,10 @@ def make_endpoints(app):
     def logout():
         session.clear()
         return redirect(url_for('home'))
+
+    @app.route('/search-results')
+    def search():
+        pass
 
 
 def is_valid_blob(bucket_name, filename):
