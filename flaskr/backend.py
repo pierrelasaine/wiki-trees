@@ -66,7 +66,7 @@ class Backend:
             return True
         else:
             return False
-            
+
     def get_image(self, image_name):
         # Solution code: check for if blob is none
         blob = self.image_bucket.get_blob(image_name)
