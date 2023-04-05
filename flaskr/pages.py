@@ -17,12 +17,13 @@ from flask import render_template, abort, session, request, redirect, url_for, m
 from flaskr.backend import *
 from io import BytesIO
 
+
 #Solution code: backend is an endpoint
 def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
-    def home():      
+    def home():
         return render_template("main.html")
 
     @app.route("/pages")
@@ -36,17 +37,15 @@ def make_endpoints(app, backend):
         if not page_content:
             abort(404)
 
-        return render_template("page_template.html", 
+        return render_template("page_template.html",
                                filename=filename,
                                page_content=page_content)
 
     @app.route("/about")
     def about():
-        authors = [
-            ("Pierre Johnson", "bulbasaur.jpeg"),
-            ("Ericka James", "charmander.jpeg"),
-            ("Jalen Richburg", "squirtle.jpeg") 
-        ]
+        authors = [("Pierre Johnson", "bulbasaur.jpeg"),
+                   ("Ericka James", "charmander.jpeg"),
+                   ("Jalen Richburg", "squirtle.jpeg")]
         return render_template("about.html", authors=authors)
 
     @app.route("/images/<filename>")
@@ -68,10 +67,10 @@ def make_endpoints(app, backend):
         content_str = request.form['content']
         if not content_str:
             file = request.files['file']
-            backend.bucket_upload(name, file)
+            backend.upload(name, file)
         else:
             content_bstr = content_str.encode()
             content = BytesIO(content_bstr)
-            backend.bucket_upload(name, content)
+            backend.upload(name, content)
         ## check for validation [Page Redirect R8.]
         return redirect(url_for('page', filename=name))

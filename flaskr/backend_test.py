@@ -5,6 +5,7 @@ from bleach import Cleaner
 import pytest
 
 # # # TODO(Project 1): Write tests for Backend methods.
+"""
 def test_get_wiki_page(self, name):
     pass
 
@@ -22,38 +23,60 @@ def test_sign_in(self, username, password):
 
 # def test_get_image(self, image_name):
 #     pass
+"""
+
 
 @pytest.fixture
 def name():
     return "name"
 
-@pytest.fixture
-def mock_blob():
-    return MagicMock(spec=storage.Blob)
 
 @pytest.fixture
-def mock_bucket():
-    return MagicMock(spec=storage.Bucket)
+def bad_name():
+    return "bad"
 
 
 @pytest.fixture
-def bucket_name():
-    return None
+def mock_blob():
+    mock = MagicMock(spec=storage.Blob)
+    mock.download_as_text.return_value = "blob data"
+    return mock
 
 
 @pytest.fixture
-def mock_backend(bucket_name):
-    return Backend(bucket_name)
+def mock_bucket(mock_blob, bad_name):
+    mock = MagicMock(spec=storage.Bucket)
 
-@patch("flaskr.backend.storage.Client")
-def test_get_wiki_page(mock_client, mock_blob, mock_bucket, name):
-    mock_client.return_value.bucket.return_value = mock_bucket
-    mock_bucket.blob.return_value = mock_blob
+    def side_effect(name):
+        if name == bad_name:
+            bad_mock = MagicMock(spec=storage.Blob)
+            bad_mock.download_as_text.return_value = None
+            return bad_mock
+        else:
+            return mock_blob
 
-    mock_blob.download_as_text.return_value  = "blob data"
+    mock.blob.side_effect = side_effect
+    return mock
 
-    backend = Backend(name)
-    assert backend.get_wiki_page(name) == "blob data"
+
+@pytest.fixture
+def storage_client(mock_bucket):
+    mock = MagicMock(spec=storage.Client)
+    mock.bucket.return_value = mock_bucket
+    return mock
+
+
+@pytest.fixture
+def mock_backend(storage_client):
+    return Backend(storage_client)
+
+
+def test_get_wiki_page(mock_backend):
+    assert mock_backend.get_wiki_page(name) == "blob data"
+
+
+def test_cant_get_wiki_page(mock_backend, bad_name):
+    assert mock_backend.get_wiki_page(bad_name) == None
 
 
 def test_valid_html(mock_backend):

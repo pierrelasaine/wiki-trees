@@ -73,7 +73,7 @@ def test_upload_page(client):
     assert resp.status_code == 200
     assert b"Drop File to Upload" in resp.data
 
-"""
+
 @patch("flaskr.backend.Backend.get_wiki_page")
 @patch("flaskr.backend.Backend.upload")
 def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
@@ -87,17 +87,17 @@ def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
     assert b"Test HTML" in resp.data
 
 
+"""
 # ask Bianca about weird syntax req in line 99
-
-@patch("flaskr.backend.backend1.get_wiki_page")
-@patch("flaskr.backend.backend1.bucket_upload")
+@patch("flaskr.backend.Backend.get_wiki_page")
+@patch("flaskr.backend.Backend.upload")
 def test_file_upload(mock_bucket_upload, mock_get_wiki_page, client):
     mock_bucket_upload.return_value = None
     mock_get_wiki_page.return_value = "Test HTML"
     resp = client.post("/upload",
                         data=dict(name="test_page",
-                             TODO file=FileStorage(filename="test.html", stream=b"<p>Test HTML</p>")
-    assert resp.status_code == 302 \
+                                  file=FileStorage(filename="test.html", stream=b"<p>Test HTML</p>")))
+    assert resp.status_code == 302 
     resp = client.get("/pages/test_page")
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
