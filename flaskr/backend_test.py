@@ -20,13 +20,28 @@ def test_sign_up():
 def test_sign_in():
     pass
 
+<<<<<<< HEAD
 def test_get_image():
     pass
 
+@pytest.fixture
+def name():
+    return "name"
 
 @pytest.fixture
-def matches():
-    return ["apple", "allep", "app", "pear", "pineapple"]
+def mock_blob():
+    return MagicMock(spec=storage.Blob)
 
-def test_search():
-    pass
+@pytest.fixture
+def mock_bucket():
+    return MagicMock(spec=storage.Bucket)
+
+@patch("flaskr.backend.storage.Client")
+def test_get_wiki_page(mock_client, mock_blob, mock_bucket, name):
+    mock_client.return_value.bucket.return_value = mock_bucket
+    mock_bucket.blob.return_value = mock_blob
+
+    mock_blob.download_as_text.return_value  = "blob data"
+
+    backend = Backend(name)
+    assert backend.get_wiki_page(name) == "blob data"

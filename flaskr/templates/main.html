@@ -12,9 +12,9 @@
                 <a href="/"><button class="tablinks" onclick="openTab('Home')">Home</button></a>
                 <a href="/pages"><button class="tablinks" onclick="openTab('Pages')">Pages</button></a>
                 <a href="/about"><button class="tablinks" onclick="openTab('About')">About</button></a>
-                {% if logged_in %}
+                {% if current_user.name %}
                 <a href="/upload"><button class="tablinks" onclick="openTab('Upload')">Upload</button></a>
-                <a>  <span class="username">| {{ username }} |</span>  <a>
+                <a>  <span class="username">| {{ current_user.name }} |</span>  <a>
                 <a href="/logout"><button class="tablinks" onclick="openTab('Logout')">Logout</button></a>
                 {% else %}
                 <a href="/login"><button class="tablinks" onclick="openTab('Login')" active_tab='Login'>Login</button></a>

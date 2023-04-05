@@ -14,33 +14,16 @@ All routes use templates rendered with Flask's "render_template" function, and i
 """
 
 from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file
+
 from google.cloud import storage
-from google.api_core.exceptions import NotFound, Forbidden
-from flaskr.backend import *
 
-bucket_name = "wiki_content_p1"
-user_bucket = "users_passwords_p1"
-storage_client = storage.Client()
-
-backend = Backend(user_bucket)
-
-
-def make_endpoints(app):
-
-    def check_logged_in():
-        logged_in = session.get('logged_in', False)
-        if logged_in:
-            username = session['username']
-            return True, username
-        else:
-            return False, ""
-
+#Solution code: backend is an endpoint
+def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
-    def home():
-        is_login, uname = check_logged_in()
-        return render_template("main.html", logged_in=is_login, username=uname)
+    def home():      
+        return render_template("main.html")
 
     @app.route("/pages", methods=["GET", "POST"])
     def pages_index():
@@ -61,44 +44,35 @@ def make_endpoints(app):
 
     @app.route("/pages/<filename>")
     def page(filename):
-        try:
-            page_content = backend1.get_wiki_page(filename)
-            is_login, uname = check_logged_in()
-            return render_template("page_template.html",
-                                   page=page_content,
-                                   logged_in=is_login,
-                                   username=uname,
-                                   name=filename)
-        except (Forbidden, NotFound):
-            abort(404)
+        page_content = backend.get_wiki_page(filename)
+        return render_template("page_template.html", page_content=page_content)
 
     @app.route("/about")
     def about():
-        authors = [("Pierre Johnson", "bulbasaur.jpeg"),
-                   ("Ericka James", "charmander.jpeg"),
-                   ("Jalen Richburg", "squirtle.jpeg")]
-        is_login, uname = check_logged_in()
-        return render_template("about.html",
-                               authors=authors,
-                               logged_in=is_login,
-                               username=uname)
+        authors = [
+            ("Pierre Johnson", "bulbasaur.jpeg"),
+            ("Ericka James", "charmander.jpeg"),
+            ("Jalen Richburg", "squirtle.jpeg") 
+        ]
+        return render_template("about.html", authors=authors)
 
     @app.route("/images/<filename>")
     def get_image(filename):
-        try:
-            image_data = backend2.get_image(filename)
-            response = make_response(image_data)
-            response.headers.set("Content-Type", "image/jpeg")
-            return response
-        except (Forbidden, NotFound):
-            abort(404)
+        image_data = backend.get_image(filename)
+        response = make_response(image_data)
+        response.headers.set("Content-Type", "image/jpeg")
+        return response
 
     @app.route("/upload", methods=["GET", "POST"])
     def upload():
         if request.method == 'POST':
             file = request.files['file']
-            backend1.bucket_upload(file)
+            # Solution: adding name from the form.
+            # TODO: catch and propagate any errors that may occur from upload
+            name = request.form['name']
+            backend.upload(file.stream.read(), name, file.filename)
             return render_template("main.html")
+
         else:
             is_login, uname = check_logged_in()
             return render_template("upload.html",
@@ -146,7 +120,7 @@ def make_endpoints(app):
 
     @app.route('/search-results')
     def search():
-        pass
+        return render_template("search_results.html")
 
 
 def is_valid_blob(bucket_name, filename):
@@ -157,3 +131,10 @@ def is_valid_blob(bucket_name, filename):
             return True
 
     return False
+
+"""
+        else:    
+            return render_template("upload.html")
+
+"""
+
