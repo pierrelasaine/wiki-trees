@@ -54,7 +54,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-content: center;
-} 
+}
     .home-box {
         background-color: #f1f3e9;
         border-radius: 40px;
@@ -64,4 +64,17 @@ button:hover {
 
         display: flex;
         flex-direction: column;
-    }
+    }   
+        .home-logo-box {
+            display: flex;
+            justify-content: center;
+        }
+        .home-logo-box img{
+            padding: 10%;
+            padding-bottom: 0;
+            max-height: 450px;
+        }
+        .search-box {
+            padding: 10%;
+            text-align: center;
+        }
