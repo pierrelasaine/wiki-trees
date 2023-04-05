@@ -52,6 +52,7 @@ def test_pages_page(client):
     assert resp.status_code == 200
     assert b"Wiki Pages" in resp.data
 
+
 @patch("flaskr.backend.Backend.get_wiki_page")
 def test_pages_wiki_nonexistent(mock_get_wiki_page, client):
     mock_get_wiki_page.return_value = None

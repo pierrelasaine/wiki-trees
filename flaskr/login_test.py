@@ -1,6 +1,7 @@
 from flaskr import create_app
 import pytest
 
+
 @pytest.fixture
 def app():
     app = create_app({'TESTING': True, 'SECRET_KEY': 'test'})
@@ -10,6 +11,7 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
 
 def test_new_signup(client):
     response = client.post('/signup',
