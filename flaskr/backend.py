@@ -1,4 +1,5 @@
 from google.cloud import storage
+from flask import abort
 from bleach import Cleaner
 import hashlib
 
@@ -15,7 +16,7 @@ class Backend:
         # Solution code: uses page_bucket and checks for None value
         blob = self.page_bucket.get_blob(blob_name)
         if blob is None:
-            return "No page exists with this name"
+            abort(404)
         
         return blob.download_as_text()
 

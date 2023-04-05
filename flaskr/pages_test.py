@@ -33,7 +33,7 @@ def test_about_page(client):
     assert b"About this Wiki" in resp.data
 
 
-@patch("flaskr.backend.backend2.get_image")
+@patch("flaskr.backend.Backend.get_image")
 def test_get_image(mock_get_image, client):
     mock_get_image.return_value = os.urandom(1024)
 
@@ -59,9 +59,9 @@ def test_pages_wiki_nonexistent(client):
     assert b"Not Found" in resp.data
 
 
-@patch("flaskr.backend.backend1.get_wiki_page")
+@patch("flaskr.backend.Backend.get_wiki_page")
 def test_page_details(mock_get_wiki_page, client):
-    mock_get_wiki_page.return_value = "Mock Text for Unit Test\n2\n3\n4"
+    mock_get_wiki_page.return_value = "<p>Mock Text for Unit Test</p>"
 
     resp = client.get("/pages/mock-page")
     assert resp.status_code == 200
@@ -73,11 +73,11 @@ def test_upload_page(client):
     assert resp.status_code == 200
     assert b"Drop File to Upload" in resp.data
 
-
-@patch("flaskr.backend.backend1.get_wiki_page")
-@patch("flaskr.backend.backend1.bucket_upload")
-def test_TinyMCE_upload(mock_bucket_upload, mock_get_wiki_page, client):
-    mock_bucket_upload.return_value = None
+"""
+@patch("flaskr.backend.Backend.get_wiki_page")
+@patch("flaskr.backend.Backend.upload")
+def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
+    mock_upload.return_value = None
     mock_get_wiki_page.return_value = "Test HTML"
     resp = client.post("/upload",
                        data=dict(name="test_page", content="<p>Test HTML</p>"))
@@ -88,7 +88,7 @@ def test_TinyMCE_upload(mock_bucket_upload, mock_get_wiki_page, client):
 
 
 # ask Bianca about weird syntax req in line 99
-"""
+
 @patch("flaskr.backend.backend1.get_wiki_page")
 @patch("flaskr.backend.backend1.bucket_upload")
 def test_file_upload(mock_bucket_upload, mock_get_wiki_page, client):
@@ -122,13 +122,17 @@ def test_new_signup_existing_user(client):
     assert b'Username already exists!' in response.data
 
 
-def test_user_login(client):
+def test_user_login_logout(client):
+    # log in test
     response = client.post('/signup',
                            data=dict(username='test_user',
                                      password='test_password'))
     response = client.post('/login',
                            data=dict(username='test_user',
                                      password='test_password'))
+    assert response.status_code == 302
+    # log out test
+    response = client.get("/logout")
     assert response.status_code == 302
 
 
@@ -141,11 +145,6 @@ def test_user_login_incorrect_password(client):
                                      password='bad_password'))
     assert response.status_code == 200
     assert b'Incorrect username or password' in response.data
-
-
-def test_logout(client):
-    response = client.get('/logout')
-    assert response.status_code == 302
 
 
 def pytest_configure(config):

@@ -14,8 +14,6 @@ All routes use templates rendered with Flask's "render_template" function, and i
 """
 
 from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file, send_from_directory
-from google.cloud import storage
-from google.api_core.exceptions import NotFound, Forbidden
 from flaskr.backend import *
 from io import BytesIO
 
@@ -35,7 +33,12 @@ def make_endpoints(app, backend):
     @app.route("/pages/<filename>")
     def page(filename):
         page_content = backend.get_wiki_page(filename)
-        return render_template("page_template.html", page_content=page_content)
+        if not page_content:
+            abort(404)
+
+        return render_template("page_template.html", 
+                               filename=filename,
+                               page_content=page_content)
 
     @app.route("/about")
     def about():
@@ -49,6 +52,9 @@ def make_endpoints(app, backend):
     @app.route("/images/<filename>")
     def get_image(filename):
         image_data = backend.get_image(filename)
+        if not image_data:
+            abort(404)
+
         response = make_response(image_data)
         response.headers.set("Content-Type", "image/jpeg")
         return response
@@ -69,42 +75,3 @@ def make_endpoints(app, backend):
             backend.bucket_upload(name, content)
         ## check for validation [Page Redirect R8.]
         return redirect(url_for('page', filename=name))
-
-    @app.route('/signup', methods=["GET", "POST"])
-    def new_signup():
-        if request.method == "POST":
-            username = request.form["username"]
-            password = request.form["password"]
-
-            if backend.sign_up(username, password):
-                session['username'] = username
-                session['logged_in'] = True
-                return redirect('/')
-            else:
-                return render_template("login.html",
-                                       error_message="Username already exists!",
-                                       active_tab='SignUp')
-        else:
-            return render_template("login.html", active_tab='SignUp')
-
-    @app.route('/login', methods=["GET", "POST"])
-    def user_login():
-        if request.method == "POST":
-            username = request.form["username"]
-            password = request.form["password"]
-
-            if backend.sign_in(username, password):
-                session['username'] = username
-                session['logged_in'] = True
-                return redirect('/')
-            else:
-                return render_template(
-                    "login.html",
-                    error_message="Incorrect username or password!")
-        else:
-            return render_template("login.html")
-
-    @app.route('/logout')
-    def logout():
-        session.clear()
-        return redirect(url_for('home'))
