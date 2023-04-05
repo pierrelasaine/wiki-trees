@@ -74,3 +74,7 @@ def make_endpoints(app, backend):
             backend.upload(name, content)
         ## check for validation [Page Redirect R8.]
         return redirect(url_for('page', filename=name))
+
+    @app.route("/tdm")
+    def tdm():
+        return render_template("tdm.html")
