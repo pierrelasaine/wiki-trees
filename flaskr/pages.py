@@ -30,17 +30,13 @@ def make_endpoints(app, backend):
         if request.method == "POST":
             search_input = request.form["search_input"]
 
-            results = backend1.search(search_input)
+            results = backend.search(search_input)
             return render_template("search_results.html",
                             search_input=search_input,
                             results=results)
         else:
-            pages = backend1.get_all_page_names()
-            is_login, uname = check_logged_in()
-            return render_template("pages.html",
-                                pages=pages,
-                                logged_in=is_login,
-                                username=uname)
+            pages = backend.get_all_page_names()
+            return render_template("pages.html",pages=pages)
 
     @app.route("/pages/<filename>")
     def page(filename):
@@ -74,67 +70,10 @@ def make_endpoints(app, backend):
             return render_template("main.html")
 
         else:
-            is_login, uname = check_logged_in()
-            return render_template("upload.html",
-                                   logged_in=is_login,
-                                   username=uname)
-
-    @app.route('/signup', methods=["GET", "POST"])
-    def new_signup():
-        if request.method == "POST":
-            username = request.form["username"]
-            password = request.form["password"]
-
-            if backend.sign_up(username, password):
-                session['username'] = username
-                session['logged_in'] = True
-                return redirect('/')
-            else:
-                return render_template("login.html",
-                                       error_message="Username already exists!",
-                                       active_tab='SignUp')
-        else:
-            return render_template("login.html", active_tab='SignUp')
-
-    @app.route('/login', methods=["GET", "POST"])
-    def user_login():
-        if request.method == "POST":
-            username = request.form["username"]
-            password = request.form["password"]
-
-            if backend.sign_in(username, password):
-                session['username'] = username
-                session['logged_in'] = True
-                return redirect('/')
-            else:
-                return render_template(
-                    "login.html",
-                    error_message="Incorrect username or password!")
-        else:
-            return render_template("login.html")
-
-    @app.route('/logout')
-    def logout():
-        session.clear()
-        return redirect(url_for('home'))
+            return render_template("upload.html")
 
     @app.route('/search-results')
     def search():
         return render_template("search_results.html")
 
-
-def is_valid_blob(bucket_name, filename):
-    bucket = storage_client.bucket(bucket_name)
-    if bucket.exists():
-        blob = bucket.blob(filename)
-        if blob.exists():
-            return True
-
-    return False
-
-"""
-        else:    
-            return render_template("upload.html")
-
-"""
 

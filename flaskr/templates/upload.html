@@ -7,9 +7,9 @@
 	{% endif %}
   
     <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="text" name="name" placeholder="file name">
+        <input type="text" name="name" placeholder="Enter File Name" required>
         <h3 style="font-weight: normal;">Drag & Drop File to Upload</h3>
-        <input type="file" name="file">
+        <input type="file" name="file" required>
         <button type="submit", value = "Upload">Upload</button>
     </form>
 		

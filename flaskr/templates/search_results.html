@@ -4,20 +4,21 @@
 Pages
 {% endblock %}
 
-
-
 {% block content %}
+
 <h1>Wiki Search</h1>
 <p style="font-style: italic;">Results for "{{search_input}}"</p>
 <br>
-
     
     {% if results %}
+
     <ul>
     {% for page in results %}
         <li><a href="/pages/{{ page }}"> {{ page }} </a></li>
-    </ul>
+        <br>
     {% endfor %}
+    </ul>
+    
     {% else %}
         <p>No Results Found :(</p>
     {% endif %}

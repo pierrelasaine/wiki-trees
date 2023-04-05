@@ -5,25 +5,6 @@ from google.cloud.storage.bucket import Bucket
 import pytest
 
 # # # TODO(Project 1): Write tests for Backend methods.
-def test_get_wiki_page():
-    pass
-
-def test_get_all_page_names():
-    pass
-
-def test_upload():
-    pass
-
-def test_sign_up():
-    pass
-
-def test_sign_in():
-    pass
-
-<<<<<<< HEAD
-def test_get_image():
-    pass
-
 @pytest.fixture
 def name():
     return "name"
@@ -45,3 +26,18 @@ def test_get_wiki_page(mock_client, mock_blob, mock_bucket, name):
 
     backend = Backend(name)
     assert backend.get_wiki_page(name) == "blob data"
+
+def test_get_all_page_names():
+    pass
+
+def test_upload():
+    pass
+
+def test_sign_up():
+    pass
+
+def test_sign_in():
+    pass
+
+def test_get_image():
+    pass
