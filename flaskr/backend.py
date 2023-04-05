@@ -66,32 +66,8 @@ class Backend:
 
         return True
 
-    def is_valid_html(self, html):
-        """Checks if the given HTML string is safe.
-
-        Args:
-            html: A string containing HTML code.
-
-        Returns:
-            True if the HTML is safe, False otherwise.
-        """
-        cleaner = Cleaner(tags=[
-            'a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title',
-            'div', 'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'
-        ],
-                          attributes={
-                              'a': ['href', 'title'],
-                              'abbr': ['title'],
-                              'acronym': ['title'],
-                              'img': ['src', 'alt']
-                          })
-
-        sanitized_html = cleaner.clean(html)
-
-        if sanitized_html != html:
-            return False
-
-        return True
+    def tmd_html(self):
+        pass
 
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")
