@@ -35,7 +35,7 @@ def make_endpoints(app, backend):
     @app.route("/pages/<filename>")
     def page(filename):
         try:
-            page_data = backend1.get_wiki_page(filename)
+            page_data = backend.get_wiki_page(filename)
             is_login, uname = check_logged_in()
             return render_template("page_template.html",
                                    page_data=page_data,
@@ -73,11 +73,11 @@ def make_endpoints(app, backend):
         content_str = request.form['content']
         if not content_str:
             file = request.files['file']
-            backend1.bucket_upload(name, file)
+            backend.bucket_upload(name, file)
         else:
             content_bstr = content_str.encode()
             content = BytesIO(content_bstr)
-            backend1.bucket_upload(name, content)
+            backend.bucket_upload(name, content)
         ## check for validation [Page Redirect R8.]
         return redirect(url_for('page', filename=name))
 
