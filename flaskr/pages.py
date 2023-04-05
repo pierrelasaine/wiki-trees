@@ -34,16 +34,8 @@ def make_endpoints(app, backend):
 
     @app.route("/pages/<filename>")
     def page(filename):
-        try:
-            page_data = backend.get_wiki_page(filename)
-            is_login, uname = check_logged_in()
-            return render_template("page_template.html",
-                                   page_data=page_data,
-                                   logged_in=is_login,
-                                   username=uname,
-                                   filename=filename)
-        except (Forbidden, NotFound):
-            abort(404)
+        page_content = backend.get_wiki_page(filename)
+        return render_template("page_template.html", page_content=page_content)
 
     @app.route("/about")
     def about():
