@@ -56,10 +56,7 @@ def make_endpoints(app, backend):
     @app.route("/upload", methods=["GET", "POST"])
     def upload():
         if request.method != 'POST':
-            is_login, uname = check_logged_in()
-            return render_template("upload.html",
-                                   logged_in=is_login,
-                                   username=uname)
+            return render_template("upload.html")
 
         name = request.form['name']
         content_str = request.form['content']
