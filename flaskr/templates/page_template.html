@@ -8,7 +8,7 @@
 
 <div id='page-data-container' style='display: block;'>{{ page_content|safe }}</div>
 
-{% if logged_in %}
+{% if current_user.name %}
 <button id="toggleButton" type="button" onclick="toggleEditor(); togglePage(); toggleSave();">Edit Page</button>
 <form action="/upload" method="POST" enctype="multipart/form-data">
     <input id="nameInput" type="hidden" name="name" value="{{ filename }}">
