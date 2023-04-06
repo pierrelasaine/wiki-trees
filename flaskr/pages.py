@@ -76,5 +76,7 @@ def make_endpoints(app, backend):
         return redirect(url_for('page', filename=name))
 
     @app.route("/tdm")
-    def tdm():
-        return render_template("tdm.html")
+    def tree_distribution_map():
+        map_html = backend.tree_map()
+        return render_template("tree_map.html", map_html=map_html, header="Tree Distribution Map")
+

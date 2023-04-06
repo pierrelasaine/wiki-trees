@@ -2,6 +2,7 @@ from google.cloud import storage
 from flask import abort
 from bleach import Cleaner
 import hashlib
+import folium
 
 
 class Backend:
@@ -66,8 +67,11 @@ class Backend:
 
         return True
 
-    def tmd_html(self):
-        pass
+    def tree_map(self):
+        tree_map = folium.Map(location=[37.0902, -95.7129], zoom_start=5)
+        map_html = tree_map._repr_html_()
+        
+        return map_html
 
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")
