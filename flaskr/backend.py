@@ -2,8 +2,8 @@ from google.cloud import storage
 from flask import abort
 from bleach import Cleaner
 import hashlib
-#import folium
-#from folium import plugins
+import folium
+from folium import plugins
 
 
 
