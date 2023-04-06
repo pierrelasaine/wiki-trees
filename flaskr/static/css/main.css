@@ -58,7 +58,8 @@ button:hover {
     background-color: #fdfdf7;
     margin-left: 110px;
     min-height: 100vh;
-    padding-left: 0px !important;
+    padding-left: 20px !important;
+    padding-right: 30px !important;
 
     display: flex;
     justify-content: center;
@@ -67,9 +68,9 @@ button:hover {
     .home-box {
         background-color: #f1f3e9;
         border-radius: 40px;
+        margin: 0 auto;
         margin-top: 200px;
-        margin-left: 20%;
-        max-width: 60%;
+        max-width: 1045px;
 
         display: flex;
         flex-direction: column;
@@ -90,7 +91,8 @@ button:hover {
     .about-box {
         background-color: #f1f3e9;
         border-radius: 40px;
-        margin: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
         padding-left: 10%;
         padding-right: 10%;
         padding-top: 5%;
