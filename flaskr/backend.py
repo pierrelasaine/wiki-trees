@@ -3,6 +3,8 @@ from flask import abort
 from bleach import Cleaner
 import hashlib
 import folium
+from folium import plugins
+
 
 
 class Backend:
@@ -68,7 +70,17 @@ class Backend:
         return True
 
     def tree_map(self):
-        tree_map = folium.Map(location=[37.0902, -95.7129], zoom_start=5)
+        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)
+        legend_html = '''
+         <div style="position:fixed; 
+                     bottom: 50px; left: 50px; width: 100px; height: 90px; 
+                     border:2px light grey; z-index:9999; font-size:14px;
+                     background-color:rgba(255, 255, 255, 0.8);
+                    ">
+            &nbsp; Legend <br>
+         </div>
+         '''
+        tree_map.get_root().html.add_child(folium.Element(legend_html))
         map_html = tree_map._repr_html_()
         
         return map_html
