@@ -50,6 +50,7 @@ button:hover {
     background-color: #fdfdf7;
     height: 100vh;
     margin-left: 110px;
+    padding-left: 0px !important;
 
     display: flex;
     justify-content: center;
@@ -77,4 +78,27 @@ button:hover {
         .search-box {
             padding: 10%;
             text-align: center;
+        }
+    .about-box {
+        background-color: #f1f3e9;
+        border-radius: 40px;
+        margin: 20px;
+        padding-left: 10%;
+        padding-right: 10%;
+        padding-top: 5%;
+        padding-bottom: 5%;
+
+        display: flex;
+        flex-direction: column;
+    }
+        .about-title-box {
+            font-size: 50px;
+            display: flex;
+        }
+            .about-title-box h1{
+                margin-bottom: 0px !important;
+            }
+        .about-info-box {
+            max-width: 1300px;
+            display: flex;
         }
