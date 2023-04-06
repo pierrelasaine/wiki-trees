@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+
+{% block title %}Tree Distribution Map{% endblock %}
+
+{% block header %}
+	<h1>Tree Distribution Map</h1>
+{% endblock %}
+
+{% block content %}
+	<div id="map-container">
+		{{ map_html | safe }}
+	</div>
+{% endblock %}
+
+<!-- {% block extra_styles %}
+	<style>
+		/* Styles for the map container */
+		#map-container {
+			height: 400px;
+			width: 100%;
+		}
+	</style>
+{% endblock %} -->
