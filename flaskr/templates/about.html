@@ -11,18 +11,61 @@ About
     </div>
     <div class="about-info-box">
         <p>Welcome to WikiTrees!, an online encyclopedia dedicated to trees and their fascinating histories. Here, you'll find a wealth of information on various tree species, including their biology, cultural significance, and interesting fun facts. 
-            Think of the entries on this wiki as patterns in the sand, and feel free to make additons and edits where you feel is necessary. </p>
+            Think of the entries on this wiki as patterns in the sand, and feel free to make additons and edits where you feel necessary. </p>
     </div>
 </div>
-
-<h2>Your Authors</h2>
-    {% for author in authors %}
-        <div style="float:left">
-            <h3>{{ author[0] }}</h3>
-            <img src="/images/{{ author[1] }}" alt="Image of author.">
+<div class="authors-box">
+    <div class="authors-title-box">
+        <hr class="authors-line-box">
+        <h2>Your Authors</h2>
+        <hr class="authors-line-box">
+    </div>
+    <div class="author-box1">
+    <div class="author-box">
+        <div class="author-bio-box">
+            <div class="author-name-box">
+                <h3>First Lastname</h3>
+            </div>
+            <div class="author-text-box">
+                Somemsom sk crl efmomsla v jni wlmov eonmw edoimv oclmwedl re fi lis h lscn 
+            </div>
         </div>
-    {% endfor %}
-
+        <div class="author-image-box">
+            <img src="/static/images/squirtle.jpeg">
+        </div>
+    </div>
+    </div>
+    <div class="author-box1">
+    <div class="author-box">
+        <div class="author-image-box">
+            <img src="/static/images/squirtle.jpeg">
+        </div>
+        <div class="author-bio-box">
+            <div class="author-name-box">
+                <h3>First Lastname</h3>
+            </div>
+            <div class="author-text-box">
+                Somemsom sk crl efmomsla v jni wlmov eonmw edoimv oclmwedl re fi lis h lscn 
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="author-box1">
+    <div class="author-box">
+        <div class="author-bio-box">
+            <div class="author-name-box">
+                <h3>First Lastname</h3>
+            </div>
+            <div class="author-text-box">
+                Somemsom sk crl efmomsla v jni wlmov eonmw edoimv oclmwedl re fi lis h lscn 
+            </div>
+        </div>
+        <div class="author-image-box">
+            <img src="/static/images/squirtle.jpeg">
+        </div>
+    </div>
+    </div>
+</div>
 <!-- TODO(Project 1): Add team members and pictures to about page. -->
 
 {% endblock %}
