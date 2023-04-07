@@ -40,7 +40,8 @@ class Backend:
         blob = bucket.blob(name)
         if blob.exists():
             blob.delete()
-        blob.upload_from_file(file)
+        with blob.open("wb") as f:
+            f.write(file)
 
     def is_valid_html(self, html):
         """Checks if the given HTML string is safe.

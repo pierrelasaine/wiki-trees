@@ -1,5 +1,5 @@
 from flaskr import create_app
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from werkzeug.datastructures import FileStorage
 from flaskr.pages import *
 import io
@@ -24,13 +24,13 @@ def client(app):
 def test_home_page(client):
     resp = client.get("/")
     assert resp.status_code == 200
-    assert b"Welcome to WikiTrees" in resp.data
+    assert b"home-box" in resp.data
 
 
 def test_about_page(client):
     resp = client.get("/about")
     assert resp.status_code == 200
-    assert b"About this Wiki" in resp.data
+    assert b"About Us!" in resp.data
 
 
 @patch("flaskr.backend.Backend.get_image")
@@ -88,23 +88,19 @@ def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 
-
 """
-# ask Bianca about weird syntax req in line 99
 @patch("flaskr.backend.Backend.get_wiki_page")
 @patch("flaskr.backend.Backend.upload")
-def test_file_upload(mock_bucket_upload, mock_get_wiki_page, client):
-    mock_bucket_upload.return_value = None
+def test_file_upload(mock_upload, mock_get_wiki_page, client):
+    mock_upload.return_value = None
     mock_get_wiki_page.return_value = "Test HTML"
     resp = client.post("/upload",
                         data=dict(name="test_page",
-                                  file=FileStorage(filename="test.html", stream=b"<p>Test HTML</p>")))
-    assert resp.status_code == 302 
+                                  fileb=FileStorage(filename="test.html", stream=b"<p>Test HTML</p>")))
     resp = client.get("/pages/test_page")
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 """
-
 
 def pytest_configure(config):
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)

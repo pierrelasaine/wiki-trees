@@ -66,12 +66,12 @@ def make_endpoints(app, backend):
         name = request.form['name']
         content_str = request.form['content']
         if not content_str:
-            file = request.files['file']
-            backend.upload(name, file)
+            file = request.files.get('file')
+            backend.upload(file.stream.read(), name, file.filename)
         else:
             content_bstr = content_str.encode()
-            content = BytesIO(content_bstr)
-            backend.upload(name, content)
+            content = bytearray(content_bstr)
+            backend.upload(content, name, name)
         ## check for validation [Page Redirect R8.]
         return redirect(url_for('page', filename=name))
 
