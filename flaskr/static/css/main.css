@@ -56,12 +56,16 @@ button:hover {
     border-bottom-right-radius: 20px;
     margin-top: 13px;
     margin-left: 110px;
-    font-weight: 600;
+    font-weight: 500;
     width: 250px;
     overflow-y: scroll;
+    z-index: 9999;
 }
     .page-drawer::-webkit-scrollbar {
         width: 0px;
+    }
+    .page-drawer li {
+        height: 45px;
     }
 .columns {
     min-height: 100vh;
