@@ -49,11 +49,23 @@ button:hover {
                 .first-item {
                     margin-top: 50px;
                 }
-
+.page-drawer {
+    background-color: #ecefe3;
+    border-left: 1px solid #c9cdc0;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-top: 13px;
+    margin-left: 110px;
+    font-weight: 600;
+    width: 250px;
+    overflow-y: scroll;
+}
+    .page-drawer::-webkit-scrollbar {
+        width: 0px;
+    }
 .columns {
     min-height: 100vh;
 }
-
 .page {
     background-color: #fdfdf7;
     margin-left: 110px;

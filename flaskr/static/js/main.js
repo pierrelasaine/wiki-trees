@@ -12,6 +12,14 @@ function toggleEditor() {
         tinymce.remove();
     }
 }
+function toggleDrawer(){
+    var pageDrawer = document.getElementById('toggleDrawer');
+    if (pageDrawer.style.display === 'block') {
+        pageDrawer.style.display = 'none';
+    } else {
+        pageDrawer.style.display = 'block';
+    }    
+}
 function toggleForm() {
 var formContainer = document.getElementById('form-container');
 var toggleButton = document.getElementById('toggleButton');
