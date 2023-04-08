@@ -221,7 +221,6 @@ button:hover {
             .form-icon-box img{
                 max-width: 30px;
             }
-
         .form-box {
             padding-bottom: 35px;
             padding-left: 30px;
@@ -261,3 +260,6 @@ button:hover {
                 font-size: 16px;
                 font-weight: 500;
             }
+.wiki-page {
+    margin-left: 250px;
+}

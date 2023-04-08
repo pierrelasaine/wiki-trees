@@ -37,7 +37,7 @@
                             <li class="mb-6">About</li>
                         </div>
                         <div class="pad-fix">
-                            <li><a href="#" onclick="toggleDrawer()"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li><a href="#" onclick="toggleDrawer(); toggleWikiPageMargin()"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
                             <li class="mb-6">Pages</li>
                         </div>
                         <div class="pad-fix">
@@ -66,7 +66,7 @@
                     </ul>
                 </aside>
             </div>
-            <div class="page-drawer" style="position: fixed; display: none;" id="toggleDrawer">
+            <div class="page-drawer" style="position: fixed; display: none" id="toggleDrawer">
                 <aside class="menu">
                     <ul class="menu-list">
                     {% for page in pages %}

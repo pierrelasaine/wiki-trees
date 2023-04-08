@@ -12,14 +12,6 @@ function toggleEditor() {
         tinymce.remove();
     }
 }
-function toggleDrawer(){
-    var pageDrawer = document.getElementById('toggleDrawer');
-    if (pageDrawer.style.display === 'block') {
-        pageDrawer.style.display = 'none';
-    } else {
-        pageDrawer.style.display = 'block';
-    }    
-}
 function toggleForm() {
 var formContainer = document.getElementById('form-container');
 var toggleButton = document.getElementById('toggleButton');
@@ -63,3 +55,39 @@ function uploadPageFromEditor() {
     document.getElementById("contentInput").value = myContent;
     document.forms[0].submit();
 }
+function toggleDrawer() {
+    var pageDrawer = document.getElementById('toggleDrawer');
+    if (pageDrawer.style.display === 'block') {
+        pageDrawer.style.display = 'none';
+        sessionStorage.setItem('drawerOpen', 'false');
+    } else {
+        pageDrawer.style.display = 'block';
+        sessionStorage.setItem('drawerOpen', 'true');
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    var drawerOpen = sessionStorage.getItem('drawerOpen');
+    var pageDrawer = document.getElementById('toggleDrawer');
+    var wikiPage = document.querySelector('.wiki-page');
+    if (drawerOpen === 'true') {
+        pageDrawer.style.display = 'block';
+    } else {
+        pageDrawer.style.display = 'none';
+        wikiPage.style.marginLeft = '0px';
+    }
+});
+function toggleWikiPageMargin() {
+    var wikiPage = document.querySelector('.wiki-page');
+    if (wikiPage.style.marginLeft === '0px') {
+        wikiPage.style.marginLeft = '250px';
+    } else {
+        wikiPage.style.marginLeft = '0px';
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    var uniqueElement = document.querySelector('.unique-element');
+    if (!(uniqueElement && uniqueElement.hasAttribute('data-default-drawer-open'))) {
+        var pageDrawer = document.getElementById('toggleDrawer');
+        pageDrawer.style.display = 'none';
+    }
+});

@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block content %}
-
+<div class="unique-element" data-default-drawer-open></div>
+<div class="wiki-page">
 <div id='page-data-container' style='display: block;'>{{ page_content|safe }}</div>
 
 {% if current_user.name %}
@@ -25,5 +26,5 @@
     </textarea>
 </div>
 {% endif %}
-
+</div>
 {% endblock %}
