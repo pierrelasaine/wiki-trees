@@ -266,6 +266,7 @@ button:hover {
     display: flex;
     flex-direction: column;
 }
+@media (max-width: 1310px) {}
     .page-head {
         padding: 30px;
         padding-bottom: 20px;
@@ -293,6 +294,8 @@ button:hover {
         .buttons {
             margin-right: 20px;
             display: flex;
+            flex-direction: row;
+            justify-content: right;
         }
     .page-box {
         background-color: #f1f3e9;

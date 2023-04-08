@@ -92,3 +92,11 @@ document.addEventListener('DOMContentLoaded', function() {
         pageDrawer.style.display = 'none';
     }
 });
+window.addEventListener('resize', function() {
+    var drawerOpen = sessionStorage.getItem('drawerOpen');
+    var uniqueElement = document.querySelector('.unique-element');
+    if (window.matchMedia('(max-width: 768px)').matches && (uniqueElement && uniqueElement.hasAttribute('data-default-drawer-open')) && (drawerOpen === 'true')) {
+        toggleDrawer();
+        toggleWikiPageMargin();
+    }
+  });
