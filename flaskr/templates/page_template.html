@@ -14,15 +14,18 @@
 {% endif %}
 <div class="wiki-page">
     <div class="page-head">
-
         <h1>
             {{ filename }}
         </h1>
     {% if current_user.name %}
-        <div id='save-button-container' style="display: none;">
-            <button type="button" onclick="uploadPageFromEditor()">Save Changes</button>
+        <div class="buttons">
+            <button id="toggleButton" type="button" onclick="toggleEditor(); togglePage(); toggleSave();">
+                Edit Page
+            </button>
+            <div id='save-button-container' style="display: none;">
+                <button type="button" onclick="uploadPageFromEditor()">Save Changes</button>
+            </div>
         </div>
-        <button id="toggleButton" type="button" onclick="toggleEditor(); togglePage(); toggleSave();">Edit Page</button>
     {% endif %}
     </div>
     <div class="page-box" id='page-data-container' style='display: block;'>

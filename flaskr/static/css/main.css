@@ -268,6 +268,7 @@ button:hover {
 }
     .page-head {
         padding: 30px;
+        padding-bottom: 20px;
         display: flex;
         justify-content: space-between;
         font-size: 30px;
@@ -280,12 +281,18 @@ button:hover {
           }
         .page-head h1{
             margin-left: 20px;
+            margin-bottom: 0px !important;
         }
         .page-head button{
             background-color: #f1f3e9;
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 20px;
+            margin-left: 15px;
+        }
+        .buttons {
+            margin-right: 20px;
+            display: flex;
         }
     .page-box {
         background-color: #f1f3e9;
