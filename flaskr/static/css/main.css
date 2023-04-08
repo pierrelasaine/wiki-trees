@@ -262,4 +262,45 @@ button:hover {
             }
 .wiki-page {
     margin-left: 250px;
+
+    display: flex;
+    flex-direction: column;
 }
+    .page-head {
+        padding: 30px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 30px;
+    }   
+        .page-head div > div[style*="display: none;"] {
+            flex: 0;
+        }
+        .page-head div > div[style*="display: block;"][style*="flex: 0;"] {
+            flex: 1;
+          }
+        .page-head h1{
+            margin-left: 20px;
+        }
+        .page-head button{
+            background-color: #f1f3e9;
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+        }
+    .page-box {
+        background-color: #f1f3e9;
+        border-radius: 40px;
+        margin: 30px;
+        margin-top: 0px;
+        padding: 40px;
+        display: flex;
+    }
+    .editor-box {
+        background-color: #f1f3e9;
+        border-radius: 40px;
+        margin: 30px;
+        margin-top: 0px;
+        padding: 20px;
+        height: 100%;
+        display: flex;
+    }

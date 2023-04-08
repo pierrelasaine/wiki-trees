@@ -3,6 +3,7 @@ function toggleEditor() {
     if (editorContainer.style.display === 'none') {
         editorContainer.style.display = 'block';
         tinymce.init({
+            height: 1000,
             selector: '#myTextarea',
             plugins: 'anchor autolink charmap codesample image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents autocorrect',
             toolbar: 'export | undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
