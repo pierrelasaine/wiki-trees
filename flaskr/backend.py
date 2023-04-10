@@ -71,13 +71,31 @@ class Backend:
         return True
 
     def tree_map(self):
-        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)
-        
+        tree_distributions = {
+            'Coast Redwood': (38.9822, -123.3781),
+            'Ginko': (39.7684, -86.1581),
+            'Japanese Magnolia': (35.8801, -79.0800),
+            'Juniper': (40.7968, -77.8619),
+            'Live Oak': (30.3894, -86.5229),
+            'Monterey Cypress': (36.6002, -121.8947),
+            'Palm': (26.7056, -80.0364),
+            'Palmetto': (26.7153, -81.0522),
+            'Water Oak': (30.4383, -84.2807),
+            'White Oak': (33.9860, -83.7185),
+        }
+                    
         tree_names = ['Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper', 'Live Oak', 
             'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak', 'White Oak']
 
         colors = ['forestgreen', 'gold', 'blueviolet', 'blue', 'olive', 'darkcyan', 'darkorange', 
             'purple', 'steelblue', 'tomato']
+
+        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)       
+
+        for i, tree in enumerate(tree_names):
+            folium.Marker(location=tree_distributions[tree], 
+                        icon=folium.Icon(color='gray', icon='leaf'),
+                        popup=tree).add_to(tree_map)
 
         legend_html = '''
                     <div style="position:fixed; 
@@ -97,6 +115,7 @@ class Backend:
             '''
 
         tree_map.get_root().html.add_child(folium.Element(legend_html))
+
         map_html = tree_map._repr_html_()
         
         return map_html
