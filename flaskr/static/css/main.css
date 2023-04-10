@@ -64,8 +64,11 @@ button:hover {
     .page-drawer::-webkit-scrollbar {
         width: 0px;
     }
-    .page-drawer li {
-        height: 45px;
+    .page-drawer li{
+        height: 60px;
+    }
+    .page-drawer a{
+        padding: 20px !important;
     }
 .columns {
     min-height: 100vh;
