@@ -14,14 +14,19 @@ function toggleEditor() {
     }
 }
 function toggleForm() {
+var uploadBox = document.getElementById('upload-box-box')
 var formContainer = document.getElementById('form-container');
 var toggleButton = document.getElementById('toggleButton');
 if (formContainer.style.display === 'block') {
     formContainer.style.display = 'none';
-    toggleButton.innerHTML = "Back";
+    uploadBox.style.marginTop = '40px';
+    toggleButton.innerHTML = "<img src='/static/images/back.png'>";
+    toggleButton.classList.add('upload-button-back')
 } else {
     formContainer.style.display = 'block';
+    uploadBox.style.marginTop = '200px'
     toggleButton.innerHTML = "Create New Page";
+    toggleButton.classList.remove('upload-button-back')
 }
 }
 function toggleUpload() {
@@ -74,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
         pageDrawer.style.display = 'block';
     } else {
         pageDrawer.style.display = 'none';
-        wikiPage.style.marginLeft = '0px';
     }
 });
 function toggleWikiPageMargin() {

@@ -218,6 +218,7 @@ button:hover {
             }
         .form-icon-box {
             margin-top: 20px;
+
             display: flex;
             justify-content: center;
         }
@@ -273,9 +274,10 @@ button:hover {
     .page-head {
         padding: 30px;
         padding-bottom: 20px;
+        font-size: 30px;
+
         display: flex;
         justify-content: space-between;
-        font-size: 30px;
     }   
         .page-head div > div[style*="display: none;"] {
             flex: 0;
@@ -296,6 +298,7 @@ button:hover {
         }
         .buttons {
             margin-right: 20px;
+
             display: flex;
             flex-direction: row;
             justify-content: right;
@@ -306,6 +309,7 @@ button:hover {
         margin: 30px;
         margin-top: 0px;
         padding: 40px;
+
         display: flex;
     }
     .editor-box {
@@ -315,5 +319,97 @@ button:hover {
         margin-top: 0px;
         padding: 20px;
         height: 100%;
+
         display: flex;
     }
+.upload-box-box {
+    background-color: #f1f3e9;
+    border-radius: 40px;
+    margin: 0 auto;
+    margin-top: 200px;
+    max-height: 500px;
+    max-width: 560px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}  
+    .upload-title-box {
+            font-size: 35px;
+            padding: 20px;
+
+            display: flex;
+            justify-content: center;
+    }
+        .upload-title-box h1{
+            margin-bottom: 0px !important;
+        }
+    .upload-form-box {
+        padding-bottom: 35px;
+        padding-left: 30px;
+        padding-right: 30px;
+
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+        .upload-form-box input[type=text]{
+            font-size: 40px;
+            font-weight: 500;
+        }
+        .upload-form-box input[type=file]{
+            margin-top: 12px !important;
+        }
+        .upload-form-box label{
+            text-align: left;
+            font-size: 12px;
+            color: #43483e;
+            padding-left: 5px;
+        }
+        .upload-form-box input{
+            background-color: #e3e3dc;
+            margin-top: 0px !important;
+            border: none;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            border-bottom: 1px solid #43483e;
+            max-width: 360px;
+            align-self: center;
+        }
+        .upload-form-box button{
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .upload-form-input-label-box {
+            width: 360px;
+            margin: 0 auto;
+            display: flex;
+        }
+        .upload-form-input-box {
+            display: flex;
+            flex-direction: column;
+        }
+    .upload-button-box {
+        margin: 20px;
+
+        display: flex;
+        justify-content: center;
+    }
+        .upload-button-box button{
+            background-color: #f1f3e9;
+            max-width: 560px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .upload-button-save {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px !important;
+            margin-left: 220px;
+        }
+        .upload-button-back {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px !important;
+        }
