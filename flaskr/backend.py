@@ -71,17 +71,54 @@ class Backend:
         return True
 
     def tree_map(self):
-        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)
+        tree_distributions = {
+            'Coast Redwood': (38.9822, -123.3781),
+            'Ginko': (39.7684, -86.1581),
+            'Japanese Magnolia': (35.8801, -79.0800),
+            'Juniper': (40.7968, -77.8619),
+            'Live Oak': (30.3894, -86.5229),
+            'Monterey Cypress': (36.6002, -121.8947),
+            'Palm': (26.7056, -80.0364),
+            'Palmetto': (26.7153, -81.0522),
+            'Water Oak': (30.4383, -84.2807),
+            'White Oak': (33.9860, -83.7185),
+        }
+                    
+        tree_names = ['Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper', 'Live Oak', 
+            'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak', 'White Oak']
+
+        colors = ['forestgreen', 'gold', 'blueviolet', 'blue', 'olive', 'darkcyan', 'darkorange', 
+            'purple', 'steelblue', 'tomato']
+
+        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)       
+
+        for i, tree in enumerate(tree_names):
+            description = "This is a {}".format(tree)
+            popup_html = '<b>{}</b><br>{}'.format(tree, description)
+            folium.Marker(location=tree_distributions[tree], 
+                        icon=folium.Icon(color='gray', icon='leaf'),
+                        popup=popup_html, 
+                        tooltip=tree).add_to(tree_map)
+
         legend_html = '''
-         <div style="position:fixed; 
-                     bottom: 50px; left: 50px; width: 100px; height: 90px; 
-                     border:2px light grey; z-index:9999; font-size:14px;
-                     background-color:rgba(255, 255, 255, 0.8);
-                    ">
-            &nbsp; Legend <br>
-         </div>
-         '''
+                    <div style="position:fixed; 
+                            bottom: 50px; left: 50px; width: 160px; height: 300px; 
+                            border:2px solid grey; z-index:9999; font-size:14px;
+                            background-color:rgba(255, 255, 255, 0.8);">
+                    <h4 style="text-align:center; margin-top:10px;">Legend:</h4>
+                    <table style="margin-left:auto; margin-right:auto;">
+                        &nbsp; Legend: <br>
+                '''
+        for i in range(len(tree_names)):
+            legend_html += f'<tr><td><i style="background-color:{colors[i]}; border-radius:50%; width:10px; height:10px; display:inline-block;"></i></td><td style="padding-left:8px;">{tree_names[i]}</td></tr>'
+
+        legend_html += '''
+                </table>
+            </div>
+            '''
+
         tree_map.get_root().html.add_child(folium.Element(legend_html))
+
         map_html = tree_map._repr_html_()
         
         return map_html
