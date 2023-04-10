@@ -37,10 +37,10 @@ function togglePage() {
     var toggleButton = document.getElementById('toggleButton');
     if (formContainer.style.display === 'block') {
         formContainer.style.display = 'none';
-        toggleButton.innerHTML = "Back";
+        toggleButton.innerHTML = "<img src='/static/images/back.png'>";
     } else {
         formContainer.style.display = 'block';
-        toggleButton.innerHTML = "Edit Page";
+        toggleButton.innerHTML = "<img src='/static/images/edit.png'>";
     }
 }
 function toggleSave() {
