@@ -69,13 +69,26 @@ def make_endpoints(app, backend):
         content_str = request.form['content']
         if not content_str:
             file = request.files.get('file')
-            backend.upload(file.stream.read(), name, file.filename)
+            content = file.stream.read()
+            filename = file.filename
         else:
-            content_bstr = content_str.encode()
-            content = bytearray(content_bstr)
-            backend.upload(content, name, name)
-        ## check for validation [Page Redirect R8.]
+            content = content_str.encode()
+            filename = name
+
+        if not backend.is_html(content):
+            return "<script>alert('Invalid HTML!');</script>" + render_template("upload.html", pages=pages)
+
+        backend.upload(content, name, filename)
         return redirect(url_for('page', filename=name))
+        # if not content_str:
+        #     file = request.files.get('file')
+        #     backend.upload(file.stream.read(), name, file.filename)
+        # else:
+        #     content_bstr = content_str.encode()
+        #     content = bytearray(content_bstr)
+        #     backend.upload(content, name, name)
+        # ## check for validation [Page Redirect R8.]
+        # return redirect(url_for('page', filename=name))
 
     @app.route("/tdm")
     def tree_distribution_map():

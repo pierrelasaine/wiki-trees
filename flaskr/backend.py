@@ -4,6 +4,7 @@ from bleach import Cleaner
 import hashlib
 import folium
 from folium import plugins
+import html.parser
 
 
 
@@ -122,6 +123,14 @@ class Backend:
         map_html = tree_map._repr_html_()
         
         return map_html
+
+    def is_html(self, content):
+        parser = html.parser.HTMLParser()
+        try:
+            parser.feed(content.decode())
+        except ValueError as e:
+            return False
+        return True
 
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")
