@@ -93,9 +93,12 @@ class Backend:
         tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)       
 
         for i, tree in enumerate(tree_names):
+            description = "This is a {}".format(tree)
+            popup_html = '<b>{}</b><br>{}'.format(tree, description)
             folium.Marker(location=tree_distributions[tree], 
                         icon=folium.Icon(color='gray', icon='leaf'),
-                        popup=tree).add_to(tree_map)
+                        popup=popup_html, 
+                        tooltip=tree).add_to(tree_map)
 
         legend_html = '''
                     <div style="position:fixed; 
