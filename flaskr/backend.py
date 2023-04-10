@@ -72,15 +72,30 @@ class Backend:
 
     def tree_map(self):
         tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)
+        
+        tree_names = ['Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper', 'Live Oak', 
+            'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak', 'White Oak']
+
+        colors = ['forestgreen', 'gold', 'blueviolet', 'blue', 'olive', 'darkcyan', 'darkorange', 
+            'purple', 'steelblue', 'tomato']
+
         legend_html = '''
-         <div style="position:fixed; 
-                     bottom: 50px; left: 50px; width: 100px; height: 90px; 
-                     border:2px light grey; z-index:9999; font-size:14px;
-                     background-color:rgba(255, 255, 255, 0.8);
-                    ">
-            &nbsp; Legend <br>
-         </div>
-         '''
+                    <div style="position:fixed; 
+                            bottom: 50px; left: 50px; width: 160px; height: 300px; 
+                            border:2px solid grey; z-index:9999; font-size:14px;
+                            background-color:rgba(255, 255, 255, 0.8);">
+                    <h4 style="text-align:center; margin-top:10px;">Legend:</h4>
+                    <table style="margin-left:auto; margin-right:auto;">
+                        &nbsp; Legend: <br>
+                '''
+        for i in range(len(tree_names)):
+            legend_html += f'<tr><td><i style="background-color:{colors[i]}; border-radius:50%; width:10px; height:10px; display:inline-block;"></i></td><td style="padding-left:8px;">{tree_names[i]}</td></tr>'
+
+        legend_html += '''
+                </table>
+            </div>
+            '''
+
         tree_map.get_root().html.add_child(folium.Element(legend_html))
         map_html = tree_map._repr_html_()
         
