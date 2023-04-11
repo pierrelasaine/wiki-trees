@@ -101,7 +101,7 @@ class Backend:
                         popup=popup_html, 
                         tooltip=tree,
                         ).add_to(tree_map)
-
+                        
         legend_html = '''
                     <div style="position:fixed; 
                             bottom: 50px; left: 50px; width: 160px; height: 300px; 

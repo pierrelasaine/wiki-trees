@@ -104,3 +104,17 @@ def test_file_upload(mock_upload, mock_get_wiki_page, client):
 
 def pytest_configure(config):
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
+
+# @patch("flaskr.backend.Backend.get_wiki_page")
+# @patch("flaskr.backend.Backend.upload")
+# def test_file_upload(mock_upload, mock_get_wiki_page, client):
+#     mock_upload.return_value = None
+#     mock_get_wiki_page.return_value = "Test HTML"
+#     with open("test.html", "rb") as f:
+#         resp = client.post("/upload",
+#                             data=dict(name="test_page",
+#                                       file=(f, "test.html")))
+#     assert resp.status_code == 302
+#     resp = client.get("/pages/test_page")
+#     assert resp.status_code == 200
+#     assert b"Test HTML" in resp.data
