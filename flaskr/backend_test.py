@@ -4,6 +4,7 @@ from google.cloud import storage
 from bleach import Cleaner
 import pytest
 
+
 # # # TODO(Project 1): Write tests for Backend methods.
 """
 def test_get_wiki_page(self, name):
@@ -114,3 +115,11 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
                                         'acronym': ['title'],
                                         'img': ['src', 'alt']
                                     })
+
+def test_is_valid_html(mock_backend):
+    valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
+    assert mock_backend.is_valid_html(valid_html)
+
+def test_invalid_type(mock_backend):
+    invalid_doctype = '<!DOCTYPE other><html><head></head><body></body></html>'
+    assert not mock_backend.is_valid_html(invalid_doctype)
