@@ -88,6 +88,7 @@ def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 
+
 """
 @patch("flaskr.backend.Backend.get_wiki_page")
 @patch("flaskr.backend.Backend.upload")
@@ -101,6 +102,7 @@ def test_file_upload(mock_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 """
+
 
 def pytest_configure(config):
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
