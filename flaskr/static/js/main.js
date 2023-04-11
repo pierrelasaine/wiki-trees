@@ -33,12 +33,6 @@ function toggleEditor() {
     }
 }
 
-
-
-function confirmUnsavedChanges() {
-    
-}
-
 function toggleForm() {
     var uploadBox = document.getElementById('upload-box-box')
     var formContainer = document.getElementById('form-container');
@@ -57,27 +51,6 @@ function toggleForm() {
     }
 }
 
-// Add onclick event to the button
-var backButton = document.getElementById('toggleButton')
-backButton.onclick = function() {
-    // Call confirmUnsavedChanges() function to check for unsaved changes
-    // Get the TinyMCE editor instance
-    var editor = tinymce.get('myTextarea');
-  
-    // Check if content has been changed
-    if (editor.isDirty()) {
-      // Display confirmation dialog
-      var confirmationMessage = 'You have unsaved changes. Do you want to save them?';
-      if (!confirm(confirmationMessage)) {
-        // User chose to cancel, so prevent default action
-        return false;
-      }
-    }
-  
-    // Proceed with default action (i.e., go back)
-    return true;
-};
-
 function toggleUpload() {
 var saveContainer = document.getElementById('save-button-container');
 if (saveContainer.style.display === 'none') {
@@ -86,15 +59,38 @@ if (saveContainer.style.display === 'none') {
     saveContainer.style.display = 'none';
 }
 }
+
+function verifyLeaveFunction(){
+    var editor = tinymce.get("myTextarea");
+
+    // Check if content has been changed
+    if (editor.isDirty()) {
+        // Display confirmation dialog
+        var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave?';
+        if (!confirm(confirmationMessage)) {
+        // User chose to cancel, so prevent default action
+        return false;
+        }
+
+        
+    }
+
+  // Proceed with default action (i.e., go back)
+  return window.history.back();
+}
+
 function togglePage() {
     var formContainer = document.getElementById('page-data-container');
     var toggleButton = document.getElementById('toggleButton');
     if (formContainer.style.display === 'block') {
         formContainer.style.display = 'none';
         toggleButton.innerHTML = "<img src='/static/images/back.png'>";
-    } else {
+        toggleButton.setAttribute("onclick", "verifyLeaveFunction()");
+    } 
+    else {
         formContainer.style.display = 'block';
         toggleButton.innerHTML = "<img src='/static/images/edit.png'>";
+        toggleButton.removeAttribute("onclick");
     }
 }
 function toggleSave() {
