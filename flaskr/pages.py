@@ -18,12 +18,13 @@ from flaskr.backend import Backend
 
 from google.cloud import storage
 
+
 #Solution code: backend is an endpoint
 def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
-    def home():      
+    def home():
         return render_template("main.html")
 
     @app.route("/pages", methods=["GET", "POST"])
@@ -33,24 +34,24 @@ def make_endpoints(app, backend):
 
             results = backend.search(search_input)
             return render_template("search_results.html",
-                            search_input=search_input,
-                            results=results)
+                                   search_input=search_input,
+                                   results=results)
         else:
             pages = backend.get_all_page_names()
-            return render_template("pages.html",pages=pages)
+            return render_template("pages.html", pages=pages)
 
     @app.route("/pages/<filename>")
     def page(filename):
         page_content = backend.get_wiki_page(filename)
-        return render_template("page_template.html", page_content=page_content, filename=filename)
+        return render_template("page_template.html",
+                               page_content=page_content,
+                               filename=filename)
 
     @app.route("/about")
     def about():
-        authors = [
-            ("Pierre Johnson", "bulbasaur.jpeg"),
-            ("Ericka James", "charmander.jpeg"),
-            ("Jalen Richburg", "squirtle.jpeg") 
-        ]
+        authors = [("Pierre Johnson", "bulbasaur.jpeg"),
+                   ("Ericka James", "charmander.jpeg"),
+                   ("Jalen Richburg", "squirtle.jpeg")]
         return render_template("about.html", authors=authors)
 
     @app.route("/images/<filename>")
@@ -85,5 +86,3 @@ def make_endpoints(app, backend):
         tag = request.form['tag']
         tag_handler.add_tag_to_csv(filename, tag)
         return redirect(url_for("page", filename=filename))
-
-    

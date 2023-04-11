@@ -1,6 +1,7 @@
-from flaskr.user import User  
+from flaskr.user import User
 from flask import render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user
+
 
 # Solution: Moved from pages.py to use login_manager endpoint separately
 def make_endpoints(app, login_manager, backend):
@@ -9,7 +10,7 @@ def make_endpoints(app, login_manager, backend):
     def load_user(user_id):
         return User(user_id)
 
-    @app.route('/signup', methods=["GET","POST"])
+    @app.route('/signup', methods=["GET", "POST"])
     def new_signup():
         if request.method == "POST":
             username = request.form["username"]
@@ -19,11 +20,13 @@ def make_endpoints(app, login_manager, backend):
                 login_user(User(username))
                 return redirect('/')
             else:
-                return render_template("login.html", error_message="Username already exists!", active_tab='SignUp')
+                return render_template("login.html",
+                                       error_message="Username already exists!",
+                                       active_tab='SignUp')
         else:
             return render_template("login.html", active_tab='SignUp')
 
-    @app.route('/login', methods=["GET","POST"])
+    @app.route('/login', methods=["GET", "POST"])
     def user_login():
         if request.method == "POST":
             username = request.form["username"]
@@ -33,10 +36,12 @@ def make_endpoints(app, login_manager, backend):
                 login_user(User(username))
                 return redirect('/')
             else:
-                return render_template("login.html", error_message="Incorrect username or password!") 
+                return render_template(
+                    "login.html",
+                    error_message="Incorrect username or password!")
         else:
             return render_template("login.html")
-    
+
     @app.route('/logout')
     @login_required
     def logout():

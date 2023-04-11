@@ -6,6 +6,7 @@ import pytest
 import csv
 import io
 
+
 # # # TODO(Project 1): Write tests for Backend methods.
 @pytest.fixture
 def name():
@@ -47,7 +48,10 @@ def mock_client(mock_bucket):
 
 @pytest.fixture
 def mock_tag_handler(mock_client, mock_dict_reader, mock_dict_writer):
-    mock = Backend.TagHandler("mock.csv", storage_client=mock_client, dict_reader=mock_dict_reader, dict_writer=mock_dict_writer)
+    mock = Backend.TagHandler("mock.csv",
+                              storage_client=mock_client,
+                              dict_reader=mock_dict_reader,
+                              dict_writer=mock_dict_writer)
     return mock
 
 
@@ -63,55 +67,105 @@ def test_get_wiki_page(mock_client, mock_blob, mock_bucket, name):
 
 
 def test_get_filenames_by_tag_no_match(mock_tag_handler):
-    mock_tag_handler.dict_reader.return_value = iter([{"filename": "file1", "tags": "tag1, tag2"},
-                                                                                            {"filename": "file2", "tags": "tag1, tag3"}])
+    mock_tag_handler.dict_reader.return_value = iter([{
+        "filename": "file1",
+        "tags": "tag1, tag2"
+    }, {
+        "filename": "file2",
+        "tags": "tag1, tag3"
+    }])
     assert mock_tag_handler.get_filenames_by_tag("mock") == []
 
 
 def test_get_filenames_by_tag_match(mock_tag_handler):
-    mock_tag_handler.dict_reader.return_value = iter([{"filename": "file1", "tags": "tag1, tag2"},
-                                                      {"filename": "file2", "tags": "tag1, tag3"}])
+    mock_tag_handler.dict_reader.return_value = iter([{
+        "filename": "file1",
+        "tags": "tag1, tag2"
+    }, {
+        "filename": "file2",
+        "tags": "tag1, tag3"
+    }])
     assert mock_tag_handler.get_filenames_by_tag("tag1") == ["file1", "file2"]
 
+
 def test_add_tag_to_csv_invalid_filename(mock_tag_handler):
-    mock_tag_handler.dict_reader.return_value = [{"filename": "file1", "tags": "tag1, tag2"}]
+    mock_tag_handler.dict_reader.return_value = [{
+        "filename": "file1",
+        "tags": "tag1, tag2"
+    }]
     mock_tag_handler.add_tag_to_csv("file2", "tag1")
 
     mock_tag_handler.dict_writer.return_value.writeheader.assert_called_once()
-    mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with([{"filename": "file1", "tags": "tag1, tag2"}])
+    mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with(
+        [{
+            "filename": "file1",
+            "tags": "tag1, tag2"
+        }])
 
 
 def test_add_tag_to_csv_no_tags(mock_tag_handler):
-    mock_tag_handler.dict_reader.return_value = [{"filename": "file1", "tags": ""}]
+    mock_tag_handler.dict_reader.return_value = [{
+        "filename": "file1",
+        "tags": ""
+    }]
     mock_tag_handler.add_tag_to_csv("file1", "tag1")
 
     mock_tag_handler.dict_writer.return_value.writeheader.assert_called_once()
-    mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with([{"filename": "file1", "tags": "tag1"}])
+    mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with(
+        [{
+            "filename": "file1",
+            "tags": "tag1"
+        }])
 
 
 def test_add_tag_to_csv(mock_tag_handler):
-    mock_tag_handler.dict_reader.return_value = [{"filename": "file1", "tags": "tag1"}]
+    mock_tag_handler.dict_reader.return_value = [{
+        "filename": "file1",
+        "tags": "tag1"
+    }]
     mock_tag_handler.add_tag_to_csv("file1", "tag2")
 
     mock_tag_handler.dict_writer.return_value.writeheader.assert_called_once()
     try:
-        mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with([{"filename": "file1", "tags": "tag1, tag2"}])
+        mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with(
+            [{
+                "filename": "file1",
+                "tags": "tag1, tag2"
+            }])
     except AssertionError:
-        mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with([{"filename": "file1", "tags": "tag2, tag1"}])
+        mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with(
+            [{
+                "filename": "file1",
+                "tags": "tag2, tag1"
+            }])
 
 
 def test_add_file_to_csv_existing_file(mock_tag_handler):
-    mock_tag_handler.dict_reader.return_value = [{"filename": "file1", "tags": "tag1"}]
+    mock_tag_handler.dict_reader.return_value = [{
+        "filename": "file1",
+        "tags": "tag1"
+    }]
     mock_tag_handler.add_file_to_csv("file1")
 
     mock_tag_handler.dict_writer.return_value.writerow.assert_not_called()
 
 
 def test_add_file_to_csv(mock_tag_handler):
-    mock_tag_handler.dict_reader.return_value = [{"filename": "file1", "tags": "tag1"}]
+    mock_tag_handler.dict_reader.return_value = [{
+        "filename": "file1",
+        "tags": "tag1"
+    }]
     mock_tag_handler.add_file_to_csv("file2")
 
-    mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with([{"filename": "file1", "tags": "tag1"}, {"filename": "file2", "tags": "file2"}])
+    mock_tag_handler.dict_writer.return_value.writerows.assert_called_once_with(
+        [{
+            "filename": "file1",
+            "tags": "tag1"
+        }, {
+            "filename": "file2",
+            "tags": "file2"
+        }])
+
 
 """
 def test_get_all_page_names():
