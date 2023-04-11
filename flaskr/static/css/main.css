@@ -353,63 +353,111 @@ button:hover {
         display: flex;
         flex-direction: column;
     }
-        .upload-form-box input[type=text]{
-            font-size: 40px;
-            font-weight: 500;
-        }
-        .upload-form-box input[type=file]{
-            margin-top: 12px !important;
-        }
-        .upload-form-box label{
-            text-align: left;
-            font-size: 12px;
-            color: #43483e;
-            padding-left: 5px;
-        }
-        .upload-form-box input{
-            background-color: #e3e3dc;
-            margin-top: 0px !important;
-            border: none;
-            border-top-right-radius: 5px;
-            border-top-left-radius: 5px;
-            border-bottom: 1px solid #43483e;
-            max-width: 360px;
-            align-self: center;
-        }
-        .upload-form-box button{
-            margin-top: 20px;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        .upload-form-input-label-box {
-            width: 360px;
-            margin: 0 auto;
-            display: flex;
-        }
-        .upload-form-input-box {
-            display: flex;
-            flex-direction: column;
-        }
+    .upload-form-box input[type=text]{
+        font-size: 40px;
+        font-weight: 500;
+    }
+    .upload-form-box input[type=file]{
+        margin-top: 12px !important;
+    }
+    .upload-form-box label{
+        text-align: left;
+        font-size: 12px;
+        color: #43483e;
+        padding-left: 5px;
+    }
+    .upload-form-box input{
+        background-color: #e3e3dc;
+        margin-top: 0px !important;
+        border: none;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        border-bottom: 1px solid #43483e;
+        max-width: 360px;
+        align-self: center;
+    }
+    .upload-form-box button{
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .upload-form-input-label-box {
+        width: 360px;
+        margin: 0 auto;
+        display: flex;
+    }
+    .upload-form-input-box {
+        display: flex;
+        flex-direction: column;
+    }
     .upload-button-box {
         margin: 20px;
 
         display: flex;
         justify-content: center;
     }
-        .upload-button-box button{
-            background-color: #f1f3e9;
-            max-width: 560px;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        .upload-button-save {
-            width: 70px;
-            height: 70px;
-            border-radius: 20px !important;
-            margin-left: 220px;
-        }
-        .upload-button-back {
-            width: 70px;
-            height: 70px;
-            border-radius: 20px !important;
-        }
+    .upload-button-box button{
+        background-color: #f1f3e9;
+        max-width: 560px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .upload-button-save {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px !important;
+        margin-left: 220px;
+    }
+    .upload-button-back {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px !important;
+    }
+    #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 120px;
+        height: 120px;
+        margin: -76px 0 0 -76px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #000000;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+    
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Add animation to "page content" */
+    .animate-bottom {
+        position: relative;
+        -webkit-animation-name: animatebottom;
+        -webkit-animation-duration: 1s;
+        animation-name: animatebottom;
+        animation-duration: 0.5s
+    }
+
+    @-webkit-keyframes animatebottom {
+        from { bottom:-100px; opacity:0 } 
+        to { bottom:0px; opacity:1 }
+    }
+
+    @keyframes animatebottom { 
+        from{ bottom:-100px; opacity:0 } 
+        to{ bottom:0; opacity:1 }
+    }
+
+    #myDiv {
+        display: none;
+        text-align: center;
+    }        
