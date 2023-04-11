@@ -7,28 +7,77 @@ function toggleEditor() {
             selector: '#myTextarea',
             plugins: 'anchor autolink charmap codesample image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents autocorrect',
             toolbar: 'export | undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            setup: function (editor) {
+                // Save initial content
+                var initialContent = editor.getContent();
+            
+                // Add event listener for beforeunload event
+                window.addEventListener('beforeunload', handler, false);
+                window.addEventListener('click', handler, false);
+
+                function handler(event) {
+                  // Check if content has been changed
+                  if (initialContent !== editor.getContent()) {
+                    // Display confirmation dialog
+                    var confirmationMessage = 'You have unsaved changes. Do you want to save them?';
+                    (event || window.event).returnValue = confirmationMessage;
+                    return confirmationMessage;
+                  }
+                };
+
+              }
         });
     } else {
         editorContainer.style.display = 'none';
         tinymce.remove();
     }
 }
+
+
+
+function confirmUnsavedChanges() {
+    
+}
+
 function toggleForm() {
-var uploadBox = document.getElementById('upload-box-box')
-var formContainer = document.getElementById('form-container');
-var toggleButton = document.getElementById('toggleButton');
-if (formContainer.style.display === 'block') {
-    formContainer.style.display = 'none';
-    uploadBox.style.marginTop = '40px';
-    toggleButton.innerHTML = "<img src='/static/images/back.png'>";
-    toggleButton.classList.add('upload-button-back')
-} else {
-    formContainer.style.display = 'block';
-    uploadBox.style.marginTop = '200px'
-    toggleButton.innerHTML = "Create New Page";
-    toggleButton.classList.remove('upload-button-back')
+    var uploadBox = document.getElementById('upload-box-box')
+    var formContainer = document.getElementById('form-container');
+    var toggleButton = document.getElementById('toggleButton');
+    if (formContainer.style.display === 'block') {
+        formContainer.style.display = 'none';
+        uploadBox.style.marginTop = '40px';
+        toggleButton.innerHTML = "<img src='/static/images/back.png'>";
+        toggleButton.classList.add('upload-button-back')
+    } 
+    else {
+        formContainer.style.display = 'block';
+        uploadBox.style.marginTop = '200px'
+        toggleButton.innerHTML = "Create New Page";
+        toggleButton.classList.remove('upload-button-back')
+    }
 }
-}
+
+// Add onclick event to the button
+var backButton = document.getElementById('toggleButton')
+backButton.onclick = function() {
+    // Call confirmUnsavedChanges() function to check for unsaved changes
+    // Get the TinyMCE editor instance
+    var editor = tinymce.get('myTextarea');
+  
+    // Check if content has been changed
+    if (editor.isDirty()) {
+      // Display confirmation dialog
+      var confirmationMessage = 'You have unsaved changes. Do you want to save them?';
+      if (!confirm(confirmationMessage)) {
+        // User chose to cancel, so prevent default action
+        return false;
+      }
+    }
+  
+    // Proceed with default action (i.e., go back)
+    return true;
+};
+
 function toggleUpload() {
 var saveContainer = document.getElementById('save-button-container');
 if (saveContainer.style.display === 'none') {
@@ -104,3 +153,12 @@ window.addEventListener('resize', function() {
         toggleWikiPageMargin();
     }
   });
+
+window.addEventListener("load", () => {
+    const loader = document.querySelector(".loader")
+    loader.classList.add("loader-hidden")
+
+    loader.addEventListener("transitioned", () => {
+        document.body.removeChild("loader");
+    })
+})
