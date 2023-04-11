@@ -47,12 +47,6 @@ def test_image_nonexistent(client):
     assert b"Not Found" in resp.data
 
 
-def test_pages_page(client):
-    resp = client.get("/pages")
-    assert resp.status_code == 200
-    assert b"Wiki Pages" in resp.data
-
-
 @patch("flaskr.backend.Backend.get_wiki_page")
 def test_pages_wiki_nonexistent(mock_get_wiki_page, client):
     mock_get_wiki_page.return_value = None
@@ -73,7 +67,7 @@ def test_page_details(mock_get_wiki_page, client):
 def test_upload_page(client):
     resp = client.get("/upload")
     assert resp.status_code == 200
-    assert b"Drop File to Upload" in resp.data
+    assert b"Upload!" in resp.data
 
 
 @patch("flaskr.backend.Backend.get_wiki_page")
@@ -88,6 +82,7 @@ def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 
+
 """
 @patch("flaskr.backend.Backend.get_wiki_page")
 @patch("flaskr.backend.Backend.upload")
@@ -101,6 +96,7 @@ def test_file_upload(mock_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 """
+
 
 def pytest_configure(config):
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)

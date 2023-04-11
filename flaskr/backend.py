@@ -6,7 +6,6 @@ import folium
 from folium import plugins
 
 
-
 class Backend:
 
     def __init__(self, storage_client=storage.Client()):
@@ -83,22 +82,27 @@ class Backend:
             'Water Oak': (30.4383, -84.2807),
             'White Oak': (33.9860, -83.7185),
         }
-                    
-        tree_names = ['Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper', 'Live Oak', 
-            'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak', 'White Oak']
 
-        colors = ['forestgreen', 'gold', 'blueviolet', 'blue', 'olive', 'darkcyan', 'darkorange', 
-            'purple', 'steelblue', 'tomato']
+        tree_names = [
+            'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper',
+            'Live Oak', 'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak',
+            'White Oak'
+        ]
 
-        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)       
+        colors = [
+            'forestgreen', 'gold', 'blueviolet', 'blue', 'olive', 'darkcyan',
+            'darkorange', 'purple', 'steelblue', 'tomato'
+        ]
+
+        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)
 
         for i, tree in enumerate(tree_names):
             description = "This is a {}".format(tree)
             popup_html = '<b>{}</b><br>{}'.format(tree, description)
-            folium.Marker(location=tree_distributions[tree], 
-                        icon=folium.Icon(color='gray', icon='leaf'),
-                        popup=popup_html, 
-                        tooltip=tree).add_to(tree_map)
+            folium.Marker(location=tree_distributions[tree],
+                          icon=folium.Icon(color='gray', icon='leaf'),
+                          popup=popup_html,
+                          tooltip=tree).add_to(tree_map)
 
         legend_html = '''
                     <div style="position:fixed; 
@@ -120,7 +124,7 @@ class Backend:
         tree_map.get_root().html.add_child(folium.Element(legend_html))
 
         map_html = tree_map._repr_html_()
-        
+
         return map_html
 
     def sign_up(self, username, password):
