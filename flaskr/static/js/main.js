@@ -72,7 +72,6 @@ function verifyLeaveFunction(){
         return false;
         }
 
-        
     }
 
   // Proceed with default action (i.e., go back)
