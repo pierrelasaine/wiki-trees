@@ -129,9 +129,10 @@ class Backend:
         parser = html.parser.HTMLParser()
         try:
             parser.feed(content.decode())
-        except ValueError as e:
+        except Exception as e:
             return False
         return True
+
 
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")

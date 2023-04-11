@@ -3,6 +3,7 @@ from flaskr.backend import Backend
 from google.cloud import storage
 from bleach import Cleaner
 import pytest
+import html.parser
 
 
 # # # TODO(Project 1): Write tests for Backend methods.
@@ -117,10 +118,16 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
                                     })
 
 
-def test_is_valid_html(mock_backend):
-    valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
-    assert mock_backend.is_html(valid_html)
+@pytest.fixture
+def parser():
+    return html.parser.HTMLParser()
 
-def test_invalid_type(mock_backend):
-    invalid_doctype = '<!DOCTYPE other><html><head></head><body></body></html>'
-    assert not mock_backend.is_html(invalid_doctype)
+def test_is_html_valid(mock_backend, parser):
+    content = b"<html><body><h1>Hello World</h1></body></html>"
+    assert parser is not None
+    assert mock_backend.is_html(content)
+
+def test_is_html_invalid(mock_backend):
+    content = '<!DOCTYPE other><html><head></head><body></body></html>'
+    assert not mock_backend.is_html(content)
+

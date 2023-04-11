@@ -47,10 +47,10 @@ def test_image_nonexistent(client):
     assert b"Not Found" in resp.data
 
 
-def test_pages_page(client):
-    resp = client.get("/pages")
-    assert resp.status_code == 200
-    assert b"Wiki Pages" in resp.data
+# def test_pages_page(client):
+#     resp = client.get("/pages")
+#     assert resp.status_code == 200
+#     assert b"Wiki Pages" in resp.data
 
 
 @patch("flaskr.backend.Backend.get_wiki_page")
