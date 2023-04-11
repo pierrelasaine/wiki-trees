@@ -118,7 +118,6 @@ function toggleDrawer() {
 document.addEventListener('DOMContentLoaded', function() {
     var drawerOpen = sessionStorage.getItem('drawerOpen');
     var pageDrawer = document.getElementById('toggleDrawer');
-    var wikiPage = document.querySelector('.wiki-page');
     if (drawerOpen === 'true') {
         pageDrawer.style.display = 'block';
     } else {
@@ -140,6 +139,13 @@ document.addEventListener('DOMContentLoaded', function() {
         pageDrawer.style.display = 'none';
     }
 });
+document.addEventListener('DOMContentLoaded', function() {
+    var uniqueElement = document.querySelector('.unique-element');
+    if (uniqueElement && uniqueElement.hasAttribute('data-default-drawer-open')) {
+        var pageDrawer = document.getElementById('toggleDrawer');
+        pageDrawer.style.display = 'block';
+    }
+});
 window.addEventListener('resize', function() {
     var drawerOpen = sessionStorage.getItem('drawerOpen');
     var uniqueElement = document.querySelector('.unique-element');
@@ -156,4 +162,4 @@ window.addEventListener("load", () => {
     loader.addEventListener("transitioned", () => {
         document.body.removeChild("loader");
     })
-})
+});
