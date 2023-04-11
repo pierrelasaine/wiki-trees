@@ -1,8 +1,10 @@
 from flaskr import create_app
-from unittest.mock import patch, Mock
+from flask import url_for
+from flask import g
+from unittest.mock import patch, MagicMock
 from google.cloud.storage.blob import Blob
 from flaskr.backend import Backend
-from flaskr.pages import *
+from flaskr.pages import make_endpoints
 import pytest
 import os
 import warnings
@@ -19,6 +21,13 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def mock_tag_handler():
+    mock = MagicMock(spec=Backend.TagHandler)
+    mock.add_tag_to_csv.return_value = MagicMock()
+    return mock
 
 
 def test_home_page(client):
@@ -115,6 +124,17 @@ def test_user_login_incorrect_password(client):
 def test_logout(client):
     response = client.get('/logout')
     assert response.status_code == 302
+
+
+def test_add_tag(app, mock_tag_handler, client):
+    with app.test_request_context():
+        url = url_for("add_tag", filename="mock")
+        g.tag_handler = mock_tag_handler
+
+        resp = client.post(url, data=dict(tag="mock"), follow_redirects=True)
+
+    mock_tag_handler.add_tag_to_csv.assert_called_with("mock", "mock")
+    assert resp.status_code == 200
 
 
 def pytest_configure(config):

@@ -2,5 +2,11 @@
 
 <!-- Fix for page_content: need to let the template know that the tags are safe. -->
 {% block content %}
+{% if current_user.name %}
+<form action="/tags/{{ filename }}/" method="POST">
+    <input type="text" placeholder="Input Tag Here" name="tag" required>
+    <button type="submit">Add Tag</button>
+</form>
+{% endif %}
 {{ page_content|safe }}
 {% endblock %}

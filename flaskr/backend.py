@@ -1,5 +1,7 @@
 from google.cloud import storage
 import hashlib
+import csv
+import io
 from difflib import get_close_matches
 
 class Backend:
@@ -24,7 +26,7 @@ class Backend:
         self.pages = []
         # Solution code: uses page bucket and doesn't list image files
         for blob in self.page_bucket.list_blobs():
-            if not blob.name.endswith(("png", "jpg", "jpeg")):
+            if not blob.name.endswith(("png", "jpg", "jpeg", "csv")):
                 self.pages.append(blob.name)
         return self.pages
 
@@ -34,7 +36,7 @@ class Backend:
             bucket = self.image_bucket
         blob = bucket.get_blob(name)
         if blob is not None:
-            raise ValueError(f"{name} already exists.")
+            blob.delete
         blob = bucket.blob(name)
         with blob.open('wb') as f:
             f.write(file)
@@ -82,7 +84,75 @@ class Backend:
     # Uses the difflib Python library(specifically the “get_close_matches” function) 
     # to return page results that might be spelled incorrectly.
     def search(self, search_input):
-        return get_close_matches(search_input, self.get_all_page_names())
+        tag_handler = Backend.TagHandler()
+        return set(get_close_matches(search_input, self.get_all_page_names()) + tag_handler.get_filenames_by_tag(search_input))
+    
+    class TagHandler:
+        def __init__(self, csv_filename="tags.csv", storage_client=storage.Client(), dict_reader=csv.DictReader, dict_writer=csv.DictWriter):
+            self.csv_filename = csv_filename
+            self.storage_client = storage_client
+            self.bucket = self.storage_client.bucket("wiki_content_p1")
+            self.blob = self.bucket.blob(self.csv_filename)
+            self.dict_reader = dict_reader
+            self.dict_writer = dict_writer
+
+        def open_file(self):
+            return io.StringIO(self.blob.download_as_text())
+
+        def get_filenames_by_tag(self, tag):
+            with self.open_file() as csvfile:
+                reader = self.dict_reader(csvfile)
+                filenames = []
+                for row in reader:
+                    if tag in row["tags"]:
+                        filenames.append(row["filename"])
+                return filenames
+    
+        def add_tag_to_csv(self, filename, tag):
+            with self.open_file() as csvfile:
+                reader = self.dict_reader(csvfile)
+                rows = list(reader)
+                for row in rows:
+                    if row["filename"] == filename:
+                        if row["tags"]:
+                            existing_tags = row["tags"].split(", ")
+                            existing_tags.append(tag)
+                            updated_tags = list(set(existing_tags))
+                            row["tags"] = ", ".join(updated_tags)
+                            break
+                        else:
+                            row["tags"] = f"{tag}"
+                            break
+
+            updated_csv = io.StringIO()
+            fieldnames = ["filename", "tags"]
+            writer = self.dict_writer(updated_csv, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+
+            updated_csv.seek(0)
+            self.blob.upload_from_file(updated_csv, content_type="text/csv")
+            return
+
+        def add_file_to_csv(self, filename):
+            with self.open_file() as csvfile:
+                reader = self.dict_reader(csvfile)
+                rows = list(reader)
+                for row in reader:
+                    if row["filename"] == filename:
+                        return
+
+            rows.append({"filename": filename, "tags": filename})
+
+            updated_csv = io.StringIO()
+            fieldnames = ["filename", "tags"]
+            writer = self.dict_writer(updated_csv, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+
+            updated_csv.seek(0)
+            self.blob.upload_from_file(updated_csv, content_type="text/csv")
+            return
 
 # backend1 = Backend("wiki_content_p1")
 # backend2 = Backend("developer_images")
