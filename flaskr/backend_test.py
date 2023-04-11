@@ -116,6 +116,7 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
                                         'img': ['src', 'alt']
                                     })
 
+
 def test_is_valid_html(mock_backend):
     valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
     assert mock_backend.is_html(valid_html)
