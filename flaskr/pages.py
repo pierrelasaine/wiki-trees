@@ -17,12 +17,13 @@ from flask import render_template, abort, session, request, redirect, url_for, m
 
 from google.cloud import storage
 
+
 #Solution code: backend is an endpoint
 def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
-    def home():      
+    def home():
         return render_template("main.html")
 
     @app.route("/pages")
@@ -37,11 +38,9 @@ def make_endpoints(app, backend):
 
     @app.route("/about")
     def about():
-        authors = [
-            ("Pierre Johnson", "bulbasaur.jpeg"),
-            ("Ericka James", "charmander.jpeg"),
-            ("Jalen Richburg", "squirtle.jpeg") 
-        ]
+        authors = [("Pierre Johnson", "bulbasaur.jpeg"),
+                   ("Ericka James", "charmander.jpeg"),
+                   ("Jalen Richburg", "squirtle.jpeg")]
         return render_template("about.html", authors=authors)
 
     @app.route("/images/<filename>")
@@ -60,5 +59,5 @@ def make_endpoints(app, backend):
             name = request.form['name']
             backend.upload(file.stream.read(), name, file.filename)
             return render_template("main.html")
-        else:    
+        else:
             return render_template("upload.html")
