@@ -1,21 +1,23 @@
 from google.cloud import storage
 import hashlib
 
+
 class Backend:
+
     def __init__(self, storage_client=storage.Client()):
         # Solution Storage: uses storage client to make buckets that are
         # essentially hidden from the frontend
         self.page_bucket = storage_client.bucket("wiki_content_p1")
         self.login_bucket = storage_client.bucket("users_passwords_p1")
         self.image_bucket = storage_client.bucket("developer_images")
-        
-    def get_wiki_page(self, name): #wiki_content_p1
+
+    def get_wiki_page(self, name):  #wiki_content_p1
         blob_name = name
         # Solution code: uses page_bucket and checks for None value
         blob = self.page_bucket.get_blob(blob_name)
         if blob is None:
             return "No page exists with this name"
-        
+
         with blob.open("r") as f:
             return f.read()
 
@@ -72,12 +74,11 @@ class Backend:
         blob = self.image_bucket.get_blob(image_name)
         if blob is None:
             return bytearray()
-        
+
         with blob.open("rb") as image:
             f = image.read()
             b = bytearray(f)
             return b
-
 
 
 # backend1 = Backend("wiki_content_p1")
