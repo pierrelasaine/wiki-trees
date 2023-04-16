@@ -13,10 +13,8 @@ The module also defines two additional routes for user authentication:
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
 
-from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file, g
-from flaskr.backend import Backend
-
-from google.cloud import storage
+from flask import render_template, request, redirect, url_for, make_response, g
+from flaskr.tag_handler import TagHandler
 
 
 #Solution code: backend is an endpoint
@@ -81,7 +79,7 @@ def make_endpoints(app, backend):
 
     @app.route("/tags/<filename>/", methods=["POST"])
     def add_tag(filename):
-        tag_handler = g.get("tag_handler", Backend.TagHandler())
+        tag_handler = g.get("tag_handler", TagHandler())
         filename = filename.replace("%20", " ")
         tag = request.form['tag']
         tag_handler.add_tag_to_csv(filename, tag)
