@@ -65,29 +65,90 @@ def mock_backend(storage_client):
     """Returns a Backend instance configured to use the provided storage_client."""
     return Backend(storage_client)
 
-# Test Functions
 
-@patch("flaskr.backend.storage.Client")
-def test_get_wiki_page(mock_client, mock_blob, mock_bucket, name):
-    mock_client.return_value.bucket.return_value = mock_bucket
-    mock_bucket.blob.return_value = mock_blob
+# Test functions
+def test_get_wiki_page(mock_backend):
+    """Tests if the get_wiki_page method returns the correct content."""
+    assert mock_backend.get_wiki_page(name) == "blob data"
 
-    mock_blob.download_as_text.return_value  = "blob data"
 
-    backend = Backend(name)
-    assert backend.get_wiki_page(name) == "blob data"
+def test_cant_get_wiki_page(mock_backend, bad_name):
+    """Tests if the get_wiki_page method returns None for an invalid name."""
+    assert mock_backend.get_wiki_page(bad_name) == None
 
-def test_get_all_page_names():
+
+def test_valid_html(mock_backend):
+    """Tests if the is_valid_html method returns True for valid HTML."""
+    valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
+
+    assert mock_backend.is_valid_html(valid_html)
+
+
+def test_invalid_doctype(mock_backend):
+    """Tests if the is_valid_html method returns False for invalid doctype."""
+    invalid_doctype = '<!DOCTYPE other><html><head></head><body></body></html>'
+
+    assert not mock_backend.is_valid_html(invalid_doctype)
+
+
+def test_unsanitized_html(mock_backend):
+    """Tests if the is_valid_html method returns False for unsanitized HTML."""
+    unsanitized_html = '<div><p>Hello, world!</p><a href="javascript:alert(1);">Click me</a></div>'
+
+    assert not mock_backend.is_valid_html(unsanitized_html)
+
+
+def test_missing_closing_tag(mock_backend):
+    """Tests if the is_valid_html method returns False for missing closing tag."""
+    missing_closing_tag = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</div>'
+
+    assert not mock_backend.is_valid_html(missing_closing_tag)
+
+
+@patch("flaskr.backend.Cleaner")
+def test_cleaner_mock(mock_cleaner, mock_backend):
+    """
+    Tests if the Cleaner class is called with the correct arguments when using the
+    is_valid_html method.
+    """
+    mock_cleaner.return_value = MagicMock(spec=Cleaner)
+    valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
+
+    mock_backend.is_valid_html(valid_html)
+
+    mock_cleaner.assert_called_with(tags=[
+        'a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title', 'div',
+        'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'
+    ],
+                                    attributes={
+                                        'a': ['href', 'title'],
+                                        'abbr': ['title'],
+                                        'acronym': ['title'],
+                                        'img': ['src', 'alt']
+                                    })
+
+
+"""
+def test_get_wiki_page(self, name):
     pass
 
-def test_upload():
+
+def test_get_all_page_names(self):
     pass
 
-def test_sign_up():
+
+def test_upload(self, username, password, file):
     pass
 
-def test_sign_in():
+
+def test_sign_up(self, username, password):
     pass
 
-def test_get_image():
+
+def test_sign_in(self, username, password):
     pass
+
+
+# def test_get_image(self, image_name):
+#     pass
+"""

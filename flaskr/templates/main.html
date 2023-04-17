@@ -1,35 +1,102 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <head>
-            <title>{% block title %}Home{% endblock %} - WikiTrees</title>
-        </head>
-    </head>
+        <title>{% block title %}Home{% endblock %} - WikiTrees!</title>
+        <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+        <script src="https://cdn.tiny.cloud/1/xlogwgferszklvq97hyyn4nlvvzpo56m4z02z1tcogkqb4qx/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="/src/main.js"></script>
+        <script src="/src/tree_map.js"></script>
+        <link rel="stylesheet" href="/static/css/main.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"/>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <body>
-        <nav>
-            <div class="tabs">
-                <a href="/"><button class="tablinks" onclick="openTab('Home')">Home</button></a>
-                <a href="/pages"><button class="tablinks" onclick="openTab('Pages')">Pages</button></a>
-                <a href="/about"><button class="tablinks" onclick="openTab('About')">About</button></a>
-                {% if current_user.name %}
-                <a href="/upload"><button class="tablinks" onclick="openTab('Upload')">Upload</button></a>
-                <a>  <span class="username">| {{ current_user.name }} |</span>  <a>
-                <a href="/logout"><button class="tablinks" onclick="openTab('Logout')">Logout</button></a>
-                {% else %}
-                <a href="/login"><button class="tablinks" onclick="openTab('Login')" active_tab='Login'>Login</button></a>
-                <a href="/signup"><button class="tablinks" onclick="openTab('SignUp')" active_tab='SignUp'>Sign Up</button></a>
-                {% endif %}
+    </head>
+    <body onload="myFunction()" style="margin:0;">
+        <div class="columns">
+            <div class="column is-narrow nav-rail is-paddingless" style="position: fixed;">
+                <aside class="menu">
+                    <ul class="menu-list has-text-centered">
+                        {% if current_user.name %}
+                        <div class="pad-fix">
+                            <li class="first-item mb-1"><img src="/static/images/profile.PNG" width="35pd"></li>
+                            <li class="mb-6"><span class="username">{{ current_user.name }}</span></li>
+                        </div>
+                        <div class="pad-fix">
+                            <li><a href="/"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">Home</li>
+                        </div>
+                        {% else %}
+                        <div class="pad-fix">
+                            <li class="first-item"><a href="/"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">Home</li>
+                        </div>
+                        {% endif %}
+                        <div class="pad-fix">
+                            <li><a href="/about"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">About</li>
+                        </div>
+                        <div class="pad-fix">
+                            <li><a href="#" onclick="toggleDrawer(); toggleWikiPageMargin()"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">Pages</li>
+                        </div>
+                        <div class="pad-fix">
+                            <li><a href="/tdm"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">Map</li>
+                        </div>
+                        {% if current_user.name %}
+                        <div class="pad-fix">
+                            <li><a href="/upload"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">Upload</li>
+                        </div>
+                        <div class="pad-fix">
+                            <li><a href="/logout"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">Log Out</li>
+                        </div>
+                        {% else %}
+                        <div class="pad-fix">
+                            <li><a href="/login"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">Log In</li>
+                        </div>
+                        <div class="pad-fix">
+                            <li><a href="/signup"><img src="/static/images/bullet.PNG" width="18pd"></a></li>
+                            <li class="mb-6">Sign Up</li>
+                        </div>
+                        {% endif %}
+                    </ul>
+                </aside>
             </div>
-        </nav>
-        
-        <!-- TODO(Project 1): Implement routes. -->
-        <div>       
-            <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
-            {% block content %}
-            <h3>WikiTrees</h3>
-            <p>Welcome to WikiTrees, an online encyclopedia dedicated to trees and their fascinating histories!</p>
-            {% endblock %}
+            <div class="page-drawer" style="position: fixed; display: none" id="pageDrawer">
+                <aside class="menu">
+                    <ul class="menu-list">
+                    {% for page in pages %}
+                        <li><a href="/pages/{{ page }}"> {{ page }} </a></li>
+                    {% endfor %}
+                    </ul>
+                </aside>
+            </div>
+            <div class="column page">
+                <div class="content">       
+                    {% block content %}
+                    <div class="home-box">
+                        <div class="home-logo-box">
+                            <img src="/static/images/wikitrees!-logo.png">
+                        </div>
+                        <div class="search-box">
+                            <form method="post">
+                                <label for="search">Search Pages/Tags:</label>
+                                <br>
+                                <input type="text" id="search_input" name="search_input" required>
+                                <button type="submit">Search</button>
+                            </form>
+                              
+                        </div>                         
+                    </div>
+                    {% endblock %}
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -1,6 +1,48 @@
 {% extends "main.html" %}
 
-<!-- Fix for page_content: need to let the template know that the tags are safe. -->
+{% block title %}
+{{ filename }}
+{% endblock %}
+
 {% block content %}
+{% if current_user.name %}
+<form action="/tags/{{ filename }}/" method="POST">
+    <input type="text" placeholder="Input Tag Here" name="tag" required>
+    <button type="submit">Add Tag</button>
+</form>
+{% endif %}
 {{ page_content|safe }}
+
+<div class="unique-element" data-default-drawer-open></div>
+{% if current_user.name %}
+<form action="/upload" method="POST" enctype="multipart/form-data">
+    <input id="nameInput" type="hidden" name="name" value="{{ filename }}">
+    <input type="hidden" name="content" id="contentInput">
+</form>
+{% endif %}
+<div class="wiki-page" id="wikiPage">
+    <div class="page-head">
+        <h1>
+            {{ filename }}
+        </h1>
+    {% if current_user.name %}
+        <div class="buttons">
+            <button id="toggleButton" type="button" onclick="toggleEditor(); togglePage(); toggleSave();">
+                <img src="/static/images/edit.png">
+            </button>
+            <div id='save-button-container' style="display: none;">              
+                <button type="button" onclick="uploadPageFromEditor()"><img src="/static/images/upload.png"></button>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+    <div class="page-box" id='page-data-container' style='display: block;'>
+        {{ page_content|safe }}
+    </div>
+    <div class="editor-box" id="editor-container" style="display: none;">
+        <textarea id="myTextarea">
+            {{ page_content|safe }}
+        </textarea>
+    </div>
+</div>
 {% endblock %}

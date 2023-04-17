@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+
+{% block title %}
+Tree Distribution Map
+{% endblock %}
+
+{% block header %}
+	<h1>Tree Distribution Map</h1>
+{% endblock %}
+
+{% block content %}
+    <div id="loader"></div>
+    <div style="display:none;" id="myDiv" class="map-container">
+        {{ map_html | safe }}
+    </div>
+{% endblock %}

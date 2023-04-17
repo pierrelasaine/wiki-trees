@@ -5,22 +5,67 @@ About
 {% endblock %}
 
 {% block content %}
-<h2>About this Wiki</h2>
-
-<!-- TODO(Project 1): Add info about the wiki. -->
-    <p>Welcome to WikiTrees, an online encyclopedia dedicated to trees and their fascinating histories. Here, you'll find a wealth of information on various tree species, including their biology, cultural significance, and interesting fun facts.
-        Our mission is to provide a platform for tree enthusiasts and nature lovers to come together and share their knowledge and passion for trees. Whether you're a professional arborist or just someone who loves spending time in nature, you'll find plenty of information here to satisfy your curiosity and deepen your understanding of these remarkable organisms.
-        At WikiTrees, we believe that trees are not just beautiful and awe-inspiring, but also essential to our planet's health and well-being. Through our articles, we hope to inspire people to plant and care for trees, and to recognize the critical role that trees play in our ecosystem.
-        We're constantly updating our database with new information, so be sure to check back often for the latest news and insights on all things related to trees. Thank you for joining us on this exciting journey of discovery and appreciation!</p>
-
-<h2>Your Authors</h2>
-    {% for author in authors %}
-        <div style="float:left">
-            <h3>{{ author[0] }}</h3>
-            <img src="/images/{{ author[1] }}" alt="Image of author.">
+<div class="about-box">
+    <div class="about-title-box">
+        <h1>About Us!</h1>
+    </div>
+    <div class="about-info-box">
+        <p>Welcome to WikiTrees!, an online encyclopedia dedicated to trees and their fascinating histories. Here, you'll find a wealth of information on various tree species, including their biology, cultural significance, and interesting fun facts. 
+            Think of the entries on this wiki as patterns in the sand, and feel free to make additons and edits where you feel necessary. </p>
+    </div>
+</div>
+<div class="authors-box">
+    <div class="authors-title-box">
+        <hr class="authors-line-box">
+        <h2>Your Authors</h2>
+        <hr class="authors-line-box">
+    </div>
+    <div class="author-box1">
+    <div class="author-box">
+        <div class="author-bio-box">
+            <div class="author-name-box">
+                <h3>First Lastname</h3>
+            </div>
+            <div class="author-text-box">
+                Somemsom sk crl efmomsla v jni wlmov eonmw edoimv oclmwedl re fi lis h lscn 
+            </div>
         </div>
-    {% endfor %}
-
+        <div class="author-image-box">
+            <img src="/static/images/squirtle.jpeg">
+        </div>
+    </div>
+    </div>
+    <div class="author-box1">
+    <div class="author-box">
+        <div class="author-image-box">
+            <img src="/static/images/squirtle.jpeg">
+        </div>
+        <div class="author-bio-box">
+            <div class="author-name-box">
+                <h3>First Lastname</h3>
+            </div>
+            <div class="author-text-box">
+                Somemsom sk crl efmomsla v jni wlmov eonmw edoimv oclmwedl re fi lis h lscn 
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="author-box1">
+    <div class="author-box">
+        <div class="author-bio-box">
+            <div class="author-name-box">
+                <h3>First Lastname</h3>
+            </div>
+            <div class="author-text-box">
+                Somemsom sk crl efmomsla v jni wlmov eonmw edoimv oclmwedl re fi lis h lscn 
+            </div>
+        </div>
+        <div class="author-image-box">
+            <img src="/static/images/squirtle.jpeg">
+        </div>
+    </div>
+    </div>
+</div>
 <!-- TODO(Project 1): Add team members and pictures to about page. -->
 
 {% endblock %}

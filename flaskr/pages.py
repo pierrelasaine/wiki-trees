@@ -12,20 +12,21 @@ The module also defines two additional routes for user authentication:
 
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
-
-from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file
-from google.cloud import storage
+from flask import render_template, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response, g
+from flaskr.tag_handler import TagHandler
+from flaskr.backend import *
+from io import BytesIO
 
 #Solution code: backend is an endpoint
 def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
-    @app.route("/")
-    def home():      
-        return render_template("main.html")
+    @app.route("/src/<path:filename>")
+    def serve_js(filename):
+        return send_from_directory("../src", filename)
 
-    @app.route("/pages", methods=["GET", "POST"])
-    def pages_index():
+    @app.route("/", methods = ['GET','POST'])
+    def home():
         if request.method == "POST":
             search_input = request.form["search_input"]
 
@@ -35,38 +36,88 @@ def make_endpoints(app, backend):
                             results=results)
         else:
             pages = backend.get_all_page_names()
-            return render_template("pages.html",pages=pages)
+            return render_template("main.html", pages=pages)
 
     @app.route("/pages/<filename>")
     def page(filename):
         page_content = backend.get_wiki_page(filename)
-        return render_template("page_template.html", page_content=page_content)
+        pages = backend.get_all_page_names()
+        if not page_content:
+            error_message = "Sorry! The page could not be found :("
+            response = Response(error_message,
+                                status=404,
+                                content_type="text/plain")
+            return response
+
+        return render_template("page_template.html",
+                               filename=filename,
+                               page_content=page_content,
+                               pages=pages)
 
     @app.route("/about")
     def about():
-        authors = [
-            ("Pierre Johnson", "bulbasaur.jpeg"),
-            ("Ericka James", "charmander.jpeg"),
-            ("Jalen Richburg", "squirtle.jpeg") 
-        ]
-        return render_template("about.html", authors=authors)
+        pages = backend.get_all_page_names()
+        authors = [("Pierre Johnson", "bulbasaur.jpeg"),
+                   ("Ericka James", "charmander.jpeg"),
+                   ("Jalen Richburg", "squirtle.jpeg")]
+        return render_template("about.html", authors=authors, pages=pages)
 
     @app.route("/images/<filename>")
     def get_image(filename):
         image_data = backend.get_image(filename)
+        if not image_data:
+            error_message = "Sorry! The page could not be found :("
+            response = Response(error_message,
+                                status=404,
+                                content_type="text/plain")
+            return response
+
         response = make_response(image_data)
         response.headers.set("Content-Type", "image/jpeg")
         return response
 
     @app.route("/upload", methods=["GET", "POST"])
     def upload():
-        if request.method == 'POST':
-            file = request.files['file']
-            # Solution: adding name from the form.
-            # TODO: catch and propagate any errors that may occur from upload
-            name = request.form['name']
+        pages = backend.get_all_page_names()
+        if request.method != 'POST':
+            return render_template("upload.html", pages=pages)
+
+        name = request.form['name']
+        content_str = request.form['content']
+        if not content_str:
+            file = request.files.get('file')
+
             backend.upload(file.stream.read(), name, file.filename)
+            TagHandler().add_file_to_csv(name)
+
             return render_template("main.html")
 
         else:
-            return render_template("upload.html")
+            content_bstr = content_str.encode()
+            content = bytearray(content_bstr)
+
+            backend.upload(content, name, name)
+            TagHandler().add_file_to_csv(name)
+        ## check for validation [Page Redirect R8.]
+        return redirect(url_for('page', filename=name))
+
+    @app.route("/tdm")
+    def tree_distribution_map():
+        pages = backend.get_all_page_names()
+        map_html = backend.tree_map()
+        return render_template("tree_map.html",
+                               map_html=map_html,
+                               header="Tree Distribution Map",
+                               pages=pages)
+
+    @app.route('/search-results')
+    def search():
+        return render_template("search_results.html")
+
+    @app.route("/tags/<filename>/", methods=["POST"])
+    def add_tag(filename):
+        tag_handler = g.get("tag_handler", TagHandler())
+        filename = filename.replace("%20", " ")
+        tag = request.form['tag']
+        tag_handler.add_tag_to_csv(filename, tag)
+        return redirect(url_for("page", filename=filename))
