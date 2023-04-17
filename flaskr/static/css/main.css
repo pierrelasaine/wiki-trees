@@ -213,6 +213,9 @@ button:hover {
                 }
                     .author-image-box img{
                         border-radius: 40px;
+                        object-fit: cover;
+                        max-width: 300px !important;
+                        max-height: 100% !important;
                     }
 .form-box-box-box {
     padding-left: 20px;
