@@ -72,7 +72,7 @@ class Backend:
     def tree_map(self):
         tree_distributions = {
             'Coast Redwood': (38.9822, -123.3781),
-            'Ginko': (39.7684, -86.1581),
+            'Ginkgo': (39.7684, -86.1581),
             'Japanese Magnolia': (35.8801, -79.0800),
             'Juniper': (40.7968, -77.8619),
             'Live Oak': (30.3894, -86.5229),
@@ -84,7 +84,7 @@ class Backend:
         }
 
         tree_names = [
-            'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper',
+            'Coast Redwood', 'Ginkgo', 'Japanese Magnolia', 'Juniper',
             'Live Oak', 'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak',
             'White Oak'
         ]
@@ -98,7 +98,8 @@ class Backend:
 
         for i, tree in enumerate(tree_names):
             description = "This is a {}".format(tree)
-            popup_html = '<b>{}</b><br>{}'.format(tree, description)
+            popup_html = '<b>{}</b><br>{}<br><a href="#" onclick="window.top.location.href=\'/pages/{}\'; return false;">Learn More</a>'.format(
+                tree, description, tree)
             folium.Marker(location=tree_distributions[tree],
                           icon=folium.Icon(color='gray', icon='leaf'),
                           popup=popup_html,

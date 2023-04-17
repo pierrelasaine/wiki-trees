@@ -13,7 +13,7 @@ The module also defines two additional routes for user authentication:
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
 
-from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file, send_from_directory
+from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response
 from flaskr.backend import *
 from io import BytesIO
 
@@ -22,6 +22,10 @@ from io import BytesIO
 def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
+    @app.route("/src/<path:filename>")
+    def serve_js(filename):
+        return send_from_directory("../src", filename)
+
     @app.route("/")
     def home():
         pages = backend.get_all_page_names()
@@ -32,7 +36,11 @@ def make_endpoints(app, backend):
         page_content = backend.get_wiki_page(filename)
         pages = backend.get_all_page_names()
         if not page_content:
-            abort(404)
+            error_message = "Sorry! The page could not be found :("
+            response = Response(error_message,
+                                status=404,
+                                content_type="text/plain")
+            return response
 
         return render_template("page_template.html",
                                filename=filename,
@@ -51,7 +59,11 @@ def make_endpoints(app, backend):
     def get_image(filename):
         image_data = backend.get_image(filename)
         if not image_data:
-            abort(404)
+            error_message = "Sorry! The page could not be found :("
+            response = Response(error_message,
+                                status=404,
+                                content_type="text/plain")
+            return response
 
         response = make_response(image_data)
         response.headers.set("Content-Type", "image/jpeg")
