@@ -57,8 +57,6 @@ def test_pages_post(mock_backend, client):
     assert b'Oak Tree' in response.data
     assert b'Evergreen' not in response.data
 
-
-
 def test_pages_page(client):
     resp = client.get("/pages")
     assert resp.status_code == 200
