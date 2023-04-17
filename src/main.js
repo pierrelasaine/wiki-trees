@@ -209,8 +209,6 @@
         }
     });
 
-    
-
     window.addEventListener("load", () => {
         /**
          * Hide the loader after the page has finished loading.
