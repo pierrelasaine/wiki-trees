@@ -54,7 +54,7 @@ def test_image_nonexistent(client):
     resp = client.get("/images/nonexistent")
 
     assert resp.status_code == 404
-    assert b"Not Found" in resp.data
+    assert b'Sorry! The page could not be found :(' in resp.data
 
 
 @patch("flaskr.backend.Backend.get_wiki_page")
@@ -64,7 +64,7 @@ def test_pages_wiki_nonexistent(mock_get_wiki_page, client):
     resp = client.get("/pages/nonexistent")
 
     assert resp.status_code == 404
-    assert b"Not Found" in resp.data
+    assert b"Sorry! The page could not be found :(" in resp.data
 
 
 @patch("flaskr.backend.Backend.get_wiki_page")
