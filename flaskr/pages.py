@@ -14,7 +14,6 @@ All routes use templates rendered with Flask's "render_template" function, and i
 """
 
 from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file
-
 from google.cloud import storage
 
 #Solution code: backend is an endpoint
@@ -71,9 +70,3 @@ def make_endpoints(app, backend):
 
         else:
             return render_template("upload.html")
-
-    @app.route('/search-results')
-    def search():
-        return render_template("search_results.html")
-
-

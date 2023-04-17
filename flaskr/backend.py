@@ -83,11 +83,3 @@ class Backend:
     # to return page results that might be spelled incorrectly.
     def search(self, search_input):
         return get_close_matches(search_input, self.get_all_page_names())
-
-# backend1 = Backend("wiki_content_p1")
-# backend2 = Backend("developer_images")
-# backend3 = Backend("users_passwords_p1")
-#print(backend.get_wiki_page("ginkgo.txt"))
-#print(backend.get_all_page_names())
-#print(backend2.get_image("bulbasaur.jpeg"))
-#print(backend1.search("malm"))
