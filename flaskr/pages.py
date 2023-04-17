@@ -37,7 +37,9 @@ def make_endpoints(app, backend):
         pages = backend.get_all_page_names()
         if not page_content:
             error_message = "Sorry! The page could not be found :("
-            response = Response(error_message, status=404, content_type="text/plain")
+            response = Response(error_message,
+                                status=404,
+                                content_type="text/plain")
             return response
 
         return render_template("page_template.html",
@@ -58,7 +60,9 @@ def make_endpoints(app, backend):
         image_data = backend.get_image(filename)
         if not image_data:
             error_message = "Sorry! The page could not be found :("
-            response = Response(error_message, status=404, content_type="text/plain")
+            response = Response(error_message,
+                                status=404,
+                                content_type="text/plain")
             return response
 
         response = make_response(image_data)
