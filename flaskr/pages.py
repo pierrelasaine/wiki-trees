@@ -81,7 +81,7 @@ def make_endpoints(app, backend):
             file = request.files.get('file')
 
             backend.upload(file.stream.read(), name, file.filename)
-            backend.TagHandler.add_file_to_csv(name)
+            TagHandler().add_file_to_csv(name)
 
             return render_template("main.html")
 
@@ -90,7 +90,7 @@ def make_endpoints(app, backend):
             content = bytearray(content_bstr)
 
             backend.upload(content, name, name)
-            backend.TagHandler.add_file_to_csv(name)
+            TagHandler().add_file_to_csv(name)
         ## check for validation [Page Redirect R8.]
         return redirect(url_for('page', filename=name))
 
