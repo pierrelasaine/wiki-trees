@@ -6,36 +6,17 @@
             {{ error_message }}
         </div>
     {% endif %}
+	<h1>{% if active_tab == 'SignUp' %}Sign Up{% else %}Login{% endif %}</h1>
 	{% if error_message %}
 		<p class="error">{{ error_message }}</p>
 	{% endif %}
-	<div class="form-box-box-box">
-	<div class="form-box-box">
-		<div class="form-logo-box">
-			<img src="/static/images/wikitrees!-logo.png">
-		</div>
-		<div class="form-icon-box">
-			<img src="/static/images/profile.PNG">
-		</div>
-		<div class="form-box">
-			<form method="post">
-				<div class="form-input-box">
-					<div class="form-input-label-box">
-						<label for="username">Username</label>
-					</div>
-					<input type="text" id="username" name="username" required>
-				</div>
-				<div class="form-input-box">
-					<div class="form-input-label-box">
-						<label for="password">Password</label>
-					</div>
-					<input type="password" id="password" name="password" required>
-				</div>
-				<div class="form-button">
-					<button type="submit">{% if active_tab == 'SignUp' %}Sign Up{% else %}Log In{% endif %}</button>
-				</div>
-			</form>
-		</div>                         
-	</div>
-	</div>
+	<form method="post">
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" required>
+		<br>
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" required>
+		<br>
+		<button type="submit">{% if active_tab == 'SignUp' %}Sign Up{% else %}Login{% endif %}</button>
+	</form>
 {% endblock %}
