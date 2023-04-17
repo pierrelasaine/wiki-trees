@@ -6,7 +6,6 @@ import folium
 from folium import plugins
 
 
-
 class Backend:
 
     def __init__(self, storage_client=storage.Client()):
