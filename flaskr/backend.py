@@ -24,9 +24,8 @@ class Backend:
         self.pages = []
         # Solution code: uses page bucket and doesn't list image files
         for blob in self.page_bucket.list_blobs():
-            if not blob.name.endswith(("png", "jpg", "jpeg","csv")):
+            if not blob.name.endswith(("png", "jpg", "jpeg")):
                 self.pages.append(blob.name)
-        
         return self.pages
 
     def upload(self, file, name, original_filename):
@@ -43,21 +42,20 @@ class Backend:
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")
         # blob = self.bucket.blob(username)
-        
         if blob.exists():
             return False
-        
+
         # Hash password
         hash_pword = hashlib.blake2b(password.encode()).hexdigest()
+
         user_blob = {"username": username, "hash_pword": hash_pword}
         blob.upload_from_string(str(user_blob))
-        
+
         return True
 
     def sign_in(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")
         # blob = self.bucket.blob(username)
-        
         if not blob.exists():
             return False
 
@@ -73,7 +71,6 @@ class Backend:
     def get_image(self, image_name):
         # Solution code: check for if blob is none
         blob = self.image_bucket.get_blob(image_name)
-        
         if blob is None:
             return bytearray()
         

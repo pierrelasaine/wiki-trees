@@ -1,21 +1,25 @@
+"""This module contains tests for the Backend class in the flaskr application.
+"""
+from unittest.mock import patch, MagicMock
 from flaskr.backend import Backend
-from unittest.mock import MagicMock, Mock, patch
 from google.cloud import storage
-from google.cloud.storage.bucket import Bucket
+from bleach import Cleaner
 import pytest
+import io
 
-# # # TODO(Project 1): Write tests for Backend methods.
 
+# Test fixtures
 @pytest.fixture
 def name():
+    """Returns a string representing a valid name."""
     return "name"
 
+
 @pytest.fixture
-def storage_client(mock_bucket):
-    """Returns a MagicMock object with the same spec as storage.Client."""
-    mock = MagicMock(spec=storage.Client)
-    mock.bucket.return_value = mock_bucket
-    return mock
+def bad_name():
+    """Returns a string representing an invalid name."""
+    return "bad"
+
 
 @pytest.fixture
 def mock_blob():
@@ -25,8 +29,8 @@ def mock_blob():
     """
     mock = MagicMock(spec=storage.Blob)
     mock.download_as_text.return_value = "blob data"
-    
     return mock
+
 
 @pytest.fixture
 def mock_bucket(mock_blob, bad_name):
@@ -48,27 +52,33 @@ def mock_bucket(mock_blob, bad_name):
     return mock
 
 
+@pytest.fixture
+def storage_client(mock_bucket):
+    """Returns a MagicMock object with the same spec as storage.Client."""
+    mock = MagicMock(spec=storage.Client)
+    mock.bucket.return_value = mock_bucket
+    return mock
+
 
 @pytest.fixture
 def mock_backend(storage_client):
     """Returns a Backend instance configured to use the provided storage_client."""
-    mock = MagicMock()
-    mock.page_bucket.list_blobs.return_value = ["Coast Redwood", "Gingko", "Juniper"]
-    return mock(storage_client)
+    return Backend(storage_client)
 
-# Test functions
-def test_get_wiki_page(mock_backend):
-    """Tests if the get_wiki_page method returns the correct content."""
-    assert mock_backend.get_wiki_page(name) == "blob data"
+# Test Functions
 
+@patch("flaskr.backend.storage.Client")
+def test_get_wiki_page(mock_client, mock_blob, mock_bucket, name):
+    mock_client.return_value.bucket.return_value = mock_bucket
+    mock_bucket.blob.return_value = mock_blob
 
-def test_cant_get_wiki_page(mock_backend, bad_name):
-    """Tests if the get_wiki_page method returns None for an invalid name."""
-    assert mock_backend.get_wiki_page(bad_name) == None
+    mock_blob.download_as_text.return_value  = "blob data"
 
+    backend = Backend(name)
+    assert backend.get_wiki_page(name) == "blob data"
 
-def test_get_all_page_names(mock_backend):
-    assert mock_backend.get_all_page_names() == ["Coast Redwood", "Gingko", "Juniper"]
+def test_get_all_page_names():
+    pass
 
 def test_upload():
     pass

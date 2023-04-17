@@ -37,7 +37,7 @@ def test_about_page(client):
 @patch("flaskr.backend.backend")
 def test_get_image(mock_backend, client):
     with patch("flaskr.pages.is_valid_blob") as mock_valid_blob:
-        mock_backend.valid_blob.return_value = True
+        mock_valid_blob.valid_blob.return_value = True
         mock_backend.get_image.return_value = os.urandom(1024)
 
         resp = client.get("/images/mock_image")
@@ -57,6 +57,8 @@ def test_pages_post(mock_backend, client):
     assert b'Oak Tree' in response.data
     assert b'Evergreen' not in response.data
 
+
+
 def test_pages_page(client):
     resp = client.get("/pages")
     assert resp.status_code == 200
@@ -72,7 +74,7 @@ def test_pages_wiki_nonexistent(client):
 @patch("flaskr.backend")
 def test_page_details(mock_backend, client):
     with patch("flaskr.pages.is_valid_blob") as mock_valid_blob:
-        mock_backend.valid_blob.return_value = True
+        mock_valid_blob.return_value = True
         mock_backend.get_wiki_page.return_value = "Mock Text for Unit Test\n2\n3\n4"
 
         resp = client.get("/pages/mock-page")
