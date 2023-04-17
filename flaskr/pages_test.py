@@ -92,11 +92,11 @@ def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
 
     resp = client.post("/upload",
                        data=dict(name="test_page", content="<p>Test HTML</p>"))
-    
+
     assert resp.status_code == 302
 
     resp = client.get("/pages/test_page")
-    
+
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 

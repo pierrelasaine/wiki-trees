@@ -26,7 +26,6 @@ def make_endpoints(app, backend):
     def serve_js(filename):
         return send_from_directory("../src", filename)
 
-
     @app.route("/")
     def home():
         pages = backend.get_all_page_names()
