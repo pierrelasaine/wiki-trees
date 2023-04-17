@@ -12,8 +12,8 @@ The module also defines two additional routes for user authentication:
 
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
-
-from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response
+from flask import render_template, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response, g
+from flaskr.tag_handler import TagHandler
 from flaskr.backend import *
 from io import BytesIO
 
@@ -79,11 +79,18 @@ def make_endpoints(app, backend):
         content_str = request.form['content']
         if not content_str:
             file = request.files.get('file')
+
             backend.upload(file.stream.read(), name, file.filename)
+            TagHandler().add_file_to_csv(name)
+
+            return render_template("main.html")
+
         else:
             content_bstr = content_str.encode()
             content = bytearray(content_bstr)
+
             backend.upload(content, name, name)
+            TagHandler().add_file_to_csv(name)
         ## check for validation [Page Redirect R8.]
         return redirect(url_for('page', filename=name))
 
@@ -95,3 +102,15 @@ def make_endpoints(app, backend):
                                map_html=map_html,
                                header="Tree Distribution Map",
                                pages=pages)
+
+    @app.route('/search-results')
+    def search():
+        return render_template("search_results.html")
+
+    @app.route("/tags/<filename>/", methods=["POST"])
+    def add_tag(filename):
+        tag_handler = g.get("tag_handler", TagHandler())
+        filename = filename.replace("%20", " ")
+        tag = request.form['tag']
+        tag_handler.add_tag_to_csv(filename, tag)
+        return redirect(url_for("page", filename=filename))

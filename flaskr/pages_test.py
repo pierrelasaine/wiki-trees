@@ -1,5 +1,8 @@
 from flaskr import create_app
-from unittest.mock import patch
+from flask import url_for, g
+from unittest.mock import patch, MagicMock
+from google.cloud.storage.blob import Blob
+from flaskr.backend import Backend
 from werkzeug.datastructures import FileStorage
 from flaskr.pages import *
 import io
@@ -17,6 +20,13 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def mock_tag_handler():
+    mock = MagicMock(spec=TagHandler)
+    mock.add_tag_to_csv.return_value = MagicMock()
+    return mock
 
 
 def test_serve_js(client):
@@ -116,6 +126,20 @@ def test_file_upload(mock_upload, mock_get_wiki_page, client):
 
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
+
+
+@patch("flaskr.backend.Backend.get_wiki_page")
+def test_add_tag(mock_get_wiki_page, app, mock_tag_handler, client):
+    mock_get_wiki_page.return_value = "Mock Content"
+
+    with app.test_request_context():
+        url = url_for("add_tag", filename="mock")
+        g.tag_handler = mock_tag_handler
+
+        resp = client.post(url, data=dict(tag="mock"), follow_redirects=True)
+
+    mock_tag_handler.add_tag_to_csv.assert_called_with("mock", "mock")
+    assert resp.status_code == 200
 
 
 def pytest_configure(config):

@@ -1,3 +1,5 @@
+from difflib import get_close_matches
+from flaskr.tag_handler import TagHandler
 from google.cloud import storage
 from flask import abort
 from bleach import Cleaner
@@ -28,7 +30,7 @@ class Backend:
         self.pages = []
         # Solution code: uses page bucket and doesn't list image files
         for blob in self.page_bucket.list_blobs():
-            if not blob.name.endswith(("png", "jpg", "jpeg")):
+            if not blob.name.endswith(("png", "jpg", "jpeg", "csv")):
                 self.pages.append(blob.name)
         return self.pages
 
@@ -168,10 +170,10 @@ class Backend:
             b = bytearray(f)
             return b
 
-
-# backend1 = Backend("wiki_content_p1")
-# backend2 = Backend("developer_images")
-# backend3 = Backend("users_passwords_p1")
-#print(backend.get_wiki_page("ginkgo.txt"))
-#print(backend.get_all_page_names())
-#print(backend2.get_image("bulbasaur.jpeg"))
+    # Uses the difflib Python library(specifically the “get_close_matches” function)
+    # to return page results that might be spelled incorrectly.
+    def search(self, search_input):
+        tag_handler = TagHandler()
+        return set(
+            get_close_matches(search_input, self.get_all_page_names()) +
+            tag_handler.get_filenames_by_tag(search_input))

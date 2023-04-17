@@ -5,6 +5,7 @@ from flaskr.backend import Backend
 from google.cloud import storage
 from bleach import Cleaner
 import pytest
+import io
 
 
 # Test fixtures
