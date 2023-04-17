@@ -12,6 +12,7 @@ def make_endpoints(app, login_manager, backend):
 
     @app.route('/signup', methods=["GET", "POST"])
     def new_signup():
+        pages = backend.get_all_page_names()
         if request.method == "POST":
             username = request.form["username"]
             password = request.form["password"]
@@ -22,12 +23,16 @@ def make_endpoints(app, login_manager, backend):
             else:
                 return render_template("login.html",
                                        error_message="Username already exists!",
-                                       active_tab='SignUp')
+                                       active_tab='SignUp',
+                                       pages=pages)
         else:
-            return render_template("login.html", active_tab='SignUp')
+            return render_template("login.html",
+                                   active_tab='SignUp',
+                                   pages=pages)
 
     @app.route('/login', methods=["GET", "POST"])
     def user_login():
+        pages = backend.get_all_page_names()
         if request.method == "POST":
             username = request.form["username"]
             password = request.form["password"]
@@ -40,7 +45,7 @@ def make_endpoints(app, login_manager, backend):
                     "login.html",
                     error_message="Incorrect username or password!")
         else:
-            return render_template("login.html")
+            return render_template("login.html", pages=pages)
 
     @app.route('/logout')
     @login_required
