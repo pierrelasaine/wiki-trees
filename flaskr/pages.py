@@ -22,6 +22,11 @@ from io import BytesIO
 def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
+    @app.route("/src/<path:filename>")
+    def serve_js(filename):
+        return send_from_directory("../src", filename)
+
+
     @app.route("/")
     def home():
         pages = backend.get_all_page_names()

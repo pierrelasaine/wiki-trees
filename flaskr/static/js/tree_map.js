@@ -21,9 +21,11 @@ function myFunction() {
  * Show the map and hide the loader after the specified delay.
  */
 function showPage() {
-  // Hide the loader element
-  document.getElementById('loader').style.display = 'none';
+  if(document.getElementById('loader') != null) {
+    // Hide the loader element
+    document.getElementById('loader').style.display = 'none';
 
-  // Show the map container (myDiv) element
-  document.getElementById('myDiv').style.display = 'block';
+    // Show the map container (myDiv) element
+    document.getElementById('myDiv').style.display = 'block';
+  }
 }

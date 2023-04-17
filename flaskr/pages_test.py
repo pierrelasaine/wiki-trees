@@ -21,14 +21,22 @@ def client(app):
     return app.test_client()
 
 
+def test_serve_js(client):
+    resp = client.get("/src/main.js")
+
+    assert resp.status_code == 200
+
+
 def test_home_page(client):
     resp = client.get("/")
+
     assert resp.status_code == 200
     assert b"home-box" in resp.data
 
 
 def test_about_page(client):
     resp = client.get("/about")
+
     assert resp.status_code == 200
     assert b"About Us!" in resp.data
 
@@ -38,11 +46,13 @@ def test_get_image(mock_get_image, client):
     mock_get_image.return_value = os.urandom(1024)
 
     resp = client.get("/images/mock_image")
+
     assert resp.status_code == 200
 
 
 def test_image_nonexistent(client):
     resp = client.get("/images/nonexistent")
+
     assert resp.status_code == 404
     assert b"Not Found" in resp.data
 
@@ -50,7 +60,9 @@ def test_image_nonexistent(client):
 @patch("flaskr.backend.Backend.get_wiki_page")
 def test_pages_wiki_nonexistent(mock_get_wiki_page, client):
     mock_get_wiki_page.return_value = None
+
     resp = client.get("/pages/nonexistent")
+
     assert resp.status_code == 404
     assert b"Not Found" in resp.data
 
@@ -60,12 +72,14 @@ def test_page_details(mock_get_wiki_page, client):
     mock_get_wiki_page.return_value = "<p>Mock Text for Unit Test</p>"
 
     resp = client.get("/pages/mock-page")
+
     assert resp.status_code == 200
     assert b"Mock Text for Unit Test" in resp.data
 
 
 def test_upload_page(client):
     resp = client.get("/upload")
+
     assert resp.status_code == 200
     assert b"Upload!" in resp.data
 
@@ -75,10 +89,14 @@ def test_upload_page(client):
 def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
     mock_upload.return_value = None
     mock_get_wiki_page.return_value = "Test HTML"
+
     resp = client.post("/upload",
                        data=dict(name="test_page", content="<p>Test HTML</p>"))
+    
     assert resp.status_code == 302
+
     resp = client.get("/pages/test_page")
+    
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 
