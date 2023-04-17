@@ -131,17 +131,22 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
 def test_get_wiki_page(self, name):
     pass
 
+
 def test_get_all_page_names(self):
     pass
 
-def test_upload(self, username, password,file):
+
+def test_upload(self, username, password, file):
     pass
+
 
 def test_sign_up(self, username, password):
     pass
 
+
 def test_sign_in(self, username, password):
     pass
+
 
 # def test_get_image(self, image_name):
 #     pass
