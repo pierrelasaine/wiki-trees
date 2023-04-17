@@ -334,9 +334,14 @@ button:hover {
                 display: flex;
             }
                 .buttons input{
-                    max-width: 200px;
                     margin-left: 15px;
-                    border-radius: 20px;
+                    background-color: #e3e3dc;
+                    margin-top: 0px !important;
+                    border: none;
+                    border-top-right-radius: 5px;
+                    border-top-left-radius: 5px;
+                    border-bottom: 1px solid #43483e;
+                    max-width: 200px;
                     font-size: 16px;
 
                     display: flex;
