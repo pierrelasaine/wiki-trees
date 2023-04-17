@@ -5,14 +5,6 @@
 {% endblock %}
 
 {% block content %}
-{% if current_user.name %}
-<form action="/tags/{{ filename }}/" method="POST">
-    <input type="text" placeholder="Input Tag Here" name="tag" required>
-    <button type="submit">Add Tag</button>
-</form>
-{% endif %}
-{{ page_content|safe }}
-
 <div class="unique-element" data-default-drawer-open></div>
 {% if current_user.name %}
 <form action="/upload" method="POST" enctype="multipart/form-data">
@@ -27,6 +19,12 @@
         </h1>
     {% if current_user.name %}
         <div class="buttons">
+            <div id="toggleAddTags">
+                <form action="/tags/{{ filename }}/" method="POST">
+                    <input type="text" placeholder='Add Tag with "+"!' name="tag" required>
+                    <button type="submit"><img src="/static/images/add.png"></button>
+                </form>
+            </div>
             <button id="toggleButton" type="button" onclick="toggleEditor(); togglePage(); toggleSave();">
                 <img src="/static/images/edit.png">
             </button>
