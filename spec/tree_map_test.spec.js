@@ -58,7 +58,6 @@ describe("Tree Map Functions", function () {
             myDiv.style.display = "none";
 
             myFunction();
-            jasmine.clock().tick(3100); // Slightly more than 3000ms to give showPage() time to execute
 
             showPage();
             expect(loader.style.display).toEqual("none");
