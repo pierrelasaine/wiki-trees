@@ -34,10 +34,19 @@ def test_serve_js(client):
 
     assert resp.status_code == 200
 
+@patch("flaskr.backend")
+def test_home_post(mock_backend, client):
+    mock_backend.search.return_value = "Oak Tree"
+    resp = client.post("/", data = {"search_input": "Oak Tree"})
+    assert resp.status_code == 200
+    assert b'Oak Tree' in resp.data
+    assert b'Evergreen' not in resp.data
+
 
 def test_home_page(client):
-    resp = client.get("/")
+    
 
+    resp = client.get("/")
     assert resp.status_code == 200
     assert b"home-box" in resp.data
 
