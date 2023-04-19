@@ -7,7 +7,6 @@ from folium import plugins
 import html.parser
 
 
-
 class Backend:
 
     def __init__(self, storage_client=storage.Client()):
@@ -73,35 +72,73 @@ class Backend:
 
     def tree_map(self):
         tree_distributions = {
-            'Coast Redwood': {'location': (38.9822, -123.3781), 'distribution': 'North America'},
-            'Ginko': {'location': (39.7684, -86.1581), 'distribution': 'East Asia'},
-            'Japanese Magnolia': {'location': (35.8801, -79.0800), 'distribution': 'East Asia'},
-            'Juniper': {'location': (40.7968, -77.8619), 'distribution': 'North America, Eurasia'},
-            'Live Oak': {'location': (30.3894, -86.5229), 'distribution': 'North America'},
-            'Monterey Cypress': {'location': (36.6002, -121.8947), 'distribution': 'North America'},
-            'Palm': {'location': (26.7056, -80.0364), 'distribution': 'Africa, Eurasia, Americas'},
-            'Palmetto': {'location': (26.7153, -81.0522), 'distribution': 'North America'},
-            'Water Oak': {'location': (30.4383, -84.2807), 'distribution': 'North America'},
-            'White Oak': {'location': (33.9860, -83.7185), 'distribution': 'North America'}
+            'Coast Redwood': {
+                'location': (38.9822, -123.3781),
+                'distribution': 'North America'
+            },
+            'Ginko': {
+                'location': (39.7684, -86.1581),
+                'distribution': 'East Asia'
+            },
+            'Japanese Magnolia': {
+                'location': (35.8801, -79.0800),
+                'distribution': 'East Asia'
+            },
+            'Juniper': {
+                'location': (40.7968, -77.8619),
+                'distribution': 'North America, Eurasia'
+            },
+            'Live Oak': {
+                'location': (30.3894, -86.5229),
+                'distribution': 'North America'
+            },
+            'Monterey Cypress': {
+                'location': (36.6002, -121.8947),
+                'distribution': 'North America'
+            },
+            'Palm': {
+                'location': (26.7056, -80.0364),
+                'distribution': 'Africa, Eurasia, Americas'
+            },
+            'Palmetto': {
+                'location': (26.7153, -81.0522),
+                'distribution': 'North America'
+            },
+            'Water Oak': {
+                'location': (30.4383, -84.2807),
+                'distribution': 'North America'
+            },
+            'White Oak': {
+                'location': (33.9860, -83.7185),
+                'distribution': 'North America'
+            }
         }
-                    
-        tree_names = ['Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper', 'Live Oak', 
-            'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak', 'White Oak']
 
-        colors = ['forestgreen', 'gold', 'blueviolet', 'blue', 'olive', 'darkcyan', 'darkorange', 
-            'purple', 'steelblue', 'tomato']
+        tree_names = [
+            'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper',
+            'Live Oak', 'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak',
+            'White Oak'
+        ]
 
-        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)       
+        colors = [
+            'forestgreen', 'gold', 'blueviolet', 'blue', 'olive', 'darkcyan',
+            'darkorange', 'purple', 'steelblue', 'tomato'
+        ]
+
+        tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)
 
         for i, tree in enumerate(tree_names):
-            description = "<b style='font-size: 16px;'>Distribution: </b><h style='font-size: 16px;'>{}</h>".format(tree_distributions[tree]['distribution'])
-            popup_html = '<div style="width: 250px;font-size: 18px;"><b>{} Tree</b><br>{}</div>'.format(tree, description)
-            folium.Marker(location=tree_distributions[tree]['location'], 
-                        icon=folium.Icon(color='gray', icon='leaf', prefix='fa'),
-                        popup=popup_html, 
-                        tooltip=tree,
-                        ).add_to(tree_map)
-                        
+            description = "<b style='font-size: 16px;'>Distribution: </b><h style='font-size: 16px;'>{}</h>".format(
+                tree_distributions[tree]['distribution'])
+            popup_html = '<div style="width: 250px;font-size: 18px;"><b>{} Tree</b><br>{}</div>'.format(
+                tree, description)
+            folium.Marker(
+                location=tree_distributions[tree]['location'],
+                icon=folium.Icon(color='gray', icon='leaf', prefix='fa'),
+                popup=popup_html,
+                tooltip=tree,
+            ).add_to(tree_map)
+
         legend_html = '''
                     <div style="position:fixed; 
                             bottom: 50px; left: 50px; width: 160px; height: 300px; 
@@ -114,6 +151,12 @@ class Backend:
         for i in range(len(tree_names)):
             legend_html += f'<tr><td><i style="background-color:{colors[i]}; border-radius:50%; width:10px; height:10px; display:inline-block;"></i></td><td style="padding-left:8px;">{tree_names[i]}</td></tr>'
 
+        folium.Marker(
+                location=tree_distributions[tree_names[i]]['location'],
+                icon=folium.Icon(color=colors[i], icon='leaf', prefix='fa'),
+                tooltip=tree_names[i],
+            ).add_to(tree_map)
+            
         legend_html += '''
                 </table>
             </div>
@@ -122,16 +165,8 @@ class Backend:
         tree_map.get_root().html.add_child(folium.Element(legend_html))
 
         map_html = tree_map._repr_html_()
-        
-        return map_html
 
-    def is_html(self, content):
-        parser = html.parser.HTMLParser()
-        try:
-            parser.feed(content.decode())
-        except ValueError as e:
-            return False
-        return True
+        return map_html
 
     def sign_up(self, username, password):
         blob = self.login_bucket.blob(f"users/{username}")

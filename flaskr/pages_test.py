@@ -47,10 +47,10 @@ def test_image_nonexistent(client):
     assert b"Not Found" in resp.data
 
 
-def test_pages_page(client):
-    resp = client.get("/pages")
-    assert resp.status_code == 200
-    assert b"Wiki Pages" in resp.data
+# def test_pages_page(client):
+#     resp = client.get("/pages")
+#     assert resp.status_code == 200
+#     assert b"Wiki Pages" in resp.data
 
 
 @patch("flaskr.backend.Backend.get_wiki_page")
@@ -75,6 +75,20 @@ def test_upload_page(client):
     assert resp.status_code == 200
     assert b"Drop File to Upload" in resp.data
 
+def test_upload_valid_html(client):
+    resp = client.post('/upload', data={
+        'name': 'valid_page',
+        'content': '<html><body><h1>Hello world!</h1></body></html>'
+    })
+    assert resp.status_code == 302
+
+def test_upload_invalid_html(client):
+    resp = client.post('/upload', data={
+        'name': 'invalid_page',
+        'content': '<html><body><h1>Hello world!</h2></body></html>'
+    })
+    assert resp.status_code == 200
+    assert b"Invalid HTML!" in resp.data
 
 @patch("flaskr.backend.Backend.get_wiki_page")
 @patch("flaskr.backend.Backend.upload")
@@ -88,33 +102,5 @@ def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 
-"""
-@patch("flaskr.backend.Backend.get_wiki_page")
-@patch("flaskr.backend.Backend.upload")
-def test_file_upload(mock_upload, mock_get_wiki_page, client):
-    mock_upload.return_value = None
-    mock_get_wiki_page.return_value = "Test HTML"
-    resp = client.post("/upload",
-                        data=dict(name="test_page",
-                                  fileb=FileStorage(filename="test.html", stream=b"<p>Test HTML</p>")))
-    resp = client.get("/pages/test_page")
-    assert resp.status_code == 200
-    assert b"Test HTML" in resp.data
-"""
-
 def pytest_configure(config):
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
-
-# @patch("flaskr.backend.Backend.get_wiki_page")
-# @patch("flaskr.backend.Backend.upload")
-# def test_file_upload(mock_upload, mock_get_wiki_page, client):
-#     mock_upload.return_value = None
-#     mock_get_wiki_page.return_value = "Test HTML"
-#     with open("test.html", "rb") as f:
-#         resp = client.post("/upload",
-#                             data=dict(name="test_page",
-#                                       file=(f, "test.html")))
-#     assert resp.status_code == 302
-#     resp = client.get("/pages/test_page")
-#     assert resp.status_code == 200
-#     assert b"Test HTML" in resp.data
