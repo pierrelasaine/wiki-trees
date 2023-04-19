@@ -15,21 +15,8 @@
 
     <div id="loader"></div>
 
-    <div style="display:none;" id="myDiv" class="map-container">
+    <div style="display:none;" id="map-content" class="map-container">
         {{ map_html | safe }}
     </div>
-
-    <script>
-    var myVar;
-
-    function myFunction() {
-        myVar = setTimeout(showPage, 3000);
-    }
-
-    function showPage() {
-        document.getElementById("loader").style.display = "none";
-        document.getElementById("myDiv").style.display = "block";
-    }
-    </script>
     
 {% endblock %}

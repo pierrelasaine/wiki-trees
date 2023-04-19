@@ -82,18 +82,15 @@ class Backend:
             'Water Oak': (30.4383, -84.2807),
             'White Oak': (33.9860, -83.7185),
         }
-
         tree_names = [
             'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper',
             'Live Oak', 'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak',
             'White Oak'
         ]
-
         colors = [
             'forestgreen', 'gold', 'blueviolet', 'blue', 'olive', 'darkcyan',
             'darkorange', 'purple', 'steelblue', 'tomato'
         ]
-
         tree_map = folium.Map(location=[39.8283, -98.5795], zoom_start=5)
 
         for i, tree in enumerate(tree_names):
@@ -122,9 +119,7 @@ class Backend:
             '''
 
         tree_map.get_root().html.add_child(folium.Element(legend_html))
-
         map_html = tree_map._repr_html_()
-
         return map_html
 
     def sign_up(self, username, password):

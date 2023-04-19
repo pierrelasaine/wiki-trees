@@ -42,8 +42,7 @@ function toggleForm() {
         uploadBox.style.marginTop = '40px';
         toggleButton.innerHTML = "<img src='/static/images/back.png'>";
         toggleButton.classList.add('upload-button-back')
-    } 
-    else {
+    } else {
         formContainer.style.display = 'block';
         uploadBox.style.marginTop = '200px'
         toggleButton.innerHTML = "Create New Page";
@@ -52,12 +51,12 @@ function toggleForm() {
 }
 
 function toggleUpload() {
-var saveContainer = document.getElementById('save-button-container');
-if (saveContainer.style.display === 'none') {
-    saveContainer.style.display = 'block';
-} else {
-    saveContainer.style.display = 'none';
-}
+    var saveContainer = document.getElementById('save-button-container');
+    if (saveContainer.style.display === 'none') {
+        saveContainer.style.display = 'block';
+    } else {
+        saveContainer.style.display = 'none';
+    }
 }
 
 function verifyLeaveFunction(){
@@ -72,10 +71,12 @@ function verifyLeaveFunction(){
         return false;
         }
 
-    }
+    } else {
+        // Proceed with default action (i.e., go back)
+        return window.history.back();
+    }    
 
-  // Proceed with default action (i.e., go back)
-  return window.history.back();
+  
 }
 
 function togglePage() {
@@ -85,13 +86,13 @@ function togglePage() {
         formContainer.style.display = 'none';
         toggleButton.innerHTML = "<img src='/static/images/back.png'>";
         toggleButton.setAttribute("onclick", "verifyLeaveFunction()");
-    } 
-    else {
+    } else {
         formContainer.style.display = 'block';
         toggleButton.innerHTML = "<img src='/static/images/edit.png'>";
         toggleButton.removeAttribute("onclick");
     }
 }
+
 function toggleSave() {
     var saveContainer = document.getElementById('save-button-container');
     if (saveContainer.style.display === 'none') {
@@ -100,11 +101,13 @@ function toggleSave() {
         saveContainer.style.display = 'none';
     }
 }
+
 function uploadPageFromEditor() {
     var myContent = tinymce.get("myTextarea").getContent();
     document.getElementById("contentInput").value = myContent;
     document.forms[0].submit();
 }
+
 function toggleDrawer() {
     var pageDrawer = document.getElementById('toggleDrawer');
     if (pageDrawer.style.display === 'block') {
@@ -115,6 +118,7 @@ function toggleDrawer() {
         sessionStorage.setItem('drawerOpen', 'true');
     }
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     var drawerOpen = sessionStorage.getItem('drawerOpen');
     var pageDrawer = document.getElementById('toggleDrawer');
@@ -125,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pageDrawer.style.display = 'none';
     }
 });
+
 function toggleWikiPageMargin() {
     var wikiPage = document.querySelector('.wiki-page');
     if (wikiPage.style.marginLeft === '0px') {
@@ -133,6 +138,7 @@ function toggleWikiPageMargin() {
         wikiPage.style.marginLeft = '0px';
     }
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     var uniqueElement = document.querySelector('.unique-element');
     if (!(uniqueElement && uniqueElement.hasAttribute('data-default-drawer-open'))) {
@@ -140,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pageDrawer.style.display = 'none';
     }
 });
+
 window.addEventListener('resize', function() {
     var drawerOpen = sessionStorage.getItem('drawerOpen');
     var uniqueElement = document.querySelector('.unique-element');
@@ -147,7 +154,7 @@ window.addEventListener('resize', function() {
         toggleDrawer();
         toggleWikiPageMargin();
     }
-  });
+});
 
 window.addEventListener("load", () => {
     const loader = document.querySelector(".loader")
@@ -157,3 +164,13 @@ window.addEventListener("load", () => {
         document.body.removeChild("loader");
     })
 })
+
+var val;
+function timeout() {
+    val = setTimeout(showPage, 3000);
+}
+
+function showPage() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("map-content").style.display = "block";
+}
