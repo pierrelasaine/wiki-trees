@@ -166,11 +166,3 @@ class Backend:
             f = image.read()
             b = bytearray(f)
             return b
-
-
-# backend1 = Backend("wiki_content_p1")
-# backend2 = Backend("developer_images")
-# backend3 = Backend("users_passwords_p1")
-#print(backend.get_wiki_page("ginkgo.txt"))
-#print(backend.get_all_page_names())
-#print(backend2.get_image("bulbasaur.jpeg"))
