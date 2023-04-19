@@ -34,17 +34,17 @@ def test_serve_js(client):
 
     assert resp.status_code == 200
 
+
 @patch("flaskr.backend")
 def test_home_post(mock_backend, client):
     mock_backend.search.return_value = "Oak Tree"
-    resp = client.post("/", data = {"search_input": "Oak Tree"})
+    resp = client.post("/", data={"search_input": "Oak Tree"})
     assert resp.status_code == 200
     assert b'Oak Tree' in resp.data
     assert b'Evergreen' not in resp.data
 
 
 def test_home_page(client):
-    
 
     resp = client.get("/")
     assert resp.status_code == 200
@@ -72,13 +72,15 @@ def test_image_nonexistent(client):
     assert resp.status_code == 404
     assert b'Sorry! The page could not be found :(' in resp.data
 
+
 @patch("flaskr.backend")
 def test_pages_post(mock_backend, client):
     mock_backend.search.return_value = "Oak Tree"
-    resp = client.post("/pages", data = {"search_input": "Oak Tree"})
+    resp = client.post("/pages", data={"search_input": "Oak Tree"})
     assert resp.status_code == 200
     assert b'Oak Tree' in resp.data
     assert b'Evergreen' not in resp.data
+
 
 @patch("flaskr.backend.Backend.get_wiki_page")
 def test_pages_wiki_nonexistent(mock_get_wiki_page, client):

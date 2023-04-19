@@ -17,6 +17,7 @@ from flaskr.tag_handler import TagHandler
 from flaskr.backend import *
 from io import BytesIO
 
+
 #Solution code: backend is an endpoint
 def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
@@ -25,15 +26,15 @@ def make_endpoints(app, backend):
     def serve_js(filename):
         return send_from_directory("../src", filename)
 
-    @app.route("/", methods=['GET','POST'])
+    @app.route("/", methods=['GET', 'POST'])
     def home():
         if request.method == "POST":
             search_input = request.form["search_input"]
 
             results = backend.search(search_input)
             return render_template("search_results.html",
-                            search_input=search_input,
-                            results=results)
+                                   search_input=search_input,
+                                   results=results)
         else:
             pages = backend.get_all_page_names()
             return render_template("main.html", pages=pages)

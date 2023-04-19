@@ -8,7 +8,6 @@ import folium
 from folium import plugins
 
 
-
 class Backend:
 
     def __init__(self, storage_client=storage.Client()):
@@ -166,9 +165,8 @@ class Backend:
             b = bytearray(f)
             return b
 
-   
     def search(self, search_input):
-         # Uses the difflib Python library(specifically the “get_close_matches” function)
+        # Uses the difflib Python library(specifically the “get_close_matches” function)
         # to return page results that might be spelled incorrectly.
         tag_handler = TagHandler()
         return set(
