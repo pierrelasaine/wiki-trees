@@ -80,7 +80,7 @@ def make_endpoints(app, backend):
             parser.feed(content.decode())
             backend.upload(content, name, filename)
             return redirect(url_for('page', filename=name))
-        except ValueError as e:
+        except ValueError:
             return "<script>alert('Invalid HTML!');</script>" + render_template("upload.html", pages=pages)
 
 
