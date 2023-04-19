@@ -26,7 +26,7 @@ def make_endpoints(app, login_manager, backend):
                                        active_tab='SignUp',
                                        pages=pages)
         else:
-            return render_template("login.html", 
+            return render_template("login.html",
                                    active_tab='SignUp',
                                    pages=pages)
 

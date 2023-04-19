@@ -7,6 +7,7 @@ import folium
 from folium.plugins import MarkerCluster
 from bs4 import BeautifulSoup
 
+
 @pytest.fixture
 def name():
     return "name"

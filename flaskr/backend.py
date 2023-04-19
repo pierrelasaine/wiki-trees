@@ -152,11 +152,11 @@ class Backend:
             legend_html += f'<tr><td><i style="background-color:{colors[i]}; border-radius:50%; width:10px; height:10px; display:inline-block;"></i></td><td style="padding-left:8px;">{tree_names[i]}</td></tr>'
 
         folium.Marker(
-                location=tree_distributions[tree_names[i]]['location'],
-                icon=folium.Icon(color=colors[i], icon='leaf', prefix='fa'),
-                tooltip=tree_names[i],
-            ).add_to(tree_map)
-            
+            location=tree_distributions[tree_names[i]]['location'],
+            icon=folium.Icon(color=colors[i], icon='leaf', prefix='fa'),
+            tooltip=tree_names[i],
+        ).add_to(tree_map)
+
         legend_html += '''
                 </table>
             </div>
