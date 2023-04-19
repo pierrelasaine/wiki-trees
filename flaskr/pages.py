@@ -75,11 +75,14 @@ def make_endpoints(app, backend):
             content = content_str.encode()
             filename = name
 
-        if not backend.is_html(content):
+        parser = html.parser.HTMLParser()
+        try:
+            parser.feed(content.decode())
+            backend.upload(content, name, filename)
+            return redirect(url_for('page', filename=name))
+        except ValueError as e:
             return "<script>alert('Invalid HTML!');</script>" + render_template("upload.html", pages=pages)
 
-        backend.upload(content, name, filename)
-        return redirect(url_for('page', filename=name))
 
     @app.route("/tdm")
     def tree_distribution_map():

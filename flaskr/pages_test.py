@@ -47,10 +47,10 @@ def test_image_nonexistent(client):
     assert b"Not Found" in resp.data
 
 
-# def test_pages_page(client):
-#     resp = client.get("/pages")
-#     assert resp.status_code == 200
-#     assert b"Wiki Pages" in resp.data
+def test_pages_page(client):
+    resp = client.get("/pages")
+    assert resp.status_code == 200
+    assert b"Wiki Pages" in resp.data
 
 
 @patch("flaskr.backend.Backend.get_wiki_page")
@@ -74,6 +74,21 @@ def test_upload_page(client):
     resp = client.get("/upload")
     assert resp.status_code == 200
     assert b"Drop File to Upload" in resp.data
+
+def test_upload_valid_html(client):
+    resp = client.post('/upload', data={
+        'name': 'valid_page',
+        'content': '<html><body><h1>Hello world!</h1></body></html>'
+    })
+    assert resp.status_code == 302
+
+def test_upload_invalid_html(client):
+    resp = client.post('/upload', data={
+        'name': 'invalid_page',
+        'content': '<html><body><h1>Hello world!</h2></body></html>'
+    })
+    assert resp.status_code == 200
+    assert b"Invalid HTML!" in resp.data
 
 
 @patch("flaskr.backend.Backend.get_wiki_page")
