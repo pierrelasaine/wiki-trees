@@ -26,10 +26,18 @@ def make_endpoints(app, backend):
     def serve_js(filename):
         return send_from_directory("../src", filename)
 
-    @app.route("/")
+    @app.route("/", methods=['GET', 'POST'])
     def home():
-        pages = backend.get_all_page_names()
-        return render_template("main.html", pages=pages)
+        if request.method == "POST":
+            search_input = request.form["search_input"]
+
+            results = backend.search(search_input)
+            return render_template("search_results.html",
+                                   search_input=search_input,
+                                   results=results)
+        else:
+            pages = backend.get_all_page_names()
+            return render_template("main.html", pages=pages)
 
     @app.route("/pages/<filename>")
     def page(filename):

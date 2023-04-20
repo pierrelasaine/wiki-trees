@@ -23,7 +23,6 @@ class Backend:
         blob = self.page_bucket.blob(blob_name)
         if blob is None:
             return None
-
         return blob.download_as_text()
 
     def get_all_page_names(self):
@@ -68,7 +67,6 @@ class Backend:
 
         if sanitized_html != html:
             return False
-
         return True
 
     def tree_map(self):
@@ -123,11 +121,8 @@ class Backend:
                 </table>
             </div>
             '''
-
         tree_map.get_root().html.add_child(folium.Element(legend_html))
-
         map_html = tree_map._repr_html_()
-
         return map_html
 
     def sign_up(self, username, password):
@@ -170,9 +165,9 @@ class Backend:
             b = bytearray(f)
             return b
 
-    # Uses the difflib Python library(specifically the “get_close_matches” function)
-    # to return page results that might be spelled incorrectly.
     def search(self, search_input):
+        # Uses the difflib Python library(specifically the “get_close_matches” function)
+        # to return page results that might be spelled incorrectly.
         tag_handler = TagHandler()
         return set(
             get_close_matches(search_input, self.get_all_page_names()) +

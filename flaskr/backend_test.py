@@ -66,6 +66,39 @@ def mock_backend(storage_client):
     return Backend(storage_client)
 
 
+@pytest.fixture
+def mock_page_bucket():
+    mock = MagicMock(spec=storage.Bucket)
+
+    blobs = [MagicMock() for _ in range(3)]
+    blobs[0].name = 'Coast Redwood'
+    blobs[1].name = 'Not_A_Tree.png'
+    blobs[2].name = 'Japanese Magnolia'
+
+    mock.list_blobs.return_value = blobs
+    return mock
+
+
+@pytest.fixture
+def mock_image_bucket():
+    mock = MagicMock(spec=storage.Bucket)
+
+    mock.get_blob.return_value = mock_blob
+    return mock
+
+
+@pytest.fixture
+def mock_page_storage_client(mock_page_bucket):
+    mock = MagicMock(spec=storage.Client)
+    mock.bucket.return_value = mock_page_bucket
+    return mock
+
+
+@pytest.fixture
+def mock_page_backend(mock_page_storage_client):
+    return Backend(mock_page_storage_client)
+
+
 # Test functions
 def test_get_wiki_page(mock_backend):
     """Tests if the get_wiki_page method returns the correct content."""
@@ -80,28 +113,24 @@ def test_cant_get_wiki_page(mock_backend, bad_name):
 def test_valid_html(mock_backend):
     """Tests if the is_valid_html method returns True for valid HTML."""
     valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
-
     assert mock_backend.is_valid_html(valid_html)
 
 
 def test_invalid_doctype(mock_backend):
     """Tests if the is_valid_html method returns False for invalid doctype."""
     invalid_doctype = '<!DOCTYPE other><html><head></head><body></body></html>'
-
     assert not mock_backend.is_valid_html(invalid_doctype)
 
 
 def test_unsanitized_html(mock_backend):
     """Tests if the is_valid_html method returns False for unsanitized HTML."""
     unsanitized_html = '<div><p>Hello, world!</p><a href="javascript:alert(1);">Click me</a></div>'
-
     assert not mock_backend.is_valid_html(unsanitized_html)
 
 
 def test_missing_closing_tag(mock_backend):
     """Tests if the is_valid_html method returns False for missing closing tag."""
     missing_closing_tag = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</div>'
-
     assert not mock_backend.is_valid_html(missing_closing_tag)
 
 
@@ -128,14 +157,18 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
                                     })
 
 
+def test_get_all_page_names(mock_page_backend):
+    assert mock_page_backend.get_all_page_names() == [
+        'Coast Redwood', 'Japanese Magnolia'
+    ]
+
+
 """
-def test_get_wiki_page(self, name):
+def test_get_image_with_blob():
     pass
 
-
-def test_get_all_page_names(self):
-    pass
-
+def test_get_image_without_blob():
+    
 
 def test_upload(self, username, password, file):
     pass
@@ -147,8 +180,4 @@ def test_sign_up(self, username, password):
 
 def test_sign_in(self, username, password):
     pass
-
-
-# def test_get_image(self, image_name):
-#     pass
 """
