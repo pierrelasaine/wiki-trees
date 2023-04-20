@@ -66,7 +66,6 @@ def mock_backend(storage_client):
     return Backend(storage_client)
 
 
-
 @pytest.fixture
 def mock_page_bucket():
     mock = MagicMock(spec=storage.Bucket)
@@ -77,6 +76,13 @@ def mock_page_bucket():
     blobs[2].name = 'Japanese Magnolia'
 
     mock.list_blobs.return_value = blobs
+    return mock
+
+@pytest.fixture
+def mock_image_bucket():
+    mock = MagicMock(spec=storage.Bucket)
+
+    mock.get_blob.return_value = mock_blob
     return mock
 
 @pytest.fixture
@@ -150,12 +156,16 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
 def test_get_all_page_names(mock_page_backend):
     assert mock_page_backend.get_all_page_names() == ['Coast Redwood', 'Japanese Magnolia']
 
+"""
+def test_get_image_with_blob():
+    pass
+
+def test_get_image_without_blob():
+    
 
 def test_upload(self, username, password, file):
     pass
 
-
-"""
 
 def test_sign_up(self, username, password):
     pass
@@ -163,8 +173,5 @@ def test_sign_up(self, username, password):
 
 def test_sign_in(self, username, password):
     pass
-
-
-# def test_get_image(self, image_name):
-#     pass
 """
+
