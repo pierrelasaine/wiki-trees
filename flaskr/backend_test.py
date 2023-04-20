@@ -66,6 +66,29 @@ def mock_backend(storage_client):
     return Backend(storage_client)
 
 
+
+@pytest.fixture
+def mock_page_bucket():
+    mock = MagicMock(spec=storage.Bucket)
+
+    blobs = [MagicMock() for _ in range(3)]
+    blobs[0].name = 'Coast Redwood'
+    blobs[1].name = 'Not_A_Tree.png'
+    blobs[2].name = 'Japanese Magnolia'
+
+    mock.list_blobs.return_value = blobs
+    return mock
+
+@pytest.fixture
+def mock_page_storage_client(mock_page_bucket):
+    mock = MagicMock(spec=storage.Client)
+    mock.bucket.return_value = mock_page_bucket
+    return mock
+
+@pytest.fixture
+def mock_page_backend(mock_page_storage_client):
+    return Backend(mock_page_storage_client)
+
 # Test functions
 def test_get_wiki_page(mock_backend):
     """Tests if the get_wiki_page method returns the correct content."""
@@ -124,13 +147,15 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
                                     })
 
 
-"""
-def test_get_all_page_names(self):
-    pass
+def test_get_all_page_names(mock_page_backend):
+    assert mock_page_backend.get_all_page_names() == ['Coast Redwood', 'Japanese Magnolia']
+
 
 def test_upload(self, username, password, file):
     pass
 
+
+"""
 
 def test_sign_up(self, username, password):
     pass
