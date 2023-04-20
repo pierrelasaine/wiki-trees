@@ -26,6 +26,12 @@
         </h1>
     {% if current_user.name %}
         <div class="buttons">
+            <div id="toggleAddTags">
+                <form action="/tags/{{ filename }}/" method="POST">
+                    <input type="text" placeholder='Add Tag with "+"!' name="tag" required>
+                    <button type="submit"><img src="/static/images/add.png"></button>
+                </form>
+            </div>
             <button id="toggleButton" type="button" onclick="toggleEditor(); togglePage(); toggleSave();">
                 <img src="/static/images/edit.png">
             </button>

@@ -91,7 +91,7 @@ def make_endpoints(app, backend):
             backend.upload(file.stream.read(), name, file.filename)
             TagHandler().add_file_to_csv(name)
 
-            return render_template("main.html")
+            return render_template("main.html", pages=pages)
 
         else:
             content_bstr = content_str.encode()
@@ -111,9 +111,15 @@ def make_endpoints(app, backend):
                                header="Tree Distribution Map",
                                pages=pages)
 
-    @app.route('/search-results')
+    @app.route('/search-results', methods=["POST"])
     def search():
-        return render_template("search_results.html")
+        pages = pages = backend.get_all_page_names()
+        search_input = request.form['search_input']
+        results = backend.search(search_input)
+        return render_template("search_results.html",
+                               search_input=search_input,
+                               results=results,
+                               pages=pages)
 
     @app.route("/tags/<filename>/", methods=["POST"])
     def add_tag(filename):

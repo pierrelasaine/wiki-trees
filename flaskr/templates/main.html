@@ -85,13 +85,10 @@
                             <img src="/static/images/wikitrees!-logo.png">
                         </div>
                         <div class="search-box">
-                            <form method="post">
-                                <label for="search">Search Pages/Tags:</label>
-                                <br>
-                                <input type="text" id="search_input" name="search_input" required>
+                            <form action="/search-results" method="POST">
+                                <input type="text" id="search_input" name="search_input" placeholder="Search for a page by Tag or Title."required>
                                 <button type="submit">Search</button>
-                            </form>
-                              
+                            </form>  
                         </div>                         
                     </div>
                     {% endblock %}

@@ -2,6 +2,14 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     min-height: 100vh;
+    zoom: 1;
+}
+  
+  /* Zoom level for phone screens */
+@media screen and (max-width: 767px) {
+    body {
+        zoom: 0.8;
+    }
 }
 
 /* Full-width input fields */
@@ -105,8 +113,24 @@ button:hover {
         }
         .search-box {
             padding: 10%;
+            padding-top: 70px; 
             text-align: center;
         }
+            .search-box input{
+                background-color: #e3e3dc;
+                margin-top: 0px !important;
+                border: none;
+                border-top-right-radius: 5px;
+                border-top-left-radius: 5px;
+                border-bottom: 1px solid #43483e;
+                max-width: 625px;
+                font-size: 20px;
+            }
+            .search-box button{
+                margin-top: 20px;
+                font-size: 16px;
+                font-weight: 500;
+            }
     .about-box {
         background-color: #f1f3e9;
         border-radius: 40px;
@@ -189,6 +213,9 @@ button:hover {
                 }
                     .author-image-box img{
                         border-radius: 40px;
+                        object-fit: cover;
+                        max-width: 300px !important;
+                        max-height: 100% !important;
                     }
 .form-box-box-box {
     padding-left: 20px;
@@ -303,6 +330,22 @@ button:hover {
             flex-direction: row;
             justify-content: right;
         }
+            .buttons form{
+                display: flex;
+            }
+                .buttons input{
+                    margin-left: 15px;
+                    background-color: #e3e3dc;
+                    margin-top: 0px !important;
+                    border: none;
+                    border-top-right-radius: 5px;
+                    border-top-left-radius: 5px;
+                    border-bottom: 1px solid #43483e;
+                    max-width: 200px;
+                    font-size: 16px;
+
+                    display: flex;
+                }
     .page-box {
         background-color: #f1f3e9;
         border-radius: 40px;

@@ -164,44 +164,28 @@
 
     document.addEventListener("DOMContentLoaded", function() {
         /**
-         * Set the drawer's display state based on the value stored in sessionStorage.
+         * Set the drawer's display state based on the unique-element attribute and sessionStorage value.
          */
+        var uniqueElement = document.querySelector(".unique-element");
+        var wikiPage = document.querySelector(".wiki-page");
+        var pageDrawer = document.getElementById("pageDrawer");
         var drawerOpen = sessionStorage.getItem("drawerOpen");
-        var pageDrawer = document.getElementById("pageDrawer");
+    
         if (pageDrawer != null) {
-            if (drawerOpen === "true") {
-                pageDrawer.style.display = "block";
-            } else if (drawerOpen === "false") {
+            if (uniqueElement && uniqueElement.hasAttribute("data-default-drawer-open")) {
+                if (drawerOpen === "true" || drawerOpen === null) {
+                    pageDrawer.style.display = "block";
+                    wikiPage.style.marginLeft = "250px";
+                } else if (drawerOpen === "false") {
+                    pageDrawer.style.display = "none";
+                    wikiPage.style.marginLeft = "0px";
+                }
+            } else {
                 pageDrawer.style.display = "none";
             }
         }
     });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        /**
-         * Hide the drawer if the unique-element is not present or does not have the data-default-drawer-open attribute.
-         */
-        var uniqueElement = document.querySelector(".unique-element");
-        var pageDrawer = document.getElementById("pageDrawer");
-
-        if (!(uniqueElement && uniqueElement.hasAttribute("data-default-drawer-open"))) {
-            if (pageDrawer != null) {
-                pageDrawer.style.display = "none";
-            }
-        }
-    });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        /**
-         * Show the drawer if the unique-element is present and has the data-default-drawer-open attribute.
-         */
-        var uniqueElement = document.querySelector(".unique-element");
-
-        if (uniqueElement && uniqueElement.hasAttribute("data-default-drawer-open")) {
-            var pageDrawer = document.getElementById("pageDrawer");
-            pageDrawer.style.display = "block";
-        }
-    });
+    
 
     window.addEventListener("resize", function() {
         /**
@@ -209,10 +193,19 @@
          */
         var drawerOpen = sessionStorage.getItem("drawerOpen");
         var uniqueElement = document.querySelector(".unique-element");
-
-        if (window.matchMedia("(max-width: 768px)").matches && (uniqueElement && uniqueElement.hasAttribute("data-default-drawer-open")) && (drawerOpen === "true")) {
-            toggleDrawer();
-            toggleWikiPageMargin();
+    
+        if (uniqueElement && uniqueElement.hasAttribute("data-default-drawer-open")) {
+            if (window.matchMedia("(min-width: 1018px)").matches) {
+                if (drawerOpen === "false") {
+                    toggleDrawer();
+                    toggleWikiPageMargin();
+                }
+            } else {
+                if (drawerOpen === "true") {
+                    toggleDrawer();
+                    toggleWikiPageMargin();
+                }
+            }
         }
     });
 
