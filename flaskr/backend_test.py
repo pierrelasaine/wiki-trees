@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup
 import re
 
 
-
 @pytest.fixture
 def name():
     return "name"
