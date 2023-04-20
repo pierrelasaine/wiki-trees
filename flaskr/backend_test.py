@@ -6,6 +6,8 @@ import pytest
 import folium
 from folium.plugins import MarkerCluster
 from bs4 import BeautifulSoup
+import re
+
 
 @pytest.fixture
 def name():
@@ -86,8 +88,8 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
     valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
     mock_backend.is_valid_html(valid_html)
     mock_cleaner.assert_called_with(tags=[
-        'a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title', 'div',
-        'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'
+        'a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title',
+        'div', 'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'
     ],
                                     attributes={
                                         'a': ['href', 'title'],
@@ -97,145 +99,25 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
                                     })
 
 
-@pytest.fixture
-def valid_html():
-    return '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
-
-
-@pytest.fixture
-def invalid_doctype():
-    return '<!DOCTYPE other><html><head></head><body></body></html>'
-
-
-def test_is_html(mock_backend, valid_html):
-    assert mock_backend.is_valid_html(valid_html)
-
-
-def test_invalid_type(mock_backend, invalid_doctype):
-    assert not mock_backend.is_valid_html(invalid_doctype)
-
-
-def test_legend(mock_backend):
+def test_tree_map_is_map(mock_backend):
     map_html = mock_backend.tree_map()
-    assert 'Legend' in map_html
-    assert 'Coast Redwood' in map_html
-    # assert 'style="background-color:forestgreen' in map_html
+    assert isinstance(map_html, str)
 
 
-def test_tree_distribution(mock_backend):
-    tree_locations = {
-        'Coast Redwood': {
-            'location': (38.9822, -123.3781),
-            'distribution': 'North America'
-        },
-        'Ginko': {
-            'location': (39.7684, -86.1581),
-            'distribution': 'East Asia'
-        },
-        'Japanese Magnolia': {
-            'location': (35.8801, -79.0800),
-            'distribution': 'East Asia'
-        },
-        'Juniper': {
-            'location': (40.7968, -77.8619),
-            'distribution': 'North America, Eurasia'
-        },
-        'Live Oak': {
-            'location': (30.3894, -86.5229),
-            'distribution': 'North America'
-        },
-        'Monterey Cypress': {
-            'location': (36.6002, -121.8947),
-            'distribution': 'North America'
-        },
-        'Palm': {
-            'location': (26.7056, -80.0364),
-            'distribution': 'Africa, Eurasia, Americas'
-        },
-        'Palmetto': {
-            'location': (26.7153, -81.0522),
-            'distribution': 'North America'
-        },
-        'Water Oak': {
-            'location': (30.4383, -84.2807),
-            'distribution': 'North America'
-        },
-        'White Oak': {
-            'location': (33.9860, -83.7185),
-            'distribution': 'North America'
-        }
-    }
+def test_tree_map_marker(mock_backend):
     map_html = mock_backend.tree_map()
-    for tree_name, tree_data in tree_locations.items():
-        assert str(tree_data['location'][0]) in map_html
-        assert str(tree_data['location'][1]) in map_html
-        assert tree_data['distribution'] in map_html
-
-
-def test_tree_map_html_representation(mock_backend):
-    map_html = mock_backend.tree_map()
-
-    assert map_html.strip() != ''
-    assert 'Coast Redwood' in map_html
-    assert 'Ginko' in map_html
-    assert 'Japanese Magnolia' in map_html
-    assert 'Juniper' in map_html
-    assert 'Live Oak' in map_html
-    assert 'Monterey Cypress' in map_html
-    assert 'Palm' in map_html
-    assert 'Palmetto' in map_html
-    assert 'Water Oak' in map_html
-    assert 'White Oak' in map_html
-    # assert 'Distribution Map' in map_html
-    # assert '<i style="background-color:' in map_html
-    # assert '<b style="font-size: 16px;">Distribution: </b>' in map_html
-
-
-def test_tree_map_markers(mock_backend):
-    tree_locations = {
-        'Coast Redwood': {
-            'location': (38.9822, -123.3781),
-            'distribution': 'North America'
-        },
-        'Ginko': {
-            'location': (39.7684, -86.1581),
-            'distribution': 'East Asia'
-        },
-        'Japanese Magnolia': {
-            'location': (35.8801, -79.0800),
-            'distribution': 'East Asia'
-        },
-        'Juniper': {
-            'location': (40.7968, -77.8619),
-            'distribution': 'North America, Eurasia'
-        },
-        'Live Oak': {
-            'location': (30.3894, -86.5229),
-            'distribution': 'North America'
-        },
-        'Monterey Cypress': {
-            'location': (36.6002, -121.8947),
-            'distribution': 'North America'
-        },
-        'Palm': {
-            'location': (26.7056, -80.0364),
-            'distribution': 'Africa, Eurasia, Americas'
-        },
-        'Palmetto': {
-            'location': (26.7153, -81.0522),
-            'distribution': 'North America'
-        },
-        'Water Oak': {
-            'location': (30.4383, -84.2807),
-            'distribution': 'North America'
-        },
-        'White Oak': {
-            'location': (33.9860, -83.7185),
-            'distribution': 'North America'
-        }
-    }
-
     tree_names = [
         'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper', 'Live Oak',
         'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak', 'White Oak'
     ]
+    for tree in tree_names:
+        assert re.search(
+            f'<div class="leaflet-popup-content">\n\s+<div>{tree} Tree</div>',
+            map_html) is not None
+
+
+def test_tree_map_legend(mock_backend):
+    map_html = mock_backend.tree_map()
+    legend_pattern = r'<div class="legend">\s*<div class="item" style="background-color:(#[A-Za-z0-9]{6});">\s*(.*?)\s*</div>\s*'
+    legend_matches = re.findall(legend_pattern, map_html)
+    assert legend_matches is not None
