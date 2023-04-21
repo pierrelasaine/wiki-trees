@@ -75,18 +75,26 @@ def test_upload_page(client):
     assert resp.status_code == 200
     assert b"Drop File to Upload" in resp.data
 
+
 def test_upload_valid_html(client):
-    resp = client.post('/upload', data={
-        'name': 'valid_page',
-        'content': '<html><body><h1>Hello world!</h1></body></html>'
-    })
+    resp = client.post('/upload',
+                       data={
+                           'name':
+                           'valid_page',
+                           'content':
+                           '<html><body><h1>Hello world!</h1></body></html>'
+                       })
     assert resp.status_code == 302
 
+
 def test_upload_invalid_html(client):
-    resp = client.post('/upload', data={
-        'name': 'invalid_page',
-        'content': '<html><body><h1>Hello world!</h2></body></html>'
-    })
+    resp = client.post('/upload',
+                       data={
+                           'name':
+                           'invalid_page',
+                           'content':
+                           '<html><body><h1>Hello world!</h2></body></html>'
+                       })
     # assert resp.status_code == 200
     assert b"Invalid HTML!" in resp.data
 
@@ -103,6 +111,7 @@ def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 
+
 """
 @patch("flaskr.backend.Backend.get_wiki_page")
 @patch("flaskr.backend.Backend.upload")
@@ -116,6 +125,7 @@ def test_file_upload(mock_upload, mock_get_wiki_page, client):
     assert resp.status_code == 200
     assert b"Test HTML" in resp.data
 """
+
 
 def pytest_configure(config):
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)

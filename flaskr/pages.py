@@ -45,9 +45,7 @@ def make_endpoints(app, backend):
         authors = [("Pierre Johnson", "bulbasaur.jpeg"),
                    ("Ericka James", "charmander.jpeg"),
                    ("Jalen Richburg", "squirtle.jpeg")]
-        return render_template("about.html", 
-                               authors=authors,
-                               pages=pages)
+        return render_template("about.html", authors=authors, pages=pages)
 
     @app.route("/images/<filename>")
     def get_image(filename):
@@ -81,15 +79,14 @@ def make_endpoints(app, backend):
             backend.upload(content, name, filename)
             return redirect(url_for('page', filename=name))
         except ValueError:
-            return "<script>alert('Invalid HTML!');</script>" + render_template("upload.html", pages=pages)
-
+            return "<script>alert('Invalid HTML!');</script>" + render_template(
+                "upload.html", pages=pages)
 
     @app.route("/tdm")
     def tree_distribution_map():
         pages = backend.get_all_page_names()
         map_html = backend.tree_map()
-        return render_template("tree_map.html", 
-                               map_html=map_html, 
+        return render_template("tree_map.html",
+                               map_html=map_html,
                                header="Tree Distribution Map",
                                pages=pages)
-
