@@ -16,6 +16,8 @@ from flask import render_template, session, request, redirect, url_for, make_res
 from flaskr.tag_handler import TagHandler
 from flaskr.backend import *
 from io import BytesIO
+import bleach
+import html.parser
 
 
 #Solution code: backend is an endpoint
@@ -87,22 +89,22 @@ def make_endpoints(app, backend):
         content_str = request.form['content']
         if not content_str:
             file = request.files.get('file')
-
-            backend.upload(file.stream.read(), name, file.filename)
-            TagHandler().add_file_to_csv(name)
-
-            return render_template("main.html", pages=pages)
-
+            content = file.stream.read()
+            filename = file.filename
         else:
-            content_bstr = content_str.encode()
-            content = bytearray(content_bstr)
+            content = content_str.encode()
+            filename = name
 
-            backend.upload(content, name, name)
-            TagHandler().add_file_to_csv(name)
-        ## check for validation [Page Redirect R8.]
-        return redirect(url_for('page', filename=name))
+        parser = html.parser.HTMLParser()
+        try:
+            parser.feed(content.decode())
+            backend.upload(content, name, filename)
+            return redirect(url_for('page', filename=name))
+        except ValueError:
+            return "<script>alert('Invalid HTML!');</script>" + render_template(
+                "upload.html", pages=pages)
 
-    @app.route("/tdm")
+    @app.route("/map")
     def tree_distribution_map():
         pages = backend.get_all_page_names()
         map_html = backend.tree_map()

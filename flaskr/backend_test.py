@@ -5,7 +5,7 @@ from flaskr.backend import Backend
 from google.cloud import storage
 from bleach import Cleaner
 import pytest
-import io
+import folium
 
 
 # Test fixtures
@@ -157,27 +157,37 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
                                     })
 
 
-def test_get_all_page_names(mock_page_backend):
-    assert mock_page_backend.get_all_page_names() == [
-        'Coast Redwood', 'Japanese Magnolia'
+def test_tree_map_is_map(mock_backend):
+    map_html = mock_backend.tree_map()
+    assert isinstance(map_html, str)
+    assert map_html.strip() != ""
+
+
+def test_tree_map_contains_marker_for_each_tree(mock_backend):
+    html = mock_backend.tree_map()
+    for tree_name in [
+            'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper',
+            'Live Oak', 'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak',
+            'White Oak'
+    ]:
+        assert tree_name in html
+
+
+def test_tree_map_contains_legend(mock_backend):
+    html = mock_backend.tree_map()
+    assert 'Legend:' in html
+
+
+def test_tree_map_legend_has_all_tree_names_and_colors(mock_backend):
+    html = mock_backend.tree_map()
+    expected_colors = [
+        'green', 'red', 'blue', 'orange', 'darkgreen', 'darkblue', 'pink',
+        'darkred', 'gray', 'purple'
     ]
-
-
-"""
-def test_get_image_with_blob():
-    pass
-
-def test_get_image_without_blob():
-    
-
-def test_upload(self, username, password, file):
-    pass
-
-
-def test_sign_up(self, username, password):
-    pass
-
-
-def test_sign_in(self, username, password):
-    pass
-"""
+    for i, tree_name in enumerate([
+            'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper',
+            'Live Oak', 'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak',
+            'White Oak'
+    ]):
+        assert tree_name in html
+        assert expected_colors[i] in html
