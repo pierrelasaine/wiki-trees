@@ -8,6 +8,7 @@ import folium
 from folium import plugins
 import html.parser
 
+
 class Backend:
 
     def __init__(self, storage_client=storage.Client()):

@@ -172,6 +172,5 @@ def test_add_tag(mock_get_wiki_page, app, mock_tag_handler, client):
     assert resp.status_code == 200
 
 
-
 def pytest_configure(config):
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
