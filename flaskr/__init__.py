@@ -19,7 +19,7 @@ def create_app(test_config=None):
 
     # This is the default secret key used for login sessions
     # By default the dev environment uses the key 'dev'
-    app.config.from_mapping(SECRET_KEY='dev', )
+    app.config.from_mapping(SECRET_KEY='dev',)
 
     if test_config is None:
         # Load the instance config, if it exists, when not testing.
