@@ -4,9 +4,6 @@ from google.cloud import storage
 from bleach import Cleaner
 import pytest
 import folium
-from folium.plugins import MarkerCluster
-from bs4 import BeautifulSoup
-import re
 
 
 @pytest.fixture
@@ -88,8 +85,8 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
     valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
     mock_backend.is_valid_html(valid_html)
     mock_cleaner.assert_called_with(tags=[
-        'a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title',
-        'div', 'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'
+        'a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title', 'div',
+        'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'
     ],
                                     attributes={
                                         'a': ['href', 'title'],
@@ -102,22 +99,34 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
 def test_tree_map_is_map(mock_backend):
     map_html = mock_backend.tree_map()
     assert isinstance(map_html, str)
+    assert map_html.strip() != ""
 
 
-def test_tree_map_marker(mock_backend):
-    map_html = mock_backend.tree_map()
-    tree_names = [
-        'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper', 'Live Oak',
-        'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak', 'White Oak'
+def test_tree_map_contains_marker_for_each_tree(mock_backend):
+    html = mock_backend.tree_map()
+    for tree_name in [
+            'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper',
+            'Live Oak', 'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak',
+            'White Oak'
+    ]:
+        assert tree_name in html
+
+
+def test_tree_map_contains_legend(mock_backend):
+    html = mock_backend.tree_map()
+    assert 'Legend:' in html
+
+
+def test_tree_map_legend_has_all_tree_names_and_colors(mock_backend):
+    html = mock_backend.tree_map()
+    expected_colors = [
+        'green', 'red', 'blue', 'orange', 'darkgreen', 'darkblue', 'pink',
+        'darkred', 'gray', 'purple'
     ]
-    for tree in tree_names:
-        assert re.search(
-            f'<div class="leaflet-popup-content">\n\s+<div>{tree} Tree</div>',
-            map_html) is not None
-
-
-def test_tree_map_legend(mock_backend):
-    map_html = mock_backend.tree_map()
-    legend_pattern = r'<div class="legend">\s*<div class="item" style="background-color:(#[A-Za-z0-9]{6});">\s*(.*?)\s*</div>\s*'
-    legend_matches = re.findall(legend_pattern, map_html)
-    assert legend_matches is not None
+    for i, tree_name in enumerate([
+            'Coast Redwood', 'Ginko', 'Japanese Magnolia', 'Juniper',
+            'Live Oak', 'Monterey Cypress', 'Palm', 'Palmetto', 'Water Oak',
+            'White Oak'
+    ]):
+        assert tree_name in html
+        assert expected_colors[i] in html
