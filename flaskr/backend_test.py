@@ -106,8 +106,8 @@ def test_cleaner_mock(mock_cleaner, mock_backend):
     valid_html = '<div><p>Hello, world!</p><a href="https://example.com">Visit example.com</a></div>'
     mock_backend.is_valid_html(valid_html)
     mock_cleaner.assert_called_with(tags=[
-        'a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title', 'div',
-        'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'
+        'a', 'abbr', 'acronym', 'b', 'blockquote', 'br', 'code', 'title',
+        'div', 'em', 'i', 'li', 'ol', 'p', 'strong', 'u', 'ul', 'img'
     ],
                                     attributes={
                                         'a': ['href', 'title'],
