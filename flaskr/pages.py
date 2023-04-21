@@ -12,8 +12,8 @@ The module also defines two additional routes for user authentication:
 
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
-
-from flask import render_template, abort, session, request, redirect, url_for, make_response, send_file, send_from_directory
+from flask import render_template, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response, g
+from flaskr.tag_handler import TagHandler
 from flaskr.backend import *
 from io import BytesIO
 import bleach
@@ -24,17 +24,33 @@ import html.parser
 def make_endpoints(app, backend):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
-    @app.route("/")
+    @app.route("/src/<path:filename>")
+    def serve_js(filename):
+        return send_from_directory("../src", filename)
+
+    @app.route("/", methods=['GET', 'POST'])
     def home():
-        pages = backend.get_all_page_names()
-        return render_template("main.html", pages=pages)
+        if request.method == "POST":
+            search_input = request.form["search_input"]
+
+            results = backend.search(search_input)
+            return render_template("search_results.html",
+                                   search_input=search_input,
+                                   results=results)
+        else:
+            pages = backend.get_all_page_names()
+            return render_template("main.html", pages=pages)
 
     @app.route("/pages/<filename>")
     def page(filename):
         page_content = backend.get_wiki_page(filename)
         pages = backend.get_all_page_names()
         if not page_content:
-            abort(404)
+            error_message = "Sorry! The page could not be found :("
+            response = Response(error_message,
+                                status=404,
+                                content_type="text/plain")
+            return response
 
         return render_template("page_template.html",
                                filename=filename,
@@ -53,7 +69,11 @@ def make_endpoints(app, backend):
     def get_image(filename):
         image_data = backend.get_image(filename)
         if not image_data:
-            abort(404)
+            error_message = "Sorry! The page could not be found :("
+            response = Response(error_message,
+                                status=404,
+                                content_type="text/plain")
+            return response
 
         response = make_response(image_data)
         response.headers.set("Content-Type", "image/jpeg")
@@ -92,3 +112,21 @@ def make_endpoints(app, backend):
                                map_html=map_html,
                                header="Tree Distribution Map",
                                pages=pages)
+
+    @app.route('/search-results', methods=["POST"])
+    def search():
+        pages = pages = backend.get_all_page_names()
+        search_input = request.form['search_input']
+        results = backend.search(search_input)
+        return render_template("search_results.html",
+                               search_input=search_input,
+                               results=results,
+                               pages=pages)
+
+    @app.route("/tags/<filename>/", methods=["POST"])
+    def add_tag(filename):
+        tag_handler = g.get("tag_handler", TagHandler())
+        filename = filename.replace("%20", " ")
+        tag = request.form['tag']
+        tag_handler.add_tag_to_csv(filename, tag)
+        return redirect(url_for("page", filename=filename))

@@ -5,6 +5,13 @@
 {% endblock %}
 
 {% block content %}
+{% if current_user.name %}
+<form action="/tags/{{ filename }}/" method="POST">
+    <input type="text" placeholder="Input Tag Here" name="tag" required>
+    <button type="submit">Add Tag</button>
+</form>
+{% endif %}
+
 <div class="unique-element" data-default-drawer-open></div>
 {% if current_user.name %}
 <form action="/upload" method="POST" enctype="multipart/form-data">
@@ -12,17 +19,23 @@
     <input type="hidden" name="content" id="contentInput">
 </form>
 {% endif %}
-<div class="wiki-page">
+<div class="wiki-page" id="wikiPage">
     <div class="page-head">
         <h1>
             {{ filename }}
         </h1>
     {% if current_user.name %}
         <div class="buttons">
+            <div id="toggleAddTags">
+                <form action="/tags/{{ filename }}/" method="POST">
+                    <input type="text" placeholder='Add Tag with "+"!' name="tag" required>
+                    <button type="submit"><img src="/static/images/add.png"></button>
+                </form>
+            </div>
             <button id="toggleButton" type="button" onclick="toggleEditor(); togglePage(); toggleSave();">
                 <img src="/static/images/edit.png">
             </button>
-            <div id='save-button-container' style="display: none;">
+            <div id='save-button-container' style="display: none;">              
                 <button type="button" onclick="uploadPageFromEditor()"><img src="/static/images/upload.png"></button>
             </div>
         </div>
