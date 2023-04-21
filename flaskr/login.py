@@ -21,11 +21,10 @@ def make_endpoints(app, login_manager, backend):
                 login_user(User(username))
                 return redirect('/')
             else:
-                return render_template(
-                    "login.html",
-                    error_message="Username already exists!",
-                    active_tab='SignUp',
-                    pages=pages)
+                return render_template("login.html",
+                                       error_message="Username already exists!",
+                                       active_tab='SignUp',
+                                       pages=pages)
         else:
             return render_template("login.html",
                                    active_tab='SignUp',
