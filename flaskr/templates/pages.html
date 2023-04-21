@@ -4,8 +4,19 @@
 Pages
 {% endblock %}
 
+
+
 {% block content %}
 <h1>Wiki Pages</h1>
+
+
+<form method="post">
+    <label for="search">Search Pages/Tags:</label>
+    <br>
+    <input type="text" id="search_input" name="search_input" required>
+    <button type="submit">Search</button>
+</form>
+
 <ul>
     {% for page in pages %}
         <li><a href="/pages/{{ page }}"> {{ page }} </a></li>

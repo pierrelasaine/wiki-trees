@@ -1,28 +1,45 @@
 {% extends 'main.html' %}
 
 {% block content %}
-	<h1>{% if active_tab == 'SignUp' %}Sign Up{% else %}Upload{% endif %}</h1>
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+    {% endif %}
 	{% if error_message %}
 		<p class="error">{{ error_message }}</p>
 	{% endif %}
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input id="nameInput" type="text" placeholder="File Name" name="name" required>
-        <div id="form-container" style="display: block;">
-            <h3 style="font-weight: normal;">Drag & Drop File to Upload or Create a New Page</h3>
-            <input type="file" name="file" id="fileInput">
-            <button type="submit" value="Upload">Upload</button>
-            <input type="hidden" name="content" id="contentInput">
+	<div class="form-box-box-box">
+	<div id="upload-box-box" class="upload-box-box">
+		<div class="upload-title-box">
+			<h1>Upload!</h1>
+		</div>
+		<div class="upload-form-box">
+			<form action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="upload-form-input-label-box">
+                    <label for="name">Page Name</label>
+                </div>
+                <input id="nameInput" type="text" name="name" required>
+				<div id="form-container" class="upload-form-input-box" style="display: block;">
+                    <input type="file" name="file" id="fileInput">
+                    <button type="submit" value="Upload">Upload</button>
+                    <input type="hidden" name="content" id="contentInput">
+				</div>
+			</form>
+		</div>                         
+	</div>
+	</div>
+    <div class="upload-button-box">
+        <button id="toggleButton" type="button" onclick="toggleEditor(); toggleForm(); toggleSave();">Create New Page</button>
+        <div id='save-button-container' style="display: none;">
+            <button class="upload-button-save" type="button" onclick="uploadPageFromEditor()"><img src='/static/images/upload.png'></button>
         </div>
-    </form>
-    <button id="toggleButton" type="button" onclick="toggleEditor(); toggleForm(); toggleUpload();">Create New Page</button>
-    <div id='save-button-container' style="display: none;">
-        <button type="button" onclick="uploadPageFromEditor()">Upload to Wiki</button>
     </div>
     <!-- TinyMCE Text on open -->
-    <div id="editor-container" style="display: none;">
+    <div class="editor-box" id="editor-container" style="display: none;">
 		<textarea id="myTextarea">
-			<h1 style="text-align: center;">Welcome!</h1>
-			<p style="text-align: center;">Type your page content here!</p>
+			<h1>Welcome!</h1>
+			<p>Type your page name in the field above and your page content here!</p>
 		</textarea>
 	</div>
 

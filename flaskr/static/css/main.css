@@ -2,6 +2,14 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     min-height: 100vh;
+    zoom: 1;
+}
+  
+  /* Zoom level for phone screens */
+@media screen and (max-width: 767px) {
+    body {
+        zoom: 0.8;
+    }
 }
 
 /* Full-width input fields */
@@ -105,8 +113,24 @@ button:hover {
         }
         .search-box {
             padding: 10%;
+            padding-top: 70px; 
             text-align: center;
         }
+            .search-box input{
+                background-color: #e3e3dc;
+                margin-top: 0px !important;
+                border: none;
+                border-top-right-radius: 5px;
+                border-top-left-radius: 5px;
+                border-bottom: 1px solid #43483e;
+                max-width: 625px;
+                font-size: 20px;
+            }
+            .search-box button{
+                margin-top: 20px;
+                font-size: 16px;
+                font-weight: 500;
+            }
     .about-box {
         background-color: #f1f3e9;
         border-radius: 40px;
@@ -189,6 +213,9 @@ button:hover {
                 }
                     .author-image-box img{
                         border-radius: 40px;
+                        object-fit: cover;
+                        max-width: 300px !important;
+                        max-height: 100% !important;
                     }
 .form-box-box-box {
     padding-left: 20px;
@@ -218,6 +245,7 @@ button:hover {
             }
         .form-icon-box {
             margin-top: 20px;
+
             display: flex;
             justify-content: center;
         }
@@ -273,9 +301,10 @@ button:hover {
     .page-head {
         padding: 30px;
         padding-bottom: 20px;
+        font-size: 30px;
+
         display: flex;
         justify-content: space-between;
-        font-size: 30px;
     }   
         .page-head div > div[style*="display: none;"] {
             flex: 0;
@@ -296,16 +325,34 @@ button:hover {
         }
         .buttons {
             margin-right: 20px;
+
             display: flex;
             flex-direction: row;
             justify-content: right;
         }
+            .buttons form{
+                display: flex;
+            }
+                .buttons input{
+                    margin-left: 15px;
+                    background-color: #e3e3dc;
+                    margin-top: 0px !important;
+                    border: none;
+                    border-top-right-radius: 5px;
+                    border-top-left-radius: 5px;
+                    border-bottom: 1px solid #43483e;
+                    max-width: 200px;
+                    font-size: 16px;
+
+                    display: flex;
+                }
     .page-box {
         background-color: #f1f3e9;
         border-radius: 40px;
         margin: 30px;
         margin-top: 0px;
         padding: 40px;
+
         display: flex;
     }
     .editor-box {
@@ -315,5 +362,145 @@ button:hover {
         margin-top: 0px;
         padding: 20px;
         height: 100%;
+
         display: flex;
     }
+.upload-box-box {
+    background-color: #f1f3e9;
+    border-radius: 40px;
+    margin: 0 auto;
+    margin-top: 200px;
+    max-height: 500px;
+    max-width: 560px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}  
+    .upload-title-box {
+            font-size: 35px;
+            padding: 20px;
+
+            display: flex;
+            justify-content: center;
+    }
+        .upload-title-box h1{
+            margin-bottom: 0px !important;
+        }
+    .upload-form-box {
+        padding-bottom: 35px;
+        padding-left: 30px;
+        padding-right: 30px;
+
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+    .upload-form-box input[type=text]{
+        font-size: 40px;
+        font-weight: 500;
+    }
+    .upload-form-box input[type=file]{
+        margin-top: 12px !important;
+    }
+    .upload-form-box label{
+        text-align: left;
+        font-size: 12px;
+        color: #43483e;
+        padding-left: 5px;
+    }
+    .upload-form-box input{
+        background-color: #e3e3dc;
+        margin-top: 0px !important;
+        border: none;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        border-bottom: 1px solid #43483e;
+        max-width: 360px;
+        align-self: center;
+    }
+    .upload-form-box button{
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .upload-form-input-label-box {
+        width: 360px;
+        margin: 0 auto;
+        display: flex;
+    }
+    .upload-form-input-box {
+        display: flex;
+        flex-direction: column;
+    }
+    .upload-button-box {
+        margin: 20px;
+
+        display: flex;
+        justify-content: center;
+    }
+    .upload-button-box button{
+        background-color: #f1f3e9;
+        max-width: 560px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .upload-button-save {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px !important;
+        margin-left: 220px;
+    }
+    .upload-button-back {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px !important;
+    }
+    #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 120px;
+        height: 120px;
+        margin: -76px 0 0 -76px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #43483e;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+    
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Add animation to "page content" */
+    .animate-bottom {
+        position: relative;
+        -webkit-animation-name: animatebottom;
+        -webkit-animation-duration: 1s;
+        animation-name: animatebottom;
+        animation-duration: 0.5s
+    }
+
+    @-webkit-keyframes animatebottom {
+        from { bottom:-100px; opacity:0 } 
+        to { bottom:0px; opacity:1 }
+    }
+
+    @keyframes animatebottom { 
+        from{ bottom:-100px; opacity:0 } 
+        to{ bottom:0; opacity:1 }
+    }
+
+    #myDiv {
+        display: none;
+        text-align: center;
+    }        

@@ -3,5 +3,7 @@ runtime: python39
 handlers:
   - url: /static
     static_dir: flaskr/static
+  - url: /src
+    static_dir: src
   - url: /.*
     script: auto
