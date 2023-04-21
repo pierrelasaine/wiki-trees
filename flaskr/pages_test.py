@@ -87,6 +87,18 @@ def test_upload_valid_html(client):
     assert resp.status_code == 302
 
 
+def other_test_upload_invalid_html(client):
+    resp = client.post('/upload',
+                       data={
+                           'name':
+                           'invalid_page',
+                           'content':
+                           '<html><body><h1>Hello world!</h2></body></html>'
+                       })
+    assert resp.status_code == 200
+    assert b"Invalid HTML!" in resp.data
+
+
 @patch("flaskr.backend.Backend.get_wiki_page")
 @patch("flaskr.backend.Backend.upload")
 def test_TinyMCE_upload(mock_upload, mock_get_wiki_page, client):
