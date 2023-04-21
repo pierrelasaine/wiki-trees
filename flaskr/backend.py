@@ -135,8 +135,8 @@ class Backend:
         for i, tree in enumerate(tree_names):
             description = "<b style='font-size: 16px;'>Distribution: </b><h style='font-size: 16px;'>{}</h>".format(
                 tree_distributions[tree]['distribution'])
-            popup_html = '<div style="width: 250px;font-size: 18px;"><b>{} Tree</b><br>{}</div>'.format(
-                tree, description)
+            popup_html = '<b>{}</b><br>{}<br><a href="#" onclick="window.top.location.href=\'/pages/{}\'; return false;">Learn More</a>'.format(
+                tree, description, tree)
             folium.Marker(
                 location=tree_distributions[tree]['location'],
                 icon=folium.Icon(color=tree_distributions[tree]['color'],

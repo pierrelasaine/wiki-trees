@@ -12,7 +12,7 @@ The module also defines two additional routes for user authentication:
 
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
-from flask import render_template, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response, g
+from flask import render_template, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response
 from flaskr.tag_handler import TagHandler
 from flaskr.backend import *
 from io import BytesIO
@@ -89,16 +89,19 @@ def make_endpoints(app, backend):
         content_str = request.form['content']
         if not content_str:
             file = request.files.get('file')
-            content = file.stream.read()
-            filename = file.filename
+            backend.upload(file.stream.read(), name, file.filename)
+            TagHandler().add_file_to_csv(name)
+            return "<script>alert('Invalid HTML!');</script>" + render_template(
+                "upload.html", pages=pages)
         else:
-            content = content_str.encode()
-            filename = name
+            content_bstr = content_str.encode()
+            content = bytearray(content_bstr)
 
         parser = html.parser.HTMLParser()
         try:
             parser.feed(content.decode())
-            backend.upload(content, name, filename)
+            backend.upload(content, name, name)
+            TagHandler().add_file_to_csv(name)
             return redirect(url_for('page', filename=name))
         except ValueError:
             return "<script>alert('Invalid HTML!');</script>" + render_template(

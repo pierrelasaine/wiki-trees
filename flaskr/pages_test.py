@@ -108,28 +108,6 @@ def no_test_upload_valid_html(client):
             'content': '<html><body><h1>Hello world!</h1></body></html>'
         })
     assert resp.status_code == 302
-    assert resp.headers['Location'] == '/pages/valid_page'
-
-
-def no_test_upload_invalid_html(client):
-    resp = client.post(
-        '/upload',
-        data={
-            'name': 'invalid_page',
-            'content': '<html><body><h1>Hello world!</h2></body></html>'
-        })
-    assert resp.status_code == 200
-    assert b"Invalid HTML!" in resp.data
-
-
-def no_test_upload_valid_html(client):
-    resp = client.post(
-        '/upload',
-        data={
-            'name': 'valid_page',
-            'content': '<html><body><h1>Hello world!</h1></body></html>'
-        })
-    assert resp.status_code == 302
 
 
 def no_test_upload_invalid_html(client):
