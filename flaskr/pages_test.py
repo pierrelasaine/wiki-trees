@@ -76,7 +76,7 @@ def test_upload_page(client):
     assert b"Drop File to Upload" in resp.data
 
 
-def other_test_upload_valid_html(client):
+def test_upload_valid_html(client):
     resp = client.post(
         '/upload',
         data={
@@ -84,10 +84,9 @@ def other_test_upload_valid_html(client):
             'content': '<html><body><h1>Hello world!</h1></body></html>'
         })
     assert resp.status_code == 302
-    assert resp.status_code == 302
 
 
-def other_test_upload_invalid_html(client):
+def no_test_upload_invalid_html(client):
     resp = client.post(
         '/upload',
         data={
