@@ -12,7 +12,7 @@ The module also defines two additional routes for user authentication:
 
 All routes use templates rendered with Flask's "render_template" function, and interact with a Google Cloud Storage bucket to retrieve and store data.
 """
-from flask import render_template, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response
+from flask import render_template, session, request, redirect, url_for, make_response, send_file, send_from_directory, Response, g
 from flaskr.tag_handler import TagHandler
 from flaskr.backend import *
 from io import BytesIO
