@@ -88,9 +88,10 @@
          * @return {boolean} to indicate whether to proceed with the default action.
          */
         var editor = tinymce.get("myTextarea");
+        var pageSave = sessionStorage.getItem("pageSave")
 
         // Check if content has been changed
-        if (editor.isDirty()) {
+        if (editor.isDirty() && pageSave != "true") {
             // Display confirmation dialog
             var confirmationMessage = "You have unsaved changes. Are you sure you want to leave?";
             if (!confirm(confirmationMessage)) {
@@ -124,6 +125,7 @@
         /**
          * Upload the content from the TinyMCE editor to the server by submitting the form.
          */
+        sessionStorage.setItem("savePage", "true")
         var myContent = tinymce.get("myTextarea").getContent();
 
         document.getElementById("contentInput").value = myContent;
